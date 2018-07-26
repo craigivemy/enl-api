@@ -18,9 +18,52 @@ class CreateMatchesTable extends Migration
 
             $table->increments('id');
 
+            $table->integer('home_score');
+            $table->integer('away_score');
 
+            $table->unsignedInteger('division_id');
+            $table->unsignedInteger('season_id');
+
+            $table->unsignedInteger('home_id');
+            $table->unsignedInteger('away_id');
+
+            $table->timestamp('match_date');
+            $table->unsignedInteger('round');
+
+            $table->boolean('played');
+            $table->boolean('walkover');
+
+            $table->integer('home_adjust');
+            $table->integer('away_adjust');
 
             $table->timestamps();
+
+
+            $table->foreign('division_id')
+                ->references('id')
+                ->on('divisions')
+                ->onDelete('set null')
+                ->onUpdate('cascade');
+
+            $table->foreign('season_id')
+                ->references('id')
+                ->on('seasons')
+                ->onDelete('set null')
+                ->onUpdate('cascade');
+
+            $table->foreign('home_id')
+                ->references('id')
+                ->on('teams')
+                ->onDelete('set null')
+                ->onUpdate('cascade');
+
+            $table->foreign('away_id')
+                ->references('id')
+                ->on('teams')
+                ->onDelete('set null')
+                ->onUpdate('cascade');
+
+
         });
     }
 
