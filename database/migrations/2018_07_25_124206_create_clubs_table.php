@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUmpiresTable extends Migration
+class CreateClubsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,25 +13,17 @@ class CreateUmpiresTable extends Migration
      */
     public function up()
     {
-        Schema::create('umpires', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
+        Schema::create('clubs', function (Blueprint $table) {
             $table->increments('id');
-
-            $table->string('forename', 45);
-            $table->string('surname', 45);
-            $table->unsignedInteger('team_id')->nullable();
-
+            $table->string('name', 80);
+            $table->string('primary_colour', 30)->nullable();
+            $table->string('secondary_colour', 30)->nullable();
+            $table->string('tertiary_colour', 30)->nullable();
+            $table->text('logo_url')->nullable();
+            $table->text('narrative')->nullable();
             $table->boolean('deleted')->default(false);
             $table->timestamp('deleted_at')->nullable();
-
             $table->timestamps();
-
-            $table->foreign('team_id')
-                ->references('id')
-                ->on('teams')
-                ->onDelete('set null')
-                ->onUpdate('cascade');
-
         });
     }
 
@@ -42,6 +34,6 @@ class CreateUmpiresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('umpires');
+        Schema::dropIfExists('clubs');
     }
 }

@@ -21,11 +21,11 @@ class CreateMatchesTable extends Migration
             $table->integer('home_score');
             $table->integer('away_score');
 
-            $table->unsignedInteger('division_id');
-            $table->unsignedInteger('season_id');
+            $table->unsignedInteger('division_id')->nullable();
+            $table->unsignedInteger('season_id')->nullable();
 
-            $table->unsignedInteger('home_id');
-            $table->unsignedInteger('away_id');
+            $table->unsignedInteger('home_id')->nullable();
+            $table->unsignedInteger('away_id')->nullable();
 
             $table->timestamp('match_date');
             $table->unsignedInteger('round');

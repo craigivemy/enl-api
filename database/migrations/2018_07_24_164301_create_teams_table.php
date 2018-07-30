@@ -29,6 +29,9 @@ class CreateTeamsTable extends Migration
             $table->unsignedInteger('club_id')->nullable();
             $table->unsignedInteger('division_id')->nullable();
 
+            $table->boolean('deleted')->default(false);
+            $table->timestamp('deleted_at')->nullable();
+
             $table->foreign('club_id')
                 ->references('id')
                 ->on('clubs')

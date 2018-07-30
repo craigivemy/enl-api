@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUmpiresTable extends Migration
+class CreateSeasonsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,25 +13,17 @@ class CreateUmpiresTable extends Migration
      */
     public function up()
     {
-        Schema::create('umpires', function (Blueprint $table) {
+        Schema::create('seasons', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-
-            $table->string('forename', 45);
-            $table->string('surname', 45);
-            $table->unsignedInteger('team_id')->nullable();
-
+            $table->string('name', 100);
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->unsignedInteger('rounds');
+            $table->boolean('current');
             $table->boolean('deleted')->default(false);
             $table->timestamp('deleted_at')->nullable();
-
             $table->timestamps();
-
-            $table->foreign('team_id')
-                ->references('id')
-                ->on('teams')
-                ->onDelete('set null')
-                ->onUpdate('cascade');
-
         });
     }
 
@@ -42,6 +34,6 @@ class CreateUmpiresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('umpires');
+        Schema::dropIfExists('seasons');
     }
 }
