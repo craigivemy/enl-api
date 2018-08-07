@@ -8,6 +8,11 @@ class Division extends Model
 {
 
 
+    public function matches()
+    {
+        return $this->hasMany('App\Match');
+    }
+
     public function seasons()
     {
         return $this->belongsToMany('App\Season');
