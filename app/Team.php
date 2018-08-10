@@ -17,5 +17,10 @@ class Team extends Model
         return $this->hasMany('App\Umpire');
     }
 
+    public function club()
+    {
+        return $this->belongsTo('App\Club');
+    }
+
     // need matches? or filter query param in request?
 }
