@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class ClubsTableSeeder extends Seeder
+class StatisticsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,6 @@ class ClubsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Club::class, 30)->create();
+        //
     }
 }
