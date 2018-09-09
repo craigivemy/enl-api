@@ -11,6 +11,6 @@ class MatchesTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        factory(App\Match::class, 100)->create();
     }
 }

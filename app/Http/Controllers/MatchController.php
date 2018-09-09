@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Match;
+use App\Http\Resources\Match as MatchResource;
+use App\Http\Resources\MatchCollection;
 use Illuminate\Http\Request;
 
 class MatchController extends Controller
@@ -14,7 +16,7 @@ class MatchController extends Controller
      */
     public function index()
     {
-        //
+        return new MatchCollection(Match::all());
     }
 
     /**

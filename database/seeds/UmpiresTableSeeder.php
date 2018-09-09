@@ -11,6 +11,6 @@ class UmpiresTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        factory(App\Umpire::class, 20)->create();
     }
 }
