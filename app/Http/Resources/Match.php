@@ -15,8 +15,9 @@ class Match extends JsonResource
     public function toArray($request)
     {
         return [
-            'home_score'  => $this->home_score,
-            'away_score'  => $this->away_score,
+            'id'            => $this->id,
+            'home_score'    => $this->home_score,
+            'away_score'    => $this->away_score,
             'division_id'   => $this->division_id,
             'season_id'     => $this->season_id,
             'home_id'       => $this->home_id,

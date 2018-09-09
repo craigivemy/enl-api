@@ -14,6 +14,12 @@ class Player extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id'                => $this->id,
+            'forename'          => $this->forename,
+            'surname'           => $this->surname,
+            'team_id'           => $this->team_id,
+            'played_up_count'   => $this->played_up_count
+        ];
     }
 }

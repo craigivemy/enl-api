@@ -14,6 +14,16 @@ class Team extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id'                => $this->id,
+            'name'              => $this->name,
+            'primary_colour'    => $this->primary_colour,
+            'secondary_colour'  => $this->secondary_colour,
+            'tertiary_colour'   => $this->tertiary_colour,
+            'logo_url'          => $this->logo_url,
+            'narrative'         => $this->narrative,
+            'division_id'       => $this->division_id,
+            'club_id'           => $this->club_id
+        ];
     }
 }

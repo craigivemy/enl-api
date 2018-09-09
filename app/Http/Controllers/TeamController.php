@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Team;
+use App\Http\Resources\Team as TeamResource;
+use App\Http\Resources\TeamCollection;
 use Illuminate\Http\Request;
 
 class TeamController extends Controller
@@ -14,7 +16,7 @@ class TeamController extends Controller
      */
     public function index()
     {
-        echo 1;
+        return new TeamCollection(Team::all());
     }
 
     /**
@@ -36,7 +38,7 @@ class TeamController extends Controller
      */
     public function show(Team $team)
     {
-        //
+        return new TeamResource(Team::find($team->id));
     }
 
     /**

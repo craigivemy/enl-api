@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Player;
+use App\Http\Resources\Player as PlayerResource;
+use App\Http\Resources\PlayerCollection;
 use Illuminate\Http\Request;
 
 class PlayerController extends Controller
@@ -14,7 +16,7 @@ class PlayerController extends Controller
      */
     public function index()
     {
-        //
+        return new PlayerCollection(Player::all());
     }
 
     /**
