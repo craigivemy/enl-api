@@ -36,9 +36,9 @@ class TeamController extends Controller
      * @param  \App\Team  $team
      * @return \Illuminate\Http\Response
      */
-    public function show(Team $team)
+    public function show($id)
     {
-        return new TeamResource(Team::find($team->id));
+        return new TeamResource(Team::find($id));
     }
 
     /**

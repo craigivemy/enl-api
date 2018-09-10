@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Umpire;
-use App\Http\Resources\Umpire as UmpireResource;
-use App\Http\Resources\UmpireCollection;
-
 use Illuminate\Http\Request;
+use App\Club;
+use App\Http\Resources\Club as ClubResource;
+use App\Http\Resources\ClubCollection;
 
-class UmpireController extends Controller
+class ClubController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +16,7 @@ class UmpireController extends Controller
      */
     public function index()
     {
-        return new UmpireCollection(Umpire::all());
+        return new ClubCollection(Club::all());
     }
 
     /**
@@ -34,22 +33,22 @@ class UmpireController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Umpire  $umpire
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        return new UmpireResource(Umpire::find($id));
+        return new ClubResource(Club::find($id));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Umpire  $umpire
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Umpire $umpire)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -57,10 +56,10 @@ class UmpireController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Umpire  $umpire
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Umpire $umpire)
+    public function destroy($id)
     {
         //
     }

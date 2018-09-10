@@ -36,9 +36,9 @@ class PlayerController extends Controller
      * @param  \App\Player  $player
      * @return \Illuminate\Http\Response
      */
-    public function show(Player $player)
+    public function show($id)
     {
-        //
+        return new PlayerResource(Player::find($id));
     }
 
     /**
