@@ -21,5 +21,9 @@ Route::apiResources([
     'teams'     => 'TeamController',
     'matches'   => 'MatchController', // /matches needs to be /fixtures and /results instead
     'players'   => 'PlayerController',
-    'umpires'   => 'UmpireController'
+    'umpires'   => 'UmpireController',
+    'seasons'   => 'SeasonsController',
+    'settings'  => 'SettingsController',
+    'divisions' => 'DivisionsController',
+    'clubs'     => 'ClubsController'
 ]);
