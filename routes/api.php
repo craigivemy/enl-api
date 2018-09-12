@@ -17,9 +17,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('register', 'AuthController@register');
-Route::post('login', 'AuthController@login');
-
 Route::apiResources([
     'teams'     => 'TeamController',
     'matches'   => 'MatchController', // /matches needs to be /fixtures and /results instead
