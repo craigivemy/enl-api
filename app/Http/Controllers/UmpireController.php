@@ -8,7 +8,7 @@ use App\Http\Resources\UmpireCollection;
 
 use Illuminate\Http\Request;
 
-class UmpireController extends Controller
+class UmpireController extends ApiController
 {
     /**
      * Display a listing of the resource.

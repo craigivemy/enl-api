@@ -6,8 +6,10 @@ use App\Match;
 use App\Http\Resources\Match as MatchResource;
 use App\Http\Resources\MatchCollection;
 use Illuminate\Http\Request;
+use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
+use RuntimeException;
 
-class MatchController extends Controller
+class MatchController extends ApiController
 {
     /**
      * Display a listing of the resource.

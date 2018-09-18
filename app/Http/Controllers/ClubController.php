@@ -7,7 +7,7 @@ use App\Club;
 use App\Http\Resources\Club as ClubResource;
 use App\Http\Resources\ClubCollection;
 
-class ClubController extends Controller
+class ClubController extends ApiController
 {
     /**
      * Display a listing of the resource.

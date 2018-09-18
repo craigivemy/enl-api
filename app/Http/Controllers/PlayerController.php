@@ -7,7 +7,7 @@ use App\Http\Resources\Player as PlayerResource;
 use App\Http\Resources\PlayerCollection;
 use Illuminate\Http\Request;
 
-class PlayerController extends Controller
+class PlayerController extends ApiController
 {
     /**
      * Display a listing of the resource.

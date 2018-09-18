@@ -7,7 +7,7 @@ use App\Http\Resources\Team as TeamResource;
 use App\Http\Resources\TeamCollection;
 use Illuminate\Http\Request;
 
-class TeamController extends Controller
+class TeamController extends ApiController
 {
 
     /**
@@ -35,11 +35,12 @@ class TeamController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Team  $team
-     * @return \Illuminate\Http\Response
+     * @return TeamResource
      */
     public function show($id)
     {
-        return new TeamResource(Team::find($id));
+        /* set correct status codes!!! */
+        return (new TeamResource(Team::find($id)))->response()->setStatusCode(400);
     }
 
     /**
