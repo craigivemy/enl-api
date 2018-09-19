@@ -23,7 +23,15 @@ class Team extends JsonResource
             'logo_url'          => $this->logo_url,
             'narrative'         => $this->narrative,
             'division_id'       => $this->division_id,
-            'club_id'           => $this->club_id
+            'club'              => optional($this->club)->name // just testing function
+        ];
+
+    }
+
+    public function with($request)
+    {
+        return [
+            'status'    => 'success'
         ];
     }
 }
