@@ -41,7 +41,7 @@ class TeamController extends ApiController
     {
         /* set correct status codes!!! */
         //return (new TeamResource(Team::find($id)))->response()->setStatusCode(400);
-        return (new TeamResource(Team::with('club')->find($id)));
+        return (new TeamResource(Team::with('club')->findOrFail($id)));
     }
 
     /**

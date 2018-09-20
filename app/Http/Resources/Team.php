@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Club as ClubResource;
 
 class Team extends JsonResource
 {
@@ -23,7 +24,8 @@ class Team extends JsonResource
             'logo_url'          => $this->logo_url,
             'narrative'         => $this->narrative,
             'division_id'       => $this->division_id,
-            'club'              => optional($this->club)->name // just testing function
+            //'club'              => optional($this->club)->name // just testing function
+            'club'              => new ClubResource($this->club)
         ];
 
     }
