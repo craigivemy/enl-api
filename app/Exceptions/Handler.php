@@ -49,7 +49,7 @@ class Handler extends ExceptionHandler
     {
         if ($exception instanceof ModelNotFoundException) {
             return response()->json([
-                'data' => [],
+                'data' => null,
                 'status' => 'not found'
             ])->setStatusCode(404);
         }

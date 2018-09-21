@@ -18,7 +18,8 @@ class MatchController extends ApiController
      */
     public function index()
     {
-        return new MatchCollection(Match::all());
+        // example of using wherePlayed to get match not fixture
+        return new MatchCollection(Match::wherePlayed(1)->get());
     }
 
     /**
@@ -38,9 +39,9 @@ class MatchController extends ApiController
      * @param  \App\Match  $match
      * @return \Illuminate\Http\Response
      */
-    public function show(Match $match)
+    public function show($id)
     {
-        //
+        return new MatchResource(Match::findOrFail($id));
     }
 
     /**
