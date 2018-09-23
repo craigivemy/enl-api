@@ -16,7 +16,7 @@ class ClubController extends ApiController
      */
     public function index()
     {
-        return new ClubCollection(Club::all());
+        return $this->respond(new ClubCollection(Club::all()));
     }
 
     /**
@@ -27,7 +27,7 @@ class ClubController extends ApiController
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
@@ -38,7 +38,11 @@ class ClubController extends ApiController
      */
     public function show($id)
     {
-        return new ClubResource(Club::find($id));
+        //return new ClubResource(Club::find($id));
+        // club not found:
+
+        return $this->respondNotFound('Club not found');
+
     }
 
     /**

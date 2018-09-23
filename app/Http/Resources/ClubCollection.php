@@ -18,7 +18,8 @@ class ClubCollection extends ResourceCollection
             'data'  => $this->collection,
             'links' => [
                 'self'  => 'link-value'
-            ]
+            ],
+            'status'    => 'success'
         ];
     }
 }

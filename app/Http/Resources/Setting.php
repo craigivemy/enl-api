@@ -20,4 +20,12 @@ class Setting extends JsonResource
             'value'         => $this->setting_value
         ];
     }
+
+    public function with($request)
+    {
+        return [
+            'status'    => 'success'
+        ];
+    }
+
 }

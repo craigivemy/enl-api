@@ -18,7 +18,8 @@ class MatchCollection extends ResourceCollection
             'data'  => $this->collection,
             'links' => [
                 'self'  => 'link-value'
-            ]
+            ],
+            'status'    => 'success'
         ];
     }
 }

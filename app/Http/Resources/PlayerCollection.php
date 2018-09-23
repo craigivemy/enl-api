@@ -18,7 +18,8 @@ class PlayerCollection extends ResourceCollection
             'data' => $this->collection,
             'links' => [
                 'self'  => 'link-value'
-            ]
+            ],
+            'status'    => 'success'
         ];
     }
 }

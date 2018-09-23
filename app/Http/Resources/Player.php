@@ -22,4 +22,12 @@ class Player extends JsonResource
             'played_up_count'   => $this->played_up_count
         ];
     }
+
+    public function with($request)
+    {
+        return [
+            'status'    => 'success'
+        ];
+    }
+
 }

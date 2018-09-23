@@ -31,4 +31,12 @@ class Match extends JsonResource
             'test'          => 1
         ];
     }
+
+    public function with($request)
+    {
+        return [
+            'status'    => 'success'
+        ];
+    }
+
 }
