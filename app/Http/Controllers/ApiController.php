@@ -7,33 +7,29 @@ use Illuminate\Http\Request;
 class ApiController extends Controller
 {
 
-    public function respond($data)
+    public function respond($data, int $status_code = 200)
     {
-        return response($data)->setStatusCode(200);
+        return response($data)->setStatusCode($status_code);
     }
 
-    public function respondWithError(string $message = '', $status_code = null)
+    public function respondWithError(string $prettyMessage = '', $status_code = null)
     {
         $response = [
             'data'      => null,
             'status'    => 'error',
-            'message'   => $message
+            'message'   => $prettyMessage
         ];
 
         if (!$status_code) {
-            return response($response);
+            return $this->respond($response, 500);
         } else {
-            return response($response)->setStatusCode($status_code);
+            return $this->respond($response, $status_code);
         }
-
-        // all methods wrapped in try / catch, if something goes wrong
-        // use this - will it override modeNotFound tho?
     }
 
     public function respondNotFound(string $message = '')
     {
         return $this->respondWithError($message, 404);
     }
-
 
 }
