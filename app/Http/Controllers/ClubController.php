@@ -8,6 +8,10 @@ use App\Club;
 use App\Http\Resources\Club as ClubResource;
 use App\Http\Resources\ClubCollection;
 
+//use Bugsnag\PsrLogger\BugsnagLogger;
+
+use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
+
 class ClubController extends ApiController
 {
 
@@ -25,12 +29,21 @@ class ClubController extends ApiController
      */
     public function index()
     {
+
+        //$this->logger->critical('test');
+
+        Bugsnag::notifyException(new \Exception('test'));
+
+       // $this->logger->log('critical', 'test');
+
+        /*
         try {
             return $this->respond(new ClubCollection(Club::all()));
         } catch (\Throwable $e) {
             return $this->respondWithError('Unknown error occurred');
             // $this->CustomLogger
         }
+        */
     }
 
     /**
