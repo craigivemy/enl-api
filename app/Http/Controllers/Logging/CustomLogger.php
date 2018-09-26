@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers\Logging;
 
+use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
-use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
+use Bugsnag\BugsnagLaravel\Facades\Bugsnag as Logger;
 
 class CustomLogger extends AbstractLogger implements LoggerInterface
 {
 
-//    protected $logger;
-//
-//    public function __construct(Bugsnag $bugsnag)
-//    {
-//        $this->logger = $bugsnag;
-//    }
+    private $logger;
+
+    public function __construct(Logger $bugsnag)
+    {
+        $this->logger = $bugsnag;
+    }
 
     /**
      * Logs with an arbitrary level.
@@ -28,7 +29,9 @@ class CustomLogger extends AbstractLogger implements LoggerInterface
     {
         switch ($level) {
             case 'critical':
-                Bugsnag::notifyError('test', 'test');
+                $this->logger::notifyException($context['exception'], function($report) {
+                    $report->setSeverity('error');
+                });
                 break;
         }
     }

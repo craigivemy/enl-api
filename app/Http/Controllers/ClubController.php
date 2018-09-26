@@ -10,7 +10,7 @@ use App\Http\Resources\ClubCollection;
 
 //use Bugsnag\PsrLogger\BugsnagLogger;
 
-use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
+//use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
 
 class ClubController extends ApiController
 {
@@ -30,9 +30,12 @@ class ClubController extends ApiController
     public function index()
     {
 
-        //$this->logger->critical('test');
+        try {
+            throw new \Exception('Absolute nightmare had');
+        } catch (\Exception $e) {
+            $this->logger->log('critical', 'another error here', ['exception' => $e]);
+        }
 
-        Bugsnag::notifyException(new \Exception('test'));
 
        // $this->logger->log('critical', 'test');
 
