@@ -28,11 +28,24 @@ class CustomLogger extends AbstractLogger implements LoggerInterface
     public function log($level, $message, array $context = array())
     {
         switch ($level) {
+            case 'emergency':
+            case 'alert':
             case 'critical':
                 $this->logger::notifyException($context['exception'], function($report) {
                     $report->setSeverity('error');
                 });
                 break;
+            case 'error':
+                break;
+            case 'warning':
+                break;
+            case 'notice':
+                break;
+            case 'info':
+                break;
+            case 'debug':
+                break;
+
         }
     }
 
