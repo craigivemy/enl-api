@@ -64,7 +64,7 @@ class ClubController extends ApiController
             return $this->respondNotFound('Club not found');
         } catch (\Throwable $t) {
             $meta = ['action'   => 'ClubController@show'];
-            $this->logger->log('alert', $t->getMessage, ['exception' => $t, 'meta'  => $meta])
+            $this->logger->log('alert', $t->getMessage, ['exception' => $t, 'meta'  => $meta]);
             return $this->respondWithError('Internal error');
         }
 
