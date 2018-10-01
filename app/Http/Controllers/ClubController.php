@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Logging\CustomLogger;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use App\Club;
 use App\Http\Resources\Club as ClubResource;
@@ -29,24 +30,13 @@ class ClubController extends ApiController
      */
     public function index()
     {
-
-        try {
-            throw new \Exception('Absolute nightmare had');
-        } catch (\Exception $e) {
-            $this->logger->log('critical', 'another error here', ['exception' => $e]);
-        }
-
-
-       // $this->logger->log('critical', 'test');
-
-        /*
         try {
             return $this->respond(new ClubCollection(Club::all()));
-        } catch (\Throwable $e) {
-            return $this->respondWithError('Unknown error occurred');
-            // $this->CustomLogger
+        } catch (\Throwable $t) {
+            $meta = ['action' => 'ClubController@index'];
+            $this->logger->log('alert', $t->getMessage(), ['exception' => $t, 'meta' => $meta]);
+            return $this->respondWithError('Internal error');
         }
-        */
     }
 
     /**
@@ -68,10 +58,15 @@ class ClubController extends ApiController
      */
     public function show($id)
     {
-        //return new ClubResource(Club::find($id));
-        // club not found:
-
-        return $this->respondNotFound('Club not found');
+        try {
+            return $this->respond(new ClubResource(Club::findOrFail($id)));
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Club not found');
+        } catch (\Throwable $t) {
+            $meta = ['action'   => 'ClubController@show'];
+            $this->logger->log('alert', $t->getMessage, ['exception' => $t, 'meta'  => $meta])
+            return $this->respondWithError('Internal error');
+        }
 
     }
 

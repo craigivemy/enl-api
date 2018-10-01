@@ -31,19 +31,31 @@ class CustomLogger extends AbstractLogger implements LoggerInterface
             case 'emergency':
             case 'alert':
             case 'critical':
-                $this->logger::notifyException($context['exception'], function($report) {
+                $this->logger::notifyException($context['exception'], function($report) use ($context) {
                     $report->setSeverity('error');
+                    if ($context['meta']) {
+                        $report->setMetaData = $context['meta'];
+                    }
                 });
                 break;
             case 'error':
-                break;
             case 'warning':
-                break;
             case 'notice':
+                $this->logger::notifyException($context['exception'], function($report) use ($context) {
+                   $report->setSeverity('warning');
+                    if ($context['meta']) {
+                        $report->setMetaData = $context['meta'];
+                    }
+                });
                 break;
             case 'info':
-                break;
             case 'debug':
+                $this->logger::notifyException($context['exception'], function($report) use ($context) {
+                    $report->setSeverity('info');
+                    if ($context['meta']) {
+                        $report->setMetaData = $context['meta'];
+                    }
+                });
                 break;
 
         }
