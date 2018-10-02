@@ -17,6 +17,7 @@ class ApiController extends Controller
 
     public function respond($data, int $status_code = 200)
     {
+        // this is messing with find method return structure
         return response($data)->setStatusCode($status_code);
     }
 
