@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Logging\CustomLogger;
+use Throwable;
 
 class ApiController extends Controller
 {
@@ -17,8 +17,14 @@ class ApiController extends Controller
 
     public function respond($data, int $status_code = 200)
     {
-        // this is messing with find method return structure
-        return response($data)->setStatusCode($status_code);
+        try {
+            // is this relying on it being a resource / collection?
+            // if so, probs not good?
+            return $data->response()->setStatusCode($status_code);
+        } catch (Throwable $t) {
+            $this->logger->log('critical', $t->getMessage(), ['exception' => $t]);
+            return $this->respondWithError(500);
+        }
     }
 
     public function respondWithError(string $message = 'Internal error', $status_code = null)

@@ -33,7 +33,7 @@ class CustomLogger extends AbstractLogger implements LoggerInterface
             case 'critical':
                 $this->logger::notifyException($context['exception'], function($report) use ($context) {
                     $report->setSeverity('error');
-                    if ($context['meta']) {
+                    if (isset($context['meta'])) {
                         $report->setMetaData(['Meta' => $context['meta']]);
                     }
                 });
@@ -43,7 +43,7 @@ class CustomLogger extends AbstractLogger implements LoggerInterface
             case 'notice':
                 $this->logger::notifyException($context['exception'], function($report) use ($context) {
                    $report->setSeverity('warning');
-                    if ($context['meta']) {
+                    if (isset($context['meta'])) {
                         $report->setMetaData(['Meta' => $context['meta']]);
                     }
                 });
@@ -52,7 +52,7 @@ class CustomLogger extends AbstractLogger implements LoggerInterface
             case 'debug':
                 $this->logger::notifyException($context['exception'], function($report) use ($context) {
                     $report->setSeverity('info');
-                    if ($context['meta']) {
+                    if (isset($context['meta'])) {
                         $report->setMetaData(['Meta' => $context['meta']]);
                     }
                 });

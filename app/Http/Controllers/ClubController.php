@@ -48,13 +48,13 @@ class ClubController extends ApiController
     public function show($id)
     {
         try {
-            return new ClubResource(Club::findOrFail($id));
+            //return new ClubResource(Club::findOrFail($id));
             return $this->respond(new ClubResource(Club::findOrFail($id)));
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound('Club not found');
         } catch (Throwable $t) {
             $meta = ['action'   => 'ClubController@show'];
-            $this->logger->log('alert', $t->getMessage, ['exception' => $t, 'meta'  => $meta]);
+            $this->logger->log('alert', $t->getMessage(), ['exception' => $t, 'meta'  => $meta]);
             return $this->respondWithError();
         }
 
