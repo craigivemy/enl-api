@@ -2,26 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Logging\CustomLogger;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use App\Club;
 use App\Http\Resources\Club as ClubResource;
 use App\Http\Resources\ClubCollection;
-
-//use Bugsnag\PsrLogger\BugsnagLogger;
-
-//use Bugsnag\BugsnagLaravel\Facades\Bugsnag;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Throwable;
 
 class ClubController extends ApiController
 {
-
-    protected $logger;
-
-    public function __construct(CustomLogger $customLogger)
-    {
-        $this->logger = $customLogger;
-    }
 
     /**
      * Display a listing of the resource.
@@ -32,10 +21,10 @@ class ClubController extends ApiController
     {
         try {
             return $this->respond(new ClubCollection(Club::all()));
-        } catch (\Throwable $t) {
+        } catch (Throwable $t) {
             $meta = ['action' => 'ClubController@index'];
             $this->logger->log('info', $t->getMessage(), ['exception' => $t, 'meta' => $meta]);
-            return $this->respondWithError('Internal error');
+            return $this->respondWithError();
         }
     }
 
@@ -59,13 +48,14 @@ class ClubController extends ApiController
     public function show($id)
     {
         try {
+            return new ClubResource(Club::findOrFail($id));
             return $this->respond(new ClubResource(Club::findOrFail($id)));
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound('Club not found');
-        } catch (\Throwable $t) {
+        } catch (Throwable $t) {
             $meta = ['action'   => 'ClubController@show'];
             $this->logger->log('alert', $t->getMessage, ['exception' => $t, 'meta'  => $meta]);
-            return $this->respondWithError('Internal error');
+            return $this->respondWithError();
         }
 
     }

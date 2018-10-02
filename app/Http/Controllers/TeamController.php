@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Team;
 use App\Http\Resources\Team as TeamResource;
 use App\Http\Resources\TeamCollection;
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Throwable;
 
 class TeamController extends ApiController
 {
-
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +18,13 @@ class TeamController extends ApiController
      */
     public function index()
     {
-        return new TeamCollection(Team::all());
+        try {
+            return $this->respond(new TeamCollection(Team::all()));
+        } catch (Throwable $t) {
+            $meta = ['action' => 'TeamController@index'];
+            $this->logger->log('alert', $t->getMessage(), ['exception' => $t, 'meta' => $meta]);
+            return $this->respondWithError();
+        }
     }
 
     /**
@@ -39,9 +46,15 @@ class TeamController extends ApiController
      */
     public function show($id)
     {
-        /* set correct status codes!!! */
-        //return (new TeamResource(Team::find($id)))->response()->setStatusCode(400);
-        return (new TeamResource(Team::with('club')->findOrFail($id)));
+        try {
+            return $this->respond(new TeamResource(Team::with('club')->findOrFail($id)));
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Team not found');
+        } catch (Throwable $t) {
+            $meta = ['action' => 'TeamController@show'];
+            $this->logger->log('alert', $t->getMessage(), ['exception' => $t, 'meta' => $meta]);
+            return $this->respondWithError();
+        }
     }
 
     /**

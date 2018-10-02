@@ -28,7 +28,7 @@ class Match extends JsonResource
             'walkover'      => $this->walkover,
             'home_adjust'   => $this->home_adjust,
             'away_adjust'   => $this->away_adjust,
-            'test'          => 1
+            'test'          => 2
         ];
     }
 
