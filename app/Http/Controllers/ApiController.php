@@ -44,19 +44,14 @@ class ApiController extends Controller
      * @param null $status_code
      * @return ApiController|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
-    public function respondWithError(string $message = 'Internal error', $status_code = null)
+    public function respondWithError(string $message = 'Internal error', $status_code = 500)
     {
         $response = [
             'data'      => null,
             'status'    => 'error',
             'message'   => $message
         ];
-
-        if (!$status_code) {
-            return $this->respond($response, 500);
-        } else {
-            return $this->respond($response, $status_code);
-        }
+        return $this->respond($response, $status_code);
     }
 
     /**
@@ -78,5 +73,4 @@ class ApiController extends Controller
         ];
         return $this->respond($response, 201);
     }
-
 }

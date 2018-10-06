@@ -20,10 +20,7 @@ class CreateUmpiresTable extends Migration
             $table->string('forename', 45);
             $table->string('surname', 45);
             $table->unsignedInteger('team_id')->nullable();
-
-            $table->boolean('deleted')->default(false);
-            $table->timestamp('deleted_at')->nullable();
-
+            
             $table->timestamps();
 
             $table->foreign('team_id')

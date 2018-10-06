@@ -24,9 +24,6 @@ class CreatePlayersTable extends Migration
 
             $table->unsignedInteger('played_up_count')->default(0);
 
-            $table->boolean('deleted')->default(false);
-            $table->timestamp('deleted_at')->nullable();
-
             $table->timestamps();
 
             $table->foreign('team_id')

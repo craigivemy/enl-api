@@ -85,6 +85,12 @@ class ClubController extends ApiController
      */
     public function destroy($id)
     {
-        //
+        try {
+            Club::destroy($id);
+        } catch (Throwable $t) {
+            $meta = ['action'   => 'ClubController@destroy'];
+            $this->logger->log('alert', $t->getMessage(), ['exception' => $t, 'meta'  => $meta]);
+            return $this->respondWithError();
+        }
     }
 }

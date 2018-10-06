@@ -22,8 +22,6 @@ class CreateClubsTable extends Migration
             $table->string('tertiary_colour', 30)->nullable();
             $table->text('logo_url')->nullable();
             $table->text('narrative')->nullable();
-            $table->boolean('deleted')->default(false);
-            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

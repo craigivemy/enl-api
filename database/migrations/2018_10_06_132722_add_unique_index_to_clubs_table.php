@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDivisionsTable extends Migration
+class AddUniqueIndexToClubsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateDivisionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('divisions', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
-            $table->increments('id');
-            $table->string('name', 80);
-            $table->timestamps();
+        Schema::table('clubs', function (Blueprint $table) {
+            $table->unique('name');
         });
     }
 
@@ -28,6 +25,8 @@ class CreateDivisionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('divisions');
+        Schema::table('clubs', function (Blueprint $table) {
+            $table->dropUnique('name');
+        });
     }
 }

@@ -21,8 +21,6 @@ class CreateSeasonsTable extends Migration
             $table->date('end_date');
             $table->unsignedInteger('rounds');
             $table->boolean('current');
-            $table->boolean('deleted')->default(false);
-            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }
