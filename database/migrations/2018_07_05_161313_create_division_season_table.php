@@ -19,6 +19,7 @@ class CreateDivisionSeasonTable extends Migration
             $table->unsignedInteger('division_id')->nullable();
             $table->unsignedInteger('season_id')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('division_id')
                 ->references('id')

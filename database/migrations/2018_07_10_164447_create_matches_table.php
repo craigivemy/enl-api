@@ -37,6 +37,7 @@ class CreateMatchesTable extends Migration
             $table->integer('away_adjust');
 
             $table->timestamps();
+            $table->softDeletes();
 
 
             $table->foreign('division_id')

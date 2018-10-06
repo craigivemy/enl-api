@@ -23,6 +23,7 @@ class CreateClubsTable extends Migration
             $table->text('logo_url')->nullable();
             $table->text('narrative')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

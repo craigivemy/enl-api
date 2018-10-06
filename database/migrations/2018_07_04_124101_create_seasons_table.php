@@ -22,6 +22,7 @@ class CreateSeasonsTable extends Migration
             $table->unsignedInteger('rounds');
             $table->boolean('current');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

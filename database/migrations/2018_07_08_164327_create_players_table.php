@@ -25,6 +25,7 @@ class CreatePlayersTable extends Migration
             $table->unsignedInteger('played_up_count')->default(0);
 
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('team_id')
                 ->references('id')

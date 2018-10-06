@@ -20,8 +20,9 @@ class CreateUmpiresTable extends Migration
             $table->string('forename', 45);
             $table->string('surname', 45);
             $table->unsignedInteger('team_id')->nullable();
-            
+
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('team_id')
                 ->references('id')

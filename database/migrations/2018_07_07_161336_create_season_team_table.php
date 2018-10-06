@@ -19,6 +19,7 @@ class CreateSeasonTeamTable extends Migration
             $table->unsignedInteger('season_id')->nullable();
             $table->unsignedInteger('team_id')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('season_id')
                 ->references('id')
