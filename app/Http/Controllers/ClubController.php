@@ -13,9 +13,9 @@ class ClubController extends ApiController
 {
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of the club.
      *
-     * @return ClubCollection
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -29,18 +29,18 @@ class ClubController extends ApiController
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created club in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-
+        
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified club.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -48,7 +48,6 @@ class ClubController extends ApiController
     public function show($id)
     {
         try {
-            //return new ClubResource(Club::findOrFail($id));
             return $this->respond(new ClubResource(Club::findOrFail($id)));
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound('Club not found');
@@ -57,11 +56,10 @@ class ClubController extends ApiController
             $this->logger->log('alert', $t->getMessage(), ['exception' => $t, 'meta'  => $meta]);
             return $this->respondWithError();
         }
-
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified club in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -73,7 +71,7 @@ class ClubController extends ApiController
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified club from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
