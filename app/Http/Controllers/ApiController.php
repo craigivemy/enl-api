@@ -41,7 +41,7 @@ class ApiController extends Controller
      * Respond with error
      *
      * @param string $message
-     * @param null $status_code
+     * @param int $status_code
      * @return ApiController|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
     public function respondWithError(string $message = 'Internal error', $status_code = 500)
@@ -72,5 +72,30 @@ class ApiController extends Controller
             'status'    => 'success'
         ];
         return $this->respond($response, 201);
+    }
+
+    public function respondSoftDeleted()
+    {
+        $response = [
+            'data'      => [],
+            'status'    => 'success'
+        ];
+        return $this->respond($response, 202);
+    }
+
+    public function respondDestroyed()
+    {
+        $response = [];
+        return $this->respond($response, 204);
+    }
+
+    public function respondDuplicateEntry(string $message = 'Duplicate entry. Resource already exists.')
+    {
+        $response = [
+            'data'      => [],
+            'status'    => 'error',
+            'message'   => $message
+        ];
+        return $this->respond($response, 409);
     }
 }

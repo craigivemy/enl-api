@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Club;
 use App\Http\Resources\Club as ClubResource;
@@ -39,6 +40,16 @@ class ClubController extends ApiController
         try {
             $club = Club::create($request->all());
             return $this->respondCreated($club);
+        } catch (QueryException $e) {
+            if ($e->errorInfo[1] === 1062) {
+                $message = 'A club with that name already exists.';
+                $meta = [
+                    'action' => 'ClubController@store',
+                    'info'   => 'Creating club named: ' . $request->input('name')
+                ];
+                $this->logger->log('info', $e->getMessage(), ['exception' => $e, 'meta' => $meta]);
+                return $this->respondDuplicateEntry($message);
+            }
         } catch (Throwable $t) {
             $meta = ['action' => 'ClubController@store'];
             $this->logger->log('critical', $t->getMessage(), ['exception' => $t, 'meta' => $meta]);
@@ -81,14 +92,35 @@ class ClubController extends ApiController
      * Remove the specified club from storage.
      *
      * @param  int  $id
+     * @param bool $force
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         try {
-            Club::destroy($id);
+            $club = Club::withTrashed()->where('id', $id)->first();
+            if (!$club) {
+                throw new ModelNotFoundException();
+            }
+            $club->forceDelete();
+            return $this->respondDestroyed();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Club not found');
         } catch (Throwable $t) {
             $meta = ['action'   => 'ClubController@destroy'];
+            $this->logger->log('alert', $t->getMessage(), ['exception' => $t, 'meta'  => $meta]);
+            return $this->respondWithError();
+        }
+    }
+
+    public function softDelete($id) {
+        try {
+            Club::destroy($id);
+            return $this->respondSoftDeleted();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Club not found');
+        } catch (Throwable $t) {
+            $meta = ['action'   => 'ClubController@softDelete'];
             $this->logger->log('alert', $t->getMessage(), ['exception' => $t, 'meta'  => $meta]);
             return $this->respondWithError();
         }
