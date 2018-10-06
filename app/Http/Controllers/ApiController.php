@@ -70,4 +70,13 @@ class ApiController extends Controller
         return $this->respondWithError($message, 404);
     }
 
+    public function respondCreated($resource)
+    {
+        $response = [
+            'data'      => $resource,
+            'status'    => 'success'
+        ];
+        return $this->respond($response, 201);
+    }
+
 }

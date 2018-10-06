@@ -23,7 +23,7 @@ class ClubController extends ApiController
             return $this->respond(new ClubCollection(Club::all()));
         } catch (Throwable $t) {
             $meta = ['action' => 'ClubController@index'];
-            $this->logger->log('info', $t->getMessage(), ['exception' => $t, 'meta' => $meta]);
+            $this->logger->log('critical', $t->getMessage(), ['exception' => $t, 'meta' => $meta]);
             return $this->respondWithError();
         }
     }
@@ -36,7 +36,14 @@ class ClubController extends ApiController
      */
     public function store(Request $request)
     {
-        
+        try {
+            $club = Club::create($request->all());
+            return $this->respondCreated($club);
+        } catch (Throwable $t) {
+            $meta = ['action' => 'ClubController@store'];
+            $this->logger->log('critical', $t->getMessage(), ['exception' => $t, 'meta' => $meta]);
+            return $this->respondWithError();
+        }
     }
 
     /**
