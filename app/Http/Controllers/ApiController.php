@@ -8,7 +8,9 @@ use Throwable;
 
 class ApiController extends Controller
 {
-
+    /**
+     * @var CustomLogger
+     */
     protected $logger;
 
     public function __construct(CustomLogger $logger)
@@ -55,6 +57,22 @@ class ApiController extends Controller
     }
 
     /**
+     * Respond notifying of duplicate entry
+     *
+     * @param string $message
+     * @return ApiController|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
+    public function respondDuplicateEntry(string $message = 'Duplicate entry. Resource already exists.')
+    {
+        $response = [
+            'data'      => [],
+            'status'    => 'error',
+            'message'   => $message
+        ];
+        return $this->respond($response, 409);
+    }
+
+    /**
      * Respond not found
      *
      * @param string $message
@@ -65,6 +83,12 @@ class ApiController extends Controller
         return $this->respondWithError($message, 404);
     }
 
+    /**
+     * Respond created
+     *
+     * @param $resource
+     * @return ApiController|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
     public function respondCreated($resource)
     {
         $response = [
@@ -74,6 +98,12 @@ class ApiController extends Controller
         return $this->respond($response, 201);
     }
 
+    /**
+     * Respond updated
+     *
+     * @param $resource
+     * @return ApiController|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
     public function respondUpdated($resource)
     {
         $response = [
@@ -83,6 +113,11 @@ class ApiController extends Controller
         return $this->respond($response, 200);
     }
 
+    /**
+     * Respond notifying of soft delete
+     *
+     * @return ApiController|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
     public function respondSoftDeleted()
     {
         $response = [
@@ -92,19 +127,15 @@ class ApiController extends Controller
         return $this->respond($response, 202);
     }
 
+    /**
+     * Respond destroyed
+     *
+     * @return ApiController|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
     public function respondDestroyed()
     {
         $response = [];
         return $this->respond($response, 204);
     }
 
-    public function respondDuplicateEntry(string $message = 'Duplicate entry. Resource already exists.')
-    {
-        $response = [
-            'data'      => [],
-            'status'    => 'error',
-            'message'   => $message
-        ];
-        return $this->respond($response, 409);
-    }
 }

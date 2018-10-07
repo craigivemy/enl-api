@@ -102,10 +102,28 @@ class ClubController extends ApiController
     }
 
     /**
+     * Soft deletes a club
+     * (deleted_at value is set to timestamp)
+     * @param $id
+     * @return ApiController|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
+    public function softDelete($id) {
+        try {
+            Club::destroy($id);
+            return $this->respondSoftDeleted();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Club not found');
+        } catch (Throwable $t) {
+            $meta = ['action'   => 'ClubController@softDelete'];
+            $this->logger->log('alert', $t->getMessage(), ['exception' => $t, 'meta'  => $meta]);
+            return $this->respondWithError();
+        }
+    }
+
+    /**
      * Remove the specified club from storage.
      *
      * @param  int  $id
-     * @param bool $force
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -125,24 +143,4 @@ class ClubController extends ApiController
             return $this->respondWithError();
         }
     }
-
-    /**
-     * Soft deletes a club
-     * (deleted_at value is set to timestamp)
-     * @param $id
-     * @return ApiController|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response
-     */
-    public function softDelete($id) {
-        try {
-            Club::destroy($id);
-            return $this->respondSoftDeleted();
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Club not found');
-        } catch (Throwable $t) {
-            $meta = ['action'   => 'ClubController@softDelete'];
-            $this->logger->log('alert', $t->getMessage(), ['exception' => $t, 'meta'  => $meta]);
-            return $this->respondWithError();
-        }
-    }
-    
 }
