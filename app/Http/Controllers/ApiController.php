@@ -74,6 +74,15 @@ class ApiController extends Controller
         return $this->respond($response, 201);
     }
 
+    public function respondUpdated($resource)
+    {
+        $response = [
+            'data'      => $resource,
+            'status'    => 'success'
+        ];
+        return $this->respond($response, 200);
+    }
+
     public function respondSoftDeleted()
     {
         $response = [

@@ -12,7 +12,6 @@ use Throwable;
 
 class ClubController extends ApiController
 {
-
     /**
      * Display a listing of the club.
      *
@@ -85,7 +84,21 @@ class ClubController extends ApiController
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $club = Club::findOrFail($id);
+            $club->fill($request->except('id'));
+            $club->save();
+            return $this->respondUpdated($club);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Club not found');
+        } catch (Throwable $t) {
+            $meta = [
+                'action' => 'ClubController@update',
+                'info'   => 'Updating club named: ' . $request->input('name')
+            ];
+            $this->logger->log('alert', $t->getMessage(), ['exception' => $t, 'meta'  => $meta]);
+            return $this->respondWithError();
+        }
     }
 
     /**
@@ -113,6 +126,12 @@ class ClubController extends ApiController
         }
     }
 
+    /**
+     * Soft deletes a club
+     * (deleted_at value is set to timestamp)
+     * @param $id
+     * @return ApiController|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     */
     public function softDelete($id) {
         try {
             Club::destroy($id);
@@ -125,4 +144,5 @@ class ClubController extends ApiController
             return $this->respondWithError();
         }
     }
+    
 }
