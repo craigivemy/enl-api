@@ -64,12 +64,7 @@ class ApiController extends Controller
      */
     public function respondDuplicateEntry(string $message = 'Duplicate entry. Resource already exists.')
     {
-        $response = [
-            'data'      => [],
-            'status'    => 'error',
-            'message'   => $message
-        ];
-        return $this->respond($response, 409);
+        return $this->respondWithError($message, 409);
     }
 
     /**
