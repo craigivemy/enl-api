@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Club;
 use App\Http\Resources\Club as ClubResource;
 use App\Http\Resources\ClubCollection;
+use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Throwable;
 
 class ClubController extends ApiController
 {
     /**
-     * Display a listing of the club.
+     * Display a listing of clubs.
      *
      * @return \Illuminate\Http\Response
      */
