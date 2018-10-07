@@ -104,6 +104,7 @@ class ClubController extends ApiController
     /**
      * Soft deletes a club
      * (deleted_at value is set to timestamp)
+     *
      * @param $id
      * @return ApiController|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
