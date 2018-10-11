@@ -24,11 +24,10 @@ class Match extends JsonResource
             'away_id'       => $this->away_id,
             'match_date'    => $this->match_date,
             'round'         => $this->round,
-            'played'        => $this->played,
-            'walkover'      => $this->walkover,
+            'played'        => (bool) $this->played,
+            'walkover'      => (bool) $this->walkover,
             'home_adjust'   => $this->home_adjust,
-            'away_adjust'   => $this->away_adjust,
-            'test'          => 2
+            'away_adjust'   => $this->away_adjust
         ];
     }
 
