@@ -38,6 +38,12 @@ class PlayerController extends ApiController
         try {
             $player = Player::create($request->all());
             return $this->respondCreated($player);
+            /*
+             * todo - create fullname / displayname method, check it here and
+             * return duplicate entry if it matches - if request contains
+             * some sort of flag, allow to create?
+             */
+
         } catch (Throwable $t) {
             $meta = ['action' => 'PlayerController@store'];
             $this->logger->log('critical', $t->getMessage(), ['exception' => $t, 'meta' => $meta]);
