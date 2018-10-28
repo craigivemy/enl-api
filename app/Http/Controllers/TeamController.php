@@ -20,7 +20,7 @@ class TeamController extends ApiController
     public function index()
     {
         try {
-            return $this->respond(new TeamCollection(Team::all()));
+            return $this->respond(new TeamCollection(Team::with(['club', 'division'])->get()));
         } catch (Throwable $t) {
             $meta = ['action' => 'TeamController@index'];
             $this->logger->log('critical', $t->getMessage(), ['exception' => $t, 'meta' => $meta]);

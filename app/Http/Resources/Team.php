@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Club as ClubResource;
+use App\Http\Resources\Division as DivisionResource;
 
 class Team extends JsonResource
 {
@@ -23,8 +24,7 @@ class Team extends JsonResource
             'tertiary_colour'   => $this->tertiary_colour,
             'logo_url'          => $this->logo_url,
             'narrative'         => $this->narrative,
-            'division_id'       => $this->division_id,
-            //'club'              => optional($this->club)->name // just testing function
+            'division'          => new DivisionResource($this->division),
             'club'              => new ClubResource($this->club)
         ];
 

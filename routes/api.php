@@ -24,7 +24,7 @@ Route::apiResources([
     'umpires'   => 'UmpireController',
     'seasons'   => 'SeasonsController',
     'settings'  => 'SettingsController',
-    'divisions' => 'DivisionsController',
+    'divisions' => 'DivisionController',
     'clubs'     => 'ClubController'
 ]);
 
