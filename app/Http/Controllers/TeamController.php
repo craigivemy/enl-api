@@ -9,6 +9,7 @@ use App\Http\Resources\TeamCollection;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Throwable;
+use App\QueryFilter;
 
 class TeamController extends ApiController
 {
@@ -17,8 +18,12 @@ class TeamController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+
+        QueryFilter::getQueryString($request);
+
+        exit;
         try {
             return $this->respond(new TeamCollection(Team::with(['club', 'division'])->get()));
         } catch (Throwable $t) {
