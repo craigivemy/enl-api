@@ -27,5 +27,4 @@ Route::apiResources([
     'divisions' => 'DivisionController',
     'clubs'     => 'ClubController'
 ]);
-
 Route::delete('clubs/{club}/soft', 'ClubController@softDelete');

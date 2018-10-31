@@ -21,9 +21,8 @@ class TeamController extends ApiController
     public function index(Request $request)
     {
 
-        QueryFilter::getQueryString($request);
-
-        exit;
+        //QueryFilter::getQueryString($request);
+        //exit;
         try {
             return $this->respond(new TeamCollection(Team::with(['club', 'division'])->get()));
         } catch (Throwable $t) {
