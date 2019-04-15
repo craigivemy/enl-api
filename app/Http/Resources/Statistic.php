@@ -30,12 +30,4 @@ class Statistic extends JsonResource
             'points'            => $this->points
         ];
     }
-
-    public function with($request)
-    {
-        return [
-            'status'    => 'success'
-        ];
-    }
-
 }

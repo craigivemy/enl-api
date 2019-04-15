@@ -29,11 +29,4 @@ class Team extends JsonResource
         ];
 
     }
-
-    public function with($request)
-    {
-        return [
-            'status'    => 'success'
-        ];
-    }
 }

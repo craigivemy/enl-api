@@ -30,12 +30,4 @@ class Match extends JsonResource
             'away_adjust'   => $this->away_adjust
         ];
     }
-
-    public function with($request)
-    {
-        return [
-            'status'    => 'success'
-        ];
-    }
-
 }

@@ -19,11 +19,4 @@ class Division extends JsonResource
             'name'  => $this->name
         ];
     }
-
-    public function with($request)
-    {
-        return [
-            'status'    => 'success'
-        ];
-    }
 }

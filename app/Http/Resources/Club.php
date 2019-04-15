@@ -24,12 +24,4 @@ class Club extends JsonResource
             'narrative'         => $this->narrative
         ];
     }
-
-    public function with($request)
-    {
-        return [
-            'status'    => 'success'
-        ];
-    }
-
 }

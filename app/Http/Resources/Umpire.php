@@ -21,11 +21,4 @@ class Umpire extends JsonResource
             'team_id'   => $this->team_id
         ];
     }
-
-    public function with($request)
-    {
-        return [
-            'status'    => 'success'
-        ];
-    }
 }
