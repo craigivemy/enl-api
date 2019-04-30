@@ -3,7 +3,7 @@
 use Faker\Generator as Faker;
 use Illuminate\Support\Facades\DB;
 
-$factory->define(\App\Match::class, function (Faker $faker) {
+$factory->define(\App\Fixture::class, function (Faker $faker) {
 
     $range = range(5, 50);
     $rounds = [1,2];

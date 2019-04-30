@@ -19,7 +19,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::apiResources([
     'teams'     => 'TeamController',
-    'matches'   => 'MatchController', // /matches needs to be /fixtures and /results instead
+    'fixtures'  => 'FixtureController',
+    'results'   => 'ResultsController',
     'players'   => 'PlayerController',
     'umpires'   => 'UmpireController',
     'seasons'   => 'SeasonController',

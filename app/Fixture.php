@@ -4,10 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Match extends Model
+class Fixture extends Model
 {
     protected $guarded = [];
-
+    protected $table = 'matches';
     /**
      * Return the division for this match
      *
