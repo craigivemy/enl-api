@@ -17,8 +17,8 @@ class Season extends JsonResource
         return [
             'id'            => $this->id,
             'name'          => $this->name,
-            'start_date'    => $this->start_date,
-            'end_date'      => $this->end_date,
+            'startDate'    => $this->start_date,
+            'endDate'      => $this->end_date,
             'rounds'        => $this->rounds,
             'current'       => (bool) $this->current
         ];

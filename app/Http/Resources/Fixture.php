@@ -16,18 +16,18 @@ class Fixture extends JsonResource
     {
         return [
             'id'            => $this->id,
-            'home_score'    => $this->home_score,
-            'away_score'    => $this->away_score,
-            'division_id'   => $this->division_id,
-            'season_id'     => $this->season_id,
-            'home_id'       => $this->home_id,
-            'away_id'       => $this->away_id,
-            'match_date'    => $this->match_date,
+            'homeScore'    => $this->home_score,
+            'awayScore'    => $this->away_score,
+            'divisionId'   => $this->division_id,
+            'seasonId'     => $this->season_id,
+            'homeId'       => $this->home_id,
+            'awayId'       => $this->away_id,
+            'matchDate'    => $this->match_date,
             'round'         => $this->round,
             'played'        => (bool) $this->played,
             'walkover'      => (bool) $this->walkover,
-            'home_adjust'   => $this->home_adjust,
-            'away_adjust'   => $this->away_adjust
+            'homeAdjust'   => $this->home_adjust,
+            'awayAdjust'   => $this->away_adjust
         ];
     }
 }

@@ -17,10 +17,10 @@ class Club extends JsonResource
         return [
             'id'                => $this->id,
             'name'              => $this->name,
-            'primary_color'     => $this->primary_colour,
-            'secondary_colour'  => $this->secondary_colour,
-            'tertiary_colour'   => $this->tertiary_colour,
-            'logo_url'          => $this->logo_url,
+            'primaryColour'     => $this->primary_colour,
+            'secondaryColour'  => $this->secondary_colour,
+            'tertiaryColour'   => $this->tertiary_colour,
+            'logoUrl'          => $this->logo_url,
             'narrative'         => $this->narrative
         ];
     }
