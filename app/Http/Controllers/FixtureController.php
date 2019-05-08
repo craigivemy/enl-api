@@ -16,9 +16,12 @@ class FixtureController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
+            if ($request->query('seasonId')) {
+                return $this->respond(new FixtureCollection(Fixture::where('season_id', $request->query('seasonId'))->get()));
+            }
             return $this->respond(new FixtureCollection(Fixture::all()));
         } catch (Throwable $t) {
             $meta = ['action' => 'FixtureController@index'];
