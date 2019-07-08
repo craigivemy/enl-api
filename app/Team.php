@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Team extends Model
 {
     protected $guarded = [];
+    protected $hidden = ['pivot'];
+
 
     public function players()
     {
@@ -30,6 +32,6 @@ class Team extends Model
 
     public function seasons()
     {
-        return $this->belongsToMany('App\Season');
+        return $this->belongsToMany('App\Season')->select(['season_id']);
     }
 }

@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Season extends Model
 {
     protected $guarded = [];
+    protected $hidden = ['pivot'];
+
 
     /**
      * Return divisions for this season

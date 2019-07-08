@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Club as ClubResource;
 use App\Http\Resources\Division as DivisionResource;
+use App\Http\Resources\Season as SeasonResource;
 
 class Team extends JsonResource
 {
@@ -25,7 +26,8 @@ class Team extends JsonResource
             'logoUrl'          => $this->logo_url,
             'narrative'         => $this->narrative,
             'division'          => new DivisionResource($this->division),
-            'club'              => new ClubResource($this->club)
+            'club'              => new ClubResource($this->club),
+            'seasons'           => $this->seasons
         ];
 
     }
