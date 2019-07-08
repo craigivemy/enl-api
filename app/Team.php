@@ -25,6 +25,11 @@ class Team extends Model
 
     public function division() {
         return $this->belongsTo('App\Division');
+        // should be belongs to many - for historical data?
     }
 
+    public function seasons()
+    {
+        return $this->belongsToMany('App\Season');
+    }
 }

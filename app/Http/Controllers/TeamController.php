@@ -20,10 +20,11 @@ class TeamController extends ApiController
      */
     public function index(Request $request)
     {
-
-        //QueryFilter::getQueryString($request);
-        //exit;
         try {
+            if ($request->query('seasonId')) {
+                $season = \App\Season::find($request->query('seasonId'));
+                return $this->respond($season->teams()->get());
+            }
             return $this->respond(new TeamCollection(Team::with(['club', 'division'])->get()));
         } catch (Throwable $t) {
             $meta = ['action' => 'TeamController@index'];

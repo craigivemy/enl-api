@@ -18,4 +18,9 @@ class Season extends Model
         return $this->belongsToMany('App\Division');
     }
 
+    public function teams()
+    {
+        return $this->belongsToMany('App\Team');
+    }
+
 }
