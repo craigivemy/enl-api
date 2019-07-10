@@ -32,6 +32,6 @@ class Team extends Model
 
     public function seasons()
     {
-        return $this->belongsToMany('App\Season')->select(['season_id']);
+        return $this->belongsToMany('App\Season')->select('season_id');
     }
 }
