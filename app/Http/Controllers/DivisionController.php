@@ -20,13 +20,11 @@ class DivisionController extends ApiController
     public function index()
     {
         try {
-
             return $this->respond(new DivisionCollection(
                 Division::whereHas('seasons', function($q) {
                     $q->where('current', '=', 1);
                 })->get()
             ));
-
         } catch (Throwable $t) {
             $meta = ['action' => 'DivisionController@index'];
             $this->logger->log('critical', $t->getMessage(), ['exception' => $t, 'meta' => $meta]);
