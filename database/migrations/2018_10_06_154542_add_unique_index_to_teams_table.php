@@ -26,7 +26,7 @@ class AddUniqueIndexToTeamsTable extends Migration
     public function down()
     {
         Schema::table('teams', function (Blueprint $table) {
-            $table->dropUnique('name');
+            //$table->dropUnique('name');
         });
     }
 }

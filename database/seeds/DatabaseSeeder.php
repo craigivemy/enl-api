@@ -22,7 +22,9 @@ class DatabaseSeeder extends Seeder
             PlayersTableSeeder::class,
             StatisticsTableSeeder::class,
             UmpiresTableSeeder::class,
-            MatchesTableSeeder::class
+            MatchesTableSeeder::class,
+            DivisionSeasonTableSeeder::class,
+            SeasonTeamTableSeeder::class
         ]);
 
     }
