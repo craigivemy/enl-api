@@ -17,14 +17,18 @@ class DivisionController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
-            return $this->respond(new DivisionCollection(
-                Division::whereHas('seasons', function($q) {
-                    $q->where('current', '=', 1);
-                })->get()
-            ));
+            if ($request->query('current') === '1') {
+                return $this->respond(new DivisionCollection(
+                    Division::whereHas('seasons', function($q) {
+                        $q->where('current', '=', 1);
+                    })->get()
+                ));
+            }
+            return $this->respond(new DivisionCollection(Division::all()));
+
         } catch (Throwable $t) {
             $meta = ['action' => 'DivisionController@index'];
             $this->logger->log('critical', $t->getMessage(), ['exception' => $t, 'meta' => $meta]);
