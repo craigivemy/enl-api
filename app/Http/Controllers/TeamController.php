@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Season;
 use Illuminate\Http\Request;
 use App\Team;
 use App\Http\Resources\Team as TeamResource;
@@ -22,7 +23,7 @@ class TeamController extends ApiController
     {
         try {
             if ($request->query('seasonId')) {
-                $season = \App\Season::find($request->query('seasonId'));
+                $season = Season::find($request->query('seasonId'));
                 return $this->respond(new TeamCollection($season->teams()->with(['club', 'division', 'seasons'])->orderBy('name')->get()));
             }
             return $this->respond(new TeamCollection(Team::with(['club', 'division'])->orderBy('name')->get()));
