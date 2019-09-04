@@ -20,7 +20,7 @@ class CreateSeasonsTable extends Migration
             $table->date('start_date');
             $table->date('end_date');
             $table->unsignedInteger('rounds');
-            $table->boolean('current');
+            $table->tinyInteger('current');
             $table->timestamps();
             $table->softDeletes();
         });

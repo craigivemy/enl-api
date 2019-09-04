@@ -20,7 +20,7 @@ class Season extends JsonResource
             'startDate'    => $this->start_date,
             'endDate'      => $this->end_date,
             'rounds'        => $this->rounds,
-            'current'       => (bool) $this->current
+            'current'       => $this->current
         ];
     }
 }

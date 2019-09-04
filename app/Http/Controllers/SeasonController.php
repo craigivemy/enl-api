@@ -17,7 +17,7 @@ class SeasonController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
             return $this->respond(new SeasonCollection(Season::all()));
@@ -37,6 +37,7 @@ class SeasonController extends ApiController
     public function store(Request $request)
     {
         try {
+            // pending season will have val of 2?
             $season = Season::create($request->all());
             return $this->respondCreated($season);
         } catch (QueryException $e) {
