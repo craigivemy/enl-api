@@ -36,6 +36,7 @@ class SeasonController extends ApiController
      */
     public function store(Request $request)
     {
+        return 1;
         try {
             // pending season will have val of 2?
             $season = Season::create($request->all());
