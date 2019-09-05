@@ -17,8 +17,8 @@ class CreateSeasonsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name', 100);
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->unsignedInteger('rounds');
             $table->tinyInteger('current');
             $table->timestamps();

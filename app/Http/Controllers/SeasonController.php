@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Logging\CustomLogger;
 use Illuminate\Http\Request;
 use App\Season;
 use App\Http\Resources\Season as SeasonResource;
 use App\Http\Resources\SeasonCollection;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class SeasonController extends ApiController
@@ -36,10 +38,17 @@ class SeasonController extends ApiController
      */
     public function store(Request $request)
     {
-        return 1;
         try {
             // pending season will have val of 2?
-            $season = Season::create($request->all());
+            $season = new Season();
+            Log::info($request->name);
+            $season->name = $request->name;
+            $season->rounds = $request->rounds;
+            $season->current = $request->current;
+            $season->saveOrFail();
+            foreach ($request->input('divisions') as $division) {
+                $season->divisions()->attach($division['id']);
+            }
             return $this->respondCreated($season);
         } catch (QueryException $e) {
             if ($e->errorInfo[1] === 1062) {
