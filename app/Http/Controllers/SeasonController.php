@@ -39,7 +39,7 @@ class SeasonController extends ApiController
     public function store(Request $request)
     {
         try {
-            // pending season will have val of 2?
+            // todo - only 1 should be able to be pending? or on front end don't allow add, juist show pending one they can edit?
             $season = new Season();
             Log::info($request->name);
             $season->name = $request->name;
