@@ -21,7 +21,7 @@ class Season extends Model
         return $this->belongsToMany('App\Division');
     }
 
-    public function teams()
+    public function teams() // todo - has many through? needs division id not season id on team table?
     {
         return $this->belongsToMany('App\Team');
     }
