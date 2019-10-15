@@ -10,20 +10,32 @@ class Season extends Model
     protected $guarded = [];
     protected $hidden = ['pivot'];
 
-
-    /**
-     * Return divisions for this season
-     *
-     * @return BelongsToMany
-     */
+    // new
     public function divisions()
     {
-        return $this->belongsToMany('App\Division');
+        return $this->belongsToMany(Division::class, 'season_division_team');
     }
 
+    // new
     public function teams()
     {
-        return $this->belongsToMany('App\Team');
+        return $this->belongsToMany(Team::class, 'season_division_team');
     }
+
+
+//    /**
+//     * Return divisions for this season
+//     *
+//     * @return BelongsToMany
+//     */
+//    public function divisions()
+//    {
+//        return $this->belongsToMany('App\Division');
+//    }
+//
+//    public function teams()
+//    {
+//        return $this->belongsToMany('App\Team');
+//    }
 
 }

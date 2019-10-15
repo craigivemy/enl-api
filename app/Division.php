@@ -13,13 +13,24 @@ class Division extends Model
         return $this->hasMany('App\Fixture');
     }
 
+    // new
     public function seasons()
     {
-        return $this->belongsToMany('App\Season');
+        return $this->belongsToMany(Season::class, 'season_division_team');
+    }
+    // new
+    public function teams()
+    {
+        return $this->belongsToMany(Team::class, 'season_division_team');
     }
 
-    public function teams() {
-        return $this->hasMany('App\Team');
-    }
+//    public function seasons()
+//    {
+//        return $this->belongsToMany('App\Season');
+//    }
+//
+//    public function teams() {
+//        return $this->hasMany('App\Team');
+//    }
 
 }

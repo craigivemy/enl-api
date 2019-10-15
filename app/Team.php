@@ -25,13 +25,26 @@ class Team extends Model
         return $this->belongsTo('App\Club');
     }
 
-    public function division() {
-        return $this->belongsTo('App\Division');
-        // should be belongs to many - for historical data?
-    }
-
+    // new
     public function seasons()
     {
-        return $this->belongsToMany('App\Season')->select('season_id');
+        return $this->belongsToMany(Season::class, 'season_division_team');
     }
+
+    // new
+    public function divisions()
+    {
+        return $this->belongsToMany(Division::class, 'season_division_team');
+    }
+
+
+//    public function division() {
+//        return $this->belongsTo('App\Division');
+//        // should be belongs to many - for historical data?
+//    }
+//
+//    public function seasons()
+//    {
+//        return $this->belongsToMany('App\Season')->select('season_id');
+//    }
 }
