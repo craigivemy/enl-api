@@ -27,7 +27,15 @@ class DivisionController extends ApiController
                     })->get()
                 ));
             }
-            return $this->respond(new DivisionCollection(Division::all()));
+
+            if ($request->query('seasonId')) {
+                $seasonId = $request->query('seasonId');
+                return $this->respond(new DivisionCollection(Division::with('teams')->whereHas(
+                 'seasons', function($q) use ($seasonId) {
+                     $q->where('season_id', '=', $seasonId);
+                    })->get()
+                ));
+            }
 
         } catch (Throwable $t) {
             $meta = ['action' => 'DivisionController@index'];

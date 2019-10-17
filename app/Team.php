@@ -28,13 +28,13 @@ class Team extends Model
     // new
     public function seasons()
     {
-        return $this->belongsToMany(Season::class, 'season_division_team');
+        return $this->belongsToMany(Season::class, 'division_season_team');
     }
 
     // new
     public function divisions()
     {
-        return $this->belongsToMany(Division::class, 'season_division_team');
+        return $this->belongsToMany(Division::class, 'division_season_team');
     }
 
 

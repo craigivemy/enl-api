@@ -16,12 +16,12 @@ class Division extends Model
     // new
     public function seasons()
     {
-        return $this->belongsToMany(Season::class, 'season_division_team');
+        return $this->belongsToMany(Season::class, 'division_season_team');
     }
     // new
     public function teams()
     {
-        return $this->belongsToMany(Team::class, 'season_division_team');
+        return $this->belongsToMany(Team::class, 'division_season_team');
     }
 
 //    public function seasons()

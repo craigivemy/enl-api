@@ -13,13 +13,13 @@ class Season extends Model
     // new
     public function divisions()
     {
-        return $this->belongsToMany(Division::class, 'season_division_team');
+        return $this->belongsToMany(Division::class, 'division_season_team');
     }
 
     // new
     public function teams()
     {
-        return $this->belongsToMany(Team::class, 'season_division_team');
+        return $this->belongsToMany(Team::class, 'division_season_team');
     }
 
 

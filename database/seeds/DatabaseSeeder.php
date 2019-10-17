@@ -23,8 +23,9 @@ class DatabaseSeeder extends Seeder
             StatisticsTableSeeder::class,
             UmpiresTableSeeder::class,
             MatchesTableSeeder::class,
-            DivisionSeasonTableSeeder::class,
-            SeasonTeamTableSeeder::class
+            //DivisionSeasonTableSeeder::class,
+            //SeasonTeamTableSeeder::class
+            DivisionSeasonTeamTableSeeder::class
         ]);
 
     }

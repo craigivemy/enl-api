@@ -17,7 +17,8 @@ class Division extends JsonResource
         return [
             'id'        => $this->id,
             'name'      => $this->name,
-            'current'   => $this->current
+            'current'   => $this->current,
+            'teams'     => $this->teams
         ];
     }
 }
