@@ -27,7 +27,7 @@ class CreateTeamsTable extends Migration
 
 
             $table->unsignedInteger('club_id')->nullable();
-            $table->unsignedInteger('division_id')->nullable();
+            // $table->unsignedInteger('division_id')->nullable();
 
             $table->foreign('club_id')
                 ->references('id')
@@ -35,11 +35,11 @@ class CreateTeamsTable extends Migration
                 ->onDelete('set null')
                 ->onUpdate('cascade');
 
-            $table->foreign('division_id')
-                ->references('id')
-                ->on('divisions')
-                ->onDelete('set null')
-                ->onUpdate('cascade');
+//            $table->foreign('division_id')
+//                ->references('id')
+//                ->on('divisions')
+//                ->onDelete('set null')
+//                ->onUpdate('cascade');
 
             $table->timestamps();
             $table->softDeletes();

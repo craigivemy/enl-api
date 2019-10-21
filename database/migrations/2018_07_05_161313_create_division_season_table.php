@@ -13,6 +13,7 @@ class CreateDivisionSeasonTable extends Migration
      */
     public function up()
     {
+        return;
         Schema::create('division_season', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');

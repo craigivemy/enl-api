@@ -25,7 +25,7 @@ class Team extends JsonResource
             'tertiaryColour'   => $this->tertiary_colour,
             'logoUrl'          => $this->logo_url,
             'narrative'         => $this->narrative,
-            'division'          => new DivisionResource($this->division),
+            // todo - remove 'division'          => new DivisionResource($this->division),
             'club'              => new ClubResource($this->club),
             'seasons'           => $this->seasons
         ];

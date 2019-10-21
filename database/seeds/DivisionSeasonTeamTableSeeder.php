@@ -18,14 +18,31 @@ class DivisionSeasonTeamTableSeeder extends Seeder
 
         foreach ($seasons as $season) {
             foreach ($divisions as $division) {
-                if ($division == 4) {
+                if ($division == 4 && $season == 2) {
                     break;
                 }
+                $team1 = $teams[array_rand($teams)];
+                $team2 = $teams[array_rand($teams)];
+                $team3 = $teams[array_rand($teams)];
                 DB::table('division_season_team')->insert([
                     [
                         'division_id' => $division,
                         'season_id' => $season,
-                        'team_id' => $teams[array_rand($teams)]
+                        'team_id' => $team1
+                    ]
+                ]);
+                DB::table('division_season_team')->insert([
+                    [
+                        'division_id' => $division,
+                        'season_id' => $season,
+                        'team_id' => $team2
+                    ]
+                ]);
+                DB::table('division_season_team')->insert([
+                    [
+                        'division_id' => $division,
+                        'season_id' => $season,
+                        'team_id' => $team3
                     ]
                 ]);
             }

@@ -13,6 +13,7 @@ class CreateSeasonTeamTable extends Migration
      */
     public function up()
     {
+        return;
         Schema::create('season_team', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');

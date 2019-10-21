@@ -30,11 +30,11 @@ class DivisionController extends ApiController
 
             if ($request->query('seasonId')) {
                 $seasonId = $request->query('seasonId');
-                return $this->respond(new DivisionCollection(Division::with('teams')->whereHas(
-                 'seasons', function($q) use ($seasonId) {
-                     $q->where('season_id', '=', $seasonId);
-                    })->get()
-                ));
+                return $this->respond(new DivisionCollection(Division::whereHas('teams', function($q) use ($seasonId) {
+                    $q->where('division_season_team.season_id', '=', $seasonId);
+                })->whereHas('seasons', function($q) use ($seasonId) {
+                    $q->where('division_season_team.season_id', '=', $seasonId);
+                })->get()));
             }
 
         } catch (Throwable $t) {

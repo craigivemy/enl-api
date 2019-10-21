@@ -15,7 +15,7 @@ $factory->define(\App\Team::class, function (Faker $faker) {
         'tertiary_colour'       => $faker->rgbColor,
         'logo_url'              => $faker->imageUrl(),
         'narrative'             => $faker->paragraph(),
-        'division_id'           => $division_ids[array_rand($division_ids)],
+        //'division_id'           => $division_ids[array_rand($division_ids)],
         'club_id'               => $club_ids[array_rand($club_ids)]
     ];
 });

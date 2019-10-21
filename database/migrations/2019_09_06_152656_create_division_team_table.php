@@ -13,6 +13,7 @@ class CreateDivisionTeamTable extends Migration
      */
     public function up()
     {
+        return;
         Schema::create('division_team', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
