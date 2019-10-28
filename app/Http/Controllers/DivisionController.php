@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Season;
+use Illuminate\Database\Schema\Builder;
 use Illuminate\Http\Request;
 use App\Division;
 use App\Http\Resources\Division as DivisionResource;
@@ -28,13 +30,20 @@ class DivisionController extends ApiController
                 ));
             }
 
-            if ($request->query('seasonId')) {
-                $seasonId = $request->query('seasonId');
-                return $this->respond(new DivisionCollection(Division::whereHas('teams', function($q) use ($seasonId) {
-                    $q->where('division_season_team.season_id', '=', $seasonId);
-                })->whereHas('seasons', function($q) use ($seasonId) {
-                    $q->where('division_season_team.season_id', '=', $seasonId);
-                })->get()));
+            if ($seasonId = $request->input('seasonId')) {
+                $season = Season::findOrFail($seasonId);
+
+                $divisionIdsQuery = $season->divisions()
+                    ->select('divisions.id')
+                    ->with(['teams' => function ($query) use ($season) {
+                        $query->where('season_id', $season->id);
+                    }])
+                    ->groupBy('id')
+                    ->getQuery(); // can't just ->get(), because MYSQL FULL GROUP BY.
+
+                $divisions = Division::whereIn('id', $divisionIdsQuery)->get();
+
+                return $this->respond(new DivisionCollection($divisions));
             }
 
         } catch (Throwable $t) {
