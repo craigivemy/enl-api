@@ -22,13 +22,13 @@ class DivisionController extends ApiController
     public function index(Request $request)
     {
         try {
-            if ($request->query('current') === '1') {
-                return $this->respond(new DivisionCollection(
-                    Division::whereHas('seasons', function($q) {
-                        $q->where('current', '=', 1);
-                    })->get()
-                ));
-            }
+//            if ($request->query('current') === '1') {
+//                return $this->respond(new DivisionCollection(
+//                    Division::whereHas('seasons', function($q) {
+//                        $q->where('current', '=', 1);
+//                    })->get()
+//                ));
+//            }
 
             if ($seasonId = $request->input('seasonId')) {
                 $season = Season::findOrFail($seasonId);
@@ -44,6 +44,8 @@ class DivisionController extends ApiController
                 $divisions = Division::whereIn('id', $divisionIdsQuery)->get();
 
                 return $this->respond(new DivisionCollection($divisions));
+            } else {
+                return $this->respond(new DivisionCollection(Division::all()));
             }
 
         } catch (Throwable $t) {
