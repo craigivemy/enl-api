@@ -59,7 +59,11 @@ class SeasonController extends ApiController
                         ]
                     );
                 }
-
+            }
+            if ($season->current === 1) {
+               Season::where('current', 1)
+                   ->where('id', '!=', $season->id)
+                   ->update(['current' => 0]);
             }
             return $this->respondCreated($season);
         } catch (QueryException $e) {
