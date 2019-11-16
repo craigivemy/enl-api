@@ -35,13 +35,14 @@ class DivisionController extends ApiController
 
                 $divisionIdsQuery = $season->divisions()
                     ->select('divisions.id')
+                    ->groupBy('divisions.id')
+                    ->getQuery(); // can't just ->get(), because MYSQL FULL GROUP BY.
+
+                $divisions = Division::whereIn('id', $divisionIdsQuery)
                     ->with(['teams' => function ($query) use ($season) {
                         $query->where('season_id', $season->id);
                     }])
-                    ->groupBy('id')
-                    ->getQuery(); // can't just ->get(), because MYSQL FULL GROUP BY.
-
-                $divisions = Division::whereIn('id', $divisionIdsQuery)->get();
+                    ->get();
 
                 return $this->respond(new DivisionCollection($divisions));
             } else {

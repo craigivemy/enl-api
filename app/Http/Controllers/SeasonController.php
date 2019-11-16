@@ -9,6 +9,7 @@ use App\Http\Resources\Season as SeasonResource;
 use App\Http\Resources\SeasonCollection;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
@@ -41,13 +42,24 @@ class SeasonController extends ApiController
         try {
             // todo - only 1 should be able to be pending? or on front end don't allow add, juist show pending one they can edit?
             $season = new Season();
-            Log::info($request->name);
-            $season->name = $request->name;
-            $season->rounds = $request->rounds;
-            $season->current = $request->current;
+            $season_request = $request->input('season');
+            $divisions_teams_request = $request->input('divisionsTeams');
+            $season->name = $season_request['name'];
+            $season->rounds = $season_request['rounds'];
+            $season->current = $season_request['current'];
             $season->saveOrFail();
-            foreach ($request->input('divisions') as $division) {
-                $season->divisions()->attach($division['id']);
+
+            foreach ($divisions_teams_request as $key => $row) {
+                foreach ($row as $sub => $val) {
+                    DB::table('division_season_team')->insert(
+                        [
+                            'season_id' => $season->id,
+                            'division_id' => $key,
+                            'team_id'   => $val['id']
+                        ]
+                    );
+                }
+
             }
             return $this->respondCreated($season);
         } catch (QueryException $e) {

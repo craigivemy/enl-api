@@ -26,8 +26,8 @@ class Team extends JsonResource
             'logoUrl'          => $this->logo_url,
             'narrative'         => $this->narrative,
             // todo - remove 'division'          => new DivisionResource($this->division),
-            'club'              => new ClubResource($this->club),
-            'seasons'           => $this->seasons
+//            'club'              => new ClubResource($this->club),
+//            'seasons'           => $this->seasons
         ];
 
     }
