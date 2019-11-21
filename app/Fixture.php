@@ -27,4 +27,15 @@ class Fixture extends Model
     {
         return $this->belongsTo('App\Season');
     }
+
+    public function homeTeam()
+    {
+        return $this->hasOne('App\Team', 'id', 'home_id');
+    }
+
+    public function awayTeam()
+    {
+        return $this->hasOne('App\Team', 'id','away_id');
+    }
+
 }
