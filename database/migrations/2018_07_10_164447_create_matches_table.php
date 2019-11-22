@@ -27,7 +27,7 @@ class CreateMatchesTable extends Migration
             $table->unsignedInteger('home_id')->nullable();
             $table->unsignedInteger('away_id')->nullable();
 
-            $table->timestamp('match_date');
+            $table->dateTime('match_date');
             $table->unsignedInteger('round');
 
             $table->boolean('played');

@@ -24,6 +24,7 @@ class FixtureController extends ApiController
                 return $this->respond(new FixtureCollection(Fixture::with(['homeTeam', 'awayTeam'])
                     ->where('season_id', $request->query('seasonId'))
                     ->orderBy('match_date', 'asc')
+                    //->groupBy(['match_date'])
                     ->get()));
             }
             return $this->respond(new FixtureCollection(Fixture::all()));
