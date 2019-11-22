@@ -7,6 +7,7 @@ use App\Fixture;
 use App\Http\Resources\Fixture as FixtureResource;
 use App\Http\Resources\FixtureCollection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 use Throwable;
 
 class FixtureController extends ApiController
@@ -23,8 +24,9 @@ class FixtureController extends ApiController
                 //return $this->respond(new FixtureCollection(Fixture::where('season_id', $request->query('seasonId'))->get()));
                 return $this->respond(new FixtureCollection(Fixture::with(['homeTeam', 'awayTeam'])
                     ->where('season_id', $request->query('seasonId'))
+                    ->where('played', '=', 0)
                     ->orderBy('match_date', 'asc')
-                    //->groupBy(['match_date'])
+                   // ->groupBy(DB::raw('Date(match_date)'))
                     ->get()));
             }
             return $this->respond(new FixtureCollection(Fixture::all()));
