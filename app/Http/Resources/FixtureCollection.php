@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class FixtureCollection extends ResourceCollection
@@ -15,7 +16,9 @@ class FixtureCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            'data'  => $this->collection,
+            'data'  => $this->collection->groupBy(function($item, $key) {
+                return Carbon::parse($item->match_date)->format('d-m-Y');
+            }),
             'links' => [
                 'self'  => 'link-value'
             ]

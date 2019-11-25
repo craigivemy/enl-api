@@ -8,7 +8,6 @@ use App\Fixture;
 use App\Http\Resources\Fixture as FixtureResource;
 use App\Http\Resources\FixtureCollection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\DB;
 use Throwable;
 
 class FixtureController extends ApiController
@@ -29,9 +28,7 @@ class FixtureController extends ApiController
                     ->orderBy('match_date', 'asc')
                     ->get();
 
-                return $this->respond($fixtures->groupBy(function($item) {
-                    return Carbon::parse($item->match_date)->format('d-m-Y');
-                }));
+                return $this->respond(new FixtureCollection($fixtures));
             }
             return $this->respond(new FixtureCollection(Fixture::all()));
         } catch (Throwable $t) {
