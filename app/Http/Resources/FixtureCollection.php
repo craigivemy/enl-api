@@ -16,9 +16,7 @@ class FixtureCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            'data'  => $this->collection->groupBy(function($item, $key) {
-                return Carbon::parse($item->match_date)->format('d-m-Y');
-            }),
+            'data'  => $this->collection,
             'links' => [
                 'self'  => 'link-value'
             ]

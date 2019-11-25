@@ -22,13 +22,12 @@ class FixtureController extends ApiController
         try {
             if ($request->query('seasonId')) {
 
-                $fixtures = Fixture::with(['homeTeam', 'awayTeam'])
+                return $this->respond(new FixtureCollection(Fixture::with(['homeTeam', 'awayTeam'])
                     ->where('season_id', $request->query('seasonId'))
                     ->where('played', '=', 0)
                     ->orderBy('match_date', 'asc')
-                    ->get();
+                    ->get()));
 
-                return $this->respond(new FixtureCollection($fixtures));
             }
             return $this->respond(new FixtureCollection(Fixture::all()));
         } catch (Throwable $t) {
