@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Fixture;
 use App\Http\Resources\Fixture as FixtureResource;
@@ -21,13 +22,16 @@ class FixtureController extends ApiController
     {
         try {
             if ($request->query('seasonId')) {
-                //return $this->respond(new FixtureCollection(Fixture::where('season_id', $request->query('seasonId'))->get()));
-                return $this->respond(new FixtureCollection(Fixture::with(['homeTeam', 'awayTeam'])
+
+                $fixtures = Fixture::with(['homeTeam', 'awayTeam'])
                     ->where('season_id', $request->query('seasonId'))
                     ->where('played', '=', 0)
                     ->orderBy('match_date', 'asc')
-                   // ->groupBy(DB::raw('Date(match_date)'))
-                    ->get()));
+                    ->get();
+
+                return $this->respond($fixtures->groupBy(function($item) {
+                    return Carbon::parse($item->match_date)->format('d-m-Y');
+                }));
             }
             return $this->respond(new FixtureCollection(Fixture::all()));
         } catch (Throwable $t) {

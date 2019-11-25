@@ -9,6 +9,7 @@ $factory->define(\App\Fixture::class, function (Faker $faker) {
     $rounds = [1,2];
     $played = [0,1];
     $true_or_false = [true, false];
+    $two_dates = ['2019-11-07 11:17:03', '2019-12-07 11:17:03'];
 
     $division_ids = DB::table('divisions')->pluck('id')->toArray();
     $season_ids = DB::table('seasons')->pluck('id')->toArray();
@@ -21,7 +22,7 @@ $factory->define(\App\Fixture::class, function (Faker $faker) {
         'season_id'     => $faker->randomElement($season_ids),
         'home_id'       => $faker->randomElement($team_ids),
         'away_id'       => $faker->randomElement($team_ids),
-        'match_date'    => $faker->dateTimeBetween('-4 months','now','Europe/London'),
+        'match_date'    => $faker->randomElement($two_dates), //$faker->dateTimeBetween('-4 months','now','Europe/London'),
         'round'         => $rounds[array_rand($rounds)],
         'played'        => $faker->randomElement($played),
         'walkover'      => $true_or_false[array_rand($true_or_false)],
