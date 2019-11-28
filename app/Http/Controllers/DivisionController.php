@@ -29,7 +29,8 @@ class DivisionController extends ApiController
 //                    })->get()
 //                ));
 //            }
-
+            // todo - seasonId also needs to be used for just getting divisions from that season without the teams so
+            // just need simpler version of below where only get divisions
             if ($seasonId = $request->input('seasonId')) {
                 $season = Season::findOrFail($seasonId);
 
