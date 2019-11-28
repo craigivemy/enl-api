@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Division extends JsonResource
+class DivisionWithTeams extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,7 +16,8 @@ class Division extends JsonResource
     {
         return [
             'id'        => $this->id,
-            'name'      => $this->name
+            'name'      => $this->name,
+            'teams'     => $this->teams
         ];
     }
 }

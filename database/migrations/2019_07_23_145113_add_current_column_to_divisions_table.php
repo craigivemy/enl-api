@@ -14,7 +14,7 @@ class AddCurrentColumnToDivisionsTable extends Migration
     public function up()
     {
         Schema::table('divisions', function (Blueprint $table) {
-            $table->boolean('current')->after('name');
+            //$table->boolean('current')->after('name');
         });
     }
 
@@ -26,7 +26,7 @@ class AddCurrentColumnToDivisionsTable extends Migration
     public function down()
     {
         Schema::table('divisions', function (Blueprint $table) {
-            $table->dropColumn('current');
+            //$table->dropColumn('current');
         });
     }
 }

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\DivisionCollection;
 use App\Season;
 use Illuminate\Database\Schema\Builder;
 use Illuminate\Http\Request;
 use App\Division;
-use App\Http\Resources\Division as DivisionResource;
-use App\Http\Resources\DivisionCollection;
+use App\Http\Resources\DivisionWithTeams as DivisionResource;
+use App\Http\Resources\DivisionWithTeamsCollection;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Throwable;
@@ -22,17 +23,18 @@ class DivisionController extends ApiController
     public function index(Request $request)
     {
         try {
-//            if ($request->query('current') === '1') {
-//                return $this->respond(new DivisionCollection(
-//                    Division::whereHas('seasons', function($q) {
-//                        $q->where('current', '=', 1);
-//                    })->get()
-//                ));
-//            }
-            // todo - seasonId also needs to be used for just getting divisions from that season without the teams so
-            // just need simpler version of below where only get divisions
             if ($seasonId = $request->input('seasonId')) {
+
                 $season = Season::findOrFail($seasonId);
+                if ($request->input('noTeams')) {
+                    $divisionIdsQuery = $season->divisions()
+                        ->select('divisions.id')
+                        ->where('season_id', '=', $seasonId)
+                        ->getQuery();
+
+                    $divisions = Division::whereIn('id', $divisionIdsQuery)->get();
+                    return $this->respond(new DivisionCollection($divisions));
+                }
 
                 $divisionIdsQuery = $season->divisions()
                     ->select('divisions.id')
@@ -45,9 +47,9 @@ class DivisionController extends ApiController
                     }])
                     ->get();
 
-                return $this->respond(new DivisionCollection($divisions));
+                return $this->respond(new DivisionWithTeamsCollection($divisions));
             } else {
-                return $this->respond(new DivisionCollection(Division::all()));
+                return $this->respond(new DivisionWithTeamsCollection(Division::all()));
             }
 
         } catch (Throwable $t) {
@@ -96,7 +98,7 @@ class DivisionController extends ApiController
         try {
             return $this->respond(new DivisionResource(Division::findOrFail($id)));
         } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Division not found');
+            return $this->respondNotFound('DivisionWithTeams not found');
         } catch (Throwable $t) {
             $meta = ['action'   => 'DivisionController@show'];
             $this->logger->log('alert', $t->getMessage(), ['exception' => $t, 'meta'  => $meta]);
@@ -119,7 +121,7 @@ class DivisionController extends ApiController
             $division->save();
             return $this->respondUpdated($division);
         } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Division not found');
+            return $this->respondNotFound('DivisionWithTeams not found');
         } catch (Throwable $t) {
             $meta = [
                 'action' => 'DivisionController@update',
@@ -142,7 +144,7 @@ class DivisionController extends ApiController
             Division::destroy($id);
             return $this->respondSoftDeleted();
         } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Division not found');
+            return $this->respondNotFound('DivisionWithTeams not found');
         } catch (Throwable $t) {
             $meta = ['action'   => 'DivisionController@softDelete'];
             $this->logger->log('alert', $t->getMessage(), ['exception' => $t, 'meta'  => $meta]);
@@ -166,7 +168,7 @@ class DivisionController extends ApiController
             $division->forceDelete();
             return $this->respondDestroyed();
         } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Division not found');
+            return $this->respondNotFound('DivisionWithTeams not found');
         } catch (Throwable $t) {
             $meta = ['action'   => 'DivisionController@destroy'];
             $this->logger->log('alert', $t->getMessage(), ['exception' => $t, 'meta'  => $meta]);

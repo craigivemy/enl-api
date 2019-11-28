@@ -39,7 +39,7 @@ class Team extends Model
 
 
 //    public function division() {
-//        return $this->belongsTo('App\Division');
+//        return $this->belongsTo('App\DivisionWithTeams');
 //        // should be belongs to many - for historical data?
 //    }
 //

@@ -30,7 +30,7 @@ class Season extends Model
 //     */
 //    public function divisions()
 //    {
-//        return $this->belongsToMany('App\Division');
+//        return $this->belongsToMany('App\DivisionWithTeams');
 //    }
 //
 //    public function teams()

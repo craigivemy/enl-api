@@ -14,24 +14,19 @@ class DivisionsTableSeeder extends Seeder
     {
         DB::table('divisions')->insert([
             [
-                'name'  => 'Pool A',
-                'current' => true
+                'name'  => 'Pool A'
             ],
             [
-                'name'  => 'Pool B',
-                'current' => true,
+                'name'  => 'Pool B'
             ],
             [
-                'name'  => 'Pool C',
-                'current' => true
+                'name'  => 'Pool C'
             ],
             [
-                'name'  => 'Pool D',
-                'current' => true
+                'name'  => 'Pool D'
             ],
             [
-                'name'  => 'Mixed',
-                'current' => false
+                'name'  => 'Mixed'
             ]
         ]);
     }

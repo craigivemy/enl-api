@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Club as ClubResource;
-use App\Http\Resources\Division as DivisionResource;
+use App\Http\Resources\DivisionWithTeams as DivisionResource;
 use App\Http\Resources\Season as SeasonResource;
 
 class Team extends JsonResource
