@@ -25,6 +25,7 @@ class Fixture extends JsonResource
             'homeTeamName' => $this->homeTeam->name,
             'awayTeamName' => $this->awayTeam->name,
             'matchDate'    => $this->match_date,
+            'court'        => $this->court,
             'round'         => $this->round,
             'played'        => (bool) $this->played,
             'walkover'      => (bool) $this->walkover,

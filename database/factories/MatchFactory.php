@@ -23,6 +23,7 @@ $factory->define(\App\Fixture::class, function (Faker $faker) {
         'home_id'       => $faker->randomElement($team_ids),
         'away_id'       => $faker->randomElement($team_ids),
         'match_date'    => $faker->dateTimeBetween('-60 days','now','Europe/London'),
+        'court'         => $faker->numberBetween(1, 4),
         'round'         => $rounds[array_rand($rounds)],
         'played'        => $faker->randomElement($played),
         'walkover'      => $true_or_false[array_rand($true_or_false)],
