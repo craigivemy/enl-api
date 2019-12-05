@@ -9,9 +9,8 @@ $factory->define(\App\Fixture::class, function (Faker $faker) {
     $rounds = [1,2];
     $played = [0,1];
     $true_or_false = [true, false];
-    $dates = ['2019-11-07 11:11:03', '2019-12-07 11:17:03'];
 
-    $division_ids = DB::table('divisions')->where('id', '<', 3)->pluck('id')->toArray();
+    $division_ids = DB::table('divisions')->where('id', '<=', 3)->pluck('id')->toArray();
     $season_ids = DB::table('seasons')->pluck('id')->toArray();
     $team_ids = DB::table('teams')->pluck('id')->toArray();
 
