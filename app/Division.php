@@ -10,7 +10,7 @@ class Division extends Model
 
     public function matches()
     {
-        return $this->hasMany('App\Fixture');
+        return $this->hasMany('App\Match');
     }
 
     // new

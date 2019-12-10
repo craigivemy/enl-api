@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Fixture;
-use App\Http\Resources\Fixture as FixtureResource;
-use App\Http\Resources\FixtureCollection;
+use App\Match;
+use App\Http\Resources\Match as FixtureResource;
+use App\Http\Resources\MatchCollection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Throwable;
 
-class FixtureController extends ApiController
+class MatchController extends ApiController
 {
     /**
      * Display a listing of fixtures.
@@ -22,16 +22,15 @@ class FixtureController extends ApiController
         try {
             if ($request->query('seasonId')) {
 
-                return $this->respond(new FixtureCollection(Fixture::with(['homeTeam', 'awayTeam'])
+                return $this->respond(new MatchCollection(Match::with(['homeTeam', 'awayTeam'])
                     ->where('season_id', $request->query('seasonId'))
-                    //->where('played', '=', 0)
                     ->orderBy('match_date')
                     ->get()));
 
             }
-            return $this->respond(new FixtureCollection(Fixture::all()));
+            return $this->respond(new MatchCollection(Match::all()));
         } catch (Throwable $t) {
-            $meta = ['action' => 'FixtureController@index'];
+            $meta = ['action' => 'MatchController@index'];
             $this->logger->log('critical', $t->getMessage(), ['exception' => $t, 'meta' => $meta]);
             return $this->respondWithError();
         }
@@ -46,10 +45,10 @@ class FixtureController extends ApiController
     public function store(Request $request)
     {
         try {
-            $fixture = Fixture::create($request->all());
+            $fixture = Match::create($request->all());
             return $this->respondCreated($fixture);
         } catch (Throwable $t) {
-            $meta = ['action' => 'FixtureController@store'];
+            $meta = ['action' => 'MatchController@store'];
             $this->logger->log('critical', $t->getMessage(), ['exception' => $t, 'meta' => $meta]);
             return $this->respondWithError();
         }
@@ -64,11 +63,11 @@ class FixtureController extends ApiController
     public function show($id)
     {
         try {
-            return $this->respond(new FixtureResource(Fixture::findOrFail($id)));
+            return $this->respond(new FixtureResource(Match::findOrFail($id)));
         } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Fixture not found');
+            return $this->respondNotFound('Match not found');
         } catch (Throwable $t) {
-            $meta = ['action'   => 'FixtureController@show'];
+            $meta = ['action'   => 'MatchController@show'];
             $this->logger->log('alert', $t->getMessage(), ['exception' => $t, 'meta'  => $meta]);
             return $this->respondWithError();
         }
@@ -84,15 +83,17 @@ class FixtureController extends ApiController
     public function update(Request $request, $id)
     {
         try {
-            $fixture = Fixture::findOrFail($id);
-            $fixture->fill($request->except('id'));
-            $fixture->save();
-            return $this->respondUpdated($fixture);
+            $match = Match::findOrFail($id);
+            $match->home_score = $request->input('homeScore');
+            $match->away_score = $request->input('awayScore');
+            $match->walkover = $request->input('walkover');
+            $match->save();
+            return $this->respondUpdated($match);
         } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Fixture not found');
+            return $this->respondNotFound('Match not found');
         } catch (Throwable $t) {
             $meta = [
-                'action' => 'FixtureController@update',
+                'action' => 'MatchController@update',
                 'info'   => 'Updating fixture ID: ' . $id
             ];
             $this->logger->log('alert', $t->getMessage(), ['exception' => $t, 'meta'  => $meta]);
@@ -109,12 +110,12 @@ class FixtureController extends ApiController
      */
     public function softDelete($id) {
         try {
-            Fixture::destroy($id);
+            Match::destroy($id);
             return $this->respondSoftDeleted();
         } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Fixture not found');
+            return $this->respondNotFound('Match not found');
         } catch (Throwable $t) {
-            $meta = ['action'   => 'FixtureController@softDelete'];
+            $meta = ['action'   => 'MatchController@softDelete'];
             $this->logger->log('alert', $t->getMessage(), ['exception' => $t, 'meta'  => $meta]);
             return $this->respondWithError();
         }
@@ -129,16 +130,16 @@ class FixtureController extends ApiController
     public function destroy($id)
     {
         try {
-            $fixture = Fixture::withTrashed()->where('id', $id)->first();
+            $fixture = Match::withTrashed()->where('id', $id)->first();
             if (!$fixture) {
                 throw new ModelNotFoundException();
             }
             $fixture->forceDelete();
             return $this->respondDestroyed();
         } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound('Fixture not found');
+            return $this->respondNotFound('Match not found');
         } catch (Throwable $t) {
-            $meta = ['action'   => 'FixtureController@destroy'];
+            $meta = ['action'   => 'MatchController@destroy'];
             $this->logger->log('alert', $t->getMessage(), ['exception' => $t, 'meta'  => $meta]);
             return $this->respondWithError();
         }

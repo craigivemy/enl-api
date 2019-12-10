@@ -19,7 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::apiResources([
     'teams'     => 'TeamController',
-    'fixtures'  => 'FixtureController',
+    'matches'   => 'MatchController',
     'results'   => 'ResultsController',
     'players'   => 'PlayerController',
     'umpires'   => 'UmpireController',
