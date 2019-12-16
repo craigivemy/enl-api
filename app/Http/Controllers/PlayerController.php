@@ -16,9 +16,14 @@ class PlayerController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
+
+            if ($team_id = $request->input('teamId')) {
+                return $this->respond(new PlayerCollection(Player::where('team_id', '=', $team_id)->get()));
+            }
+
             return $this->respond(new PlayerCollection(Player::all()));
         } catch (Throwable $t) {
             $meta = ['action' => 'PlayerController@index'];
