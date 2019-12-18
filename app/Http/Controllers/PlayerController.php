@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Team;
 use Illuminate\Http\Request;
 use App\Player;
 use App\Http\Resources\Player as PlayerResource;
@@ -41,8 +42,14 @@ class PlayerController extends ApiController
     public function store(Request $request)
     {
         try {
-            $player = Player::create($request->all());
-            return $this->respondCreated($player);
+            $player = $request->input('player');
+            $newPlayer = new Player;
+            $newPlayer->forename = $player['forename'];
+            $newPlayer->surname = $player['surname'];
+            $newPlayer->played_up_count = $player['playedUpCount'];
+            $newPlayer->team_id = $player['teamId'];
+            $newPlayer->save();
+            return $this->respondCreated($newPlayer);
             /*
              * todo - create fullname / displayname method, check it here and
              * return duplicate entry if it matches - if request contains
