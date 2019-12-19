@@ -93,7 +93,9 @@ class PlayerController extends ApiController
     {
         try {
             $player = Player::findOrFail($id);
-            $player->fill($request->except('id'));
+            $changes = $request->input('player');
+            $player->played_up_count = $changes['playedUpCount'];
+            // todo - add other fields
             $player->save();
             return $this->respondUpdated($player);
         } catch (ModelNotFoundException $e) {
