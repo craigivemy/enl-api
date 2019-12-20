@@ -14,24 +14,24 @@ class SettingsTableSeeder extends Seeder
     {
         DB::table('settings')->insert([
             [
-                'name'  => 'points_win',
-                'setting_value' => 5,
-                'description'   => 'Points for a win'
+                'name' => 'win_value',
+                'description' => 'Points awarded for a win',
+                'setting_value' => 5
             ],
             [
-                'name'  => 'points_draw',
-                'setting_value' => 2,
-                'description'   => 'Points for a draw'
+                'name' => 'draw_value',
+                'description' => 'Points awarded for a draw',
+                'setting_value' => 2
             ],
             [
-                'name'  => 'points_lose',
-                'setting_value' => 0,
-                'description'   => 'Points for a loss'
+                'name' => 'loss_value',
+                'description' => 'Points awarded for a loss',
+                'setting_value' => 0
             ],
             [
-                'name'  => 'points_bonus',
-                'setting_value' => 1,
-                'description'   => 'Bonus points'
+                'name' => 'bonus_point_value',
+                'description' => 'Value of a bonus point',
+                'setting_value' => 2
             ]
         ]);
     }

@@ -20,12 +20,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::apiResources([
     'teams'     => 'TeamController',
     'matches'   => 'MatchController',
-    'results'   => 'ResultsController',
+    //'results'   => 'ResultsController',
     'players'   => 'PlayerController',
     'umpires'   => 'UmpireController',
     'seasons'   => 'SeasonController',
     'settings'  => 'SettingController',
     'divisions' => 'DivisionController',
-    'clubs'     => 'ClubController'
+    'clubs'     => 'ClubController',
+    'divisions-tables' => 'DivisionTablesController'
 ]);
 Route::delete('clubs/{club}/soft', 'ClubController@softDelete');
