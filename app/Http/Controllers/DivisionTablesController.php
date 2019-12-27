@@ -24,31 +24,34 @@ class DivisionTablesController extends Controller
         $draw_value = $settings->get('draw_value')->setting_value;
         $bonus_value = $settings->get('bonus_point_value')->setting_value;
 
+
+        // todo - set default values as 0 rather than if null?
         $teams = DB::select(DB::raw(
             "SELECT 
-                    t.name AS Team,
-                    IFNULL(SUM(WINS), 0) AS WINS,
-                    IFNULL(SUM(DRAWS), 0) AS DRAWS,
-                    IFNULL(SUM(LOSSES), 0) AS LOSSES,
-                    IFNULL(SUM(GOALS_FOR), 0) AS GOALS_FOR,
-                    IFNULL(SUM(GOALS_AGAINST), 0) AS GOALS_AGAINST,
+                    t.name AS team_name,
+                    t.id as team_id,
+                    IFNULL(SUM(win), 0) AS win,
+                    IFNULL(SUM(draw), 0) AS draw,
+                    IFNULL(SUM(loss), 0) AS loss,
+                    IFNULL(SUM(goals_for), 0) AS goals_for,
+                    IFNULL(SUM(goals_against), 0) AS goals_against,
 
-                    IFNULL(SUM(GOAL_DIFFERENCE), 0) as GOAL_DIFFERENCE,
-                    IFNULL(SUM(GAMES_PLAYED), 0) AS GAMES_PLAYED,
-                    IFNULL(SUM(POINTS), 0) as POINTS
+                    IFNULL(SUM(goal_difference), 0) as goal_difference,
+                    IFNULL(SUM(games_played), 0) AS games_played,
+                    IFNULL(SUM(points), 0) as points
                     FROM teams t
                     LEFT JOIN (
                         SELECT home_id
-                            Team,
-                            IF(home_SCORE > away_score, 1,0) WINS,
-                            IF(home_score = away_score, 1,0) DRAWS,
-                            IF(home_score < away_score, 1,0) LOSSES,
-                            home_score GOALS_FOR,
-                            away_score GOALS_AGAINST,
-                            home_score - away_score GOAL_DIFFERENCE,
-                            1 GAMES_PLAYED,
-                            CASE WHEN home_score > away_score THEN 5 WHEN home_score = away_score THEN 2 ELSE 0 END POINTS
-                        FROM matches WHERE played = 1 AND season_id = 1 AND division_id = 2
+                            team_name,
+                            IF(home_SCORE > away_score, 1,0) win,
+                            IF(home_score = away_score, 1,0) draw,
+                            IF(home_score < away_score, 1,0) loss,
+                            home_score goals_for,
+                            away_score goals_against,
+                            home_score - away_score goal_difference,
+                            1 games_played,
+                            CASE WHEN home_score > away_score THEN '" . $win_value . "' WHEN home_score = away_score THEN '" . $draw_value . "' ELSE '" . $loss_value . "' END points
+                        FROM matches WHERE played = 1 AND season_id = '" . $season_id . "' AND division_id = '" . $division_id . "'
                         
                         UNION ALL 
                         SELECT away_id,
@@ -58,24 +61,24 @@ class DivisionTablesController extends Controller
                             IF(home_score > away_score, 1,0),
                             home_score,
                             away_score,
-                            away_score - home_score GOAL_DIFFERENCE,
-                            1 GAMES_PLAYED,
-                            CASE WHEN home_score < away_score THEN 5 WHEN home_score = away_score THEN 2 ELSE 0 END
+                            away_score - home_score goal_difference,
+                            1 games_played,
+                            CASE WHEN home_score < away_score THEN '" . $win_value . "' WHEN home_score = away_score THEN '" . $draw_value . "' ELSE '" . $loss_value . "' END
                         FROM matches
-                        WHERE played = 1 AND season_id = 1 AND division_id = 2
-                    ) AS total ON total.Team=t.id
+                        WHERE played = 1 AND season_id = '" . $season_id . "' AND division_id = '" . $division_id . "'
+                    ) AS total ON total.team_name=t.id
                     
                     GROUP BY t.name
-                    ORDER BY SUM(POINTS) DESC, GOAL_DIFFERENCE DESC"
+                    ORDER BY SUM(points) DESC, goal_difference DESC"
         ));
 
         return $teams;
 
 // todo - check OK to use variables here as from other DB fields
-        // todo - select home_team or home_id is that right?
-        // group by division id needed? Maybe better to rtetrieve all at once and use this? Or actually what about when only need one?
-        // what does the 1 do in 2nd query?
-//                  IFNULL(SUM(BONUS_POINTS), 0) as BONUS_POINTS,
+        // todo - select bonus points too, plus need to calculate home, away adjust and
+        //  probably create table and join on it for reasons (or separate query from front end?
+// todo - IFNULL(SUM(BONUS_POINTS), 0) as BONUS_POINTS,
+        // todo - also need a season id column for settings then query above ->where('season_id') etc?
 
         
     }

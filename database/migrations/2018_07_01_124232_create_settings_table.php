@@ -19,6 +19,7 @@ class CreateSettingsTable extends Migration
             $table->string('name', 100);
             $table->text('description');
             $table->string('setting_value', 255);
+            $table->tinyInteger('season_id');
             $table->timestamps();
         });
     }
