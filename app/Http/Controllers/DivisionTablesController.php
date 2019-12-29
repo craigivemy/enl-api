@@ -59,8 +59,8 @@ class DivisionTablesController extends Controller
                             IF(home_score < away_score, 1, 0),
                             IF(home_score = away_score, 1,0),
                             IF(home_score > away_score, 1,0),
-                            home_score,
                             away_score,
+                            home_score,
                             away_score - home_score goal_difference,
                             1 games_played,
                             CASE WHEN home_score < away_score THEN '" . $win_value . "' WHEN home_score = away_score THEN '" . $draw_value . "' ELSE '" . $loss_value . "' END
@@ -76,7 +76,8 @@ class DivisionTablesController extends Controller
 
 // todo - check OK to use variables here as from other DB fields
         // todo - select bonus points too, plus need to calculate home, away adjust and
-        //  probably create table and join on it for reasons (or separate query from front end?
+        //  probably create table and join on it for reasons (or separate query from front end? - actually
+        // home_adjust etc - should that be on teams table/jointable?
 // todo - IFNULL(SUM(BONUS_POINTS), 0) as BONUS_POINTS,
         // todo - also need a season id column for settings then query above ->where('season_id') etc?
 
