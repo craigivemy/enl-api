@@ -25,20 +25,20 @@ class DivisionTablesController extends Controller
         $bonus_value = $settings->get('bonus_point_value')->setting_value;
 
 
-        // todo - set default values as 0 rather than if null?
+
         $teams = DB::select(DB::raw(
             "SELECT 
                     t.name AS team_name,
                     t.id as team_id,
-                    IFNULL(SUM(win), 0) AS win,
-                    IFNULL(SUM(draw), 0) AS draw,
-                    IFNULL(SUM(loss), 0) AS loss,
-                    IFNULL(SUM(goals_for), 0) AS goals_for,
-                    IFNULL(SUM(goals_against), 0) AS goals_against,
+                    SUM(win) AS win,
+                    SUM(draw) AS draw,
+                    SUM(loss) AS loss,
+                    SUM(goals_for) AS goals_for,
+                    SUM(goals_against) AS goals_against,
 
-                    IFNULL(SUM(goal_difference), 0) as goal_difference,
-                    IFNULL(SUM(games_played), 0) AS games_played,
-                    IFNULL(SUM(points), 0) as points
+                    SUM(goal_difference) as goal_difference,
+                    SUM(games_played) AS games_played,
+                    SUM(points) as points
                     FROM teams t
                     LEFT JOIN (
                         SELECT home_id
@@ -51,7 +51,7 @@ class DivisionTablesController extends Controller
                             home_score - away_score goal_difference,
                             1 games_played,
                             CASE WHEN home_score > away_score THEN '" . $win_value . "' WHEN home_score = away_score THEN '" . $draw_value . "' ELSE '" . $loss_value . "' END points
-                        FROM matches WHERE played = 1 AND season_id = '" . $season_id . "' AND division_id = '" . $division_id . "'
+                        FROM matches mat WHERE played = 1 AND season_id = '" . $season_id . "' AND division_id = '" . $division_id . "'
                         
                         UNION ALL 
                         SELECT away_id,
@@ -64,11 +64,17 @@ class DivisionTablesController extends Controller
                             away_score - home_score goal_difference,
                             1 games_played,
                             CASE WHEN home_score < away_score THEN '" . $win_value . "' WHEN home_score = away_score THEN '" . $draw_value . "' ELSE '" . $loss_value . "' END
-                        FROM matches
+                        FROM matches mat
                         WHERE played = 1 AND season_id = '" . $season_id . "' AND division_id = '" . $division_id . "'
+                        
+                        ) INNER JOIN (
+                        division_season_team dst
+                        ON t.id = dst.team_id
+                        WHERE dst.division_id = '" . $division_id . "'
+                        
                     ) AS total ON total.team_name=t.id
                     
-                    GROUP BY t.name
+                    GROUP BY t.id
                     ORDER BY SUM(points) DESC, goal_difference DESC"
         ));
 

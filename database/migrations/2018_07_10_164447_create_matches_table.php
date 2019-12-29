@@ -18,8 +18,8 @@ class CreateMatchesTable extends Migration
 
             $table->increments('id');
 
-            $table->integer('home_score');
-            $table->integer('away_score');
+            $table->integer('home_score')->default(0);
+            $table->integer('away_score')->default(0);
 
             $table->unsignedInteger('division_id')->nullable();
             $table->unsignedInteger('season_id')->nullable();
@@ -31,11 +31,11 @@ class CreateMatchesTable extends Migration
             $table->unsignedInteger('court');
             $table->unsignedInteger('round');
 
-            $table->boolean('played');
-            $table->boolean('walkover');
+            $table->boolean('played')->default(false);
+            $table->boolean('walkover')->default(false);
 
-            $table->integer('home_adjust');
-            $table->integer('away_adjust');
+            $table->integer('home_adjust')->default(0);
+            $table->integer('away_adjust')->default(0);
 
             $table->timestamps();
             $table->softDeletes();
