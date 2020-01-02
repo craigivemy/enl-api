@@ -39,7 +39,9 @@ class DivisionTablesController extends Controller
                     SUM(goal_difference) as goal_difference,
                     SUM(games_played) AS games_played,
                     SUM(points) as points
-                    FROM teams t
+                    FROM teams t INNER JOIN
+                        division_season_team dst
+                        ON t.id = dst.team_id
                     LEFT JOIN (
                         SELECT home_id
                             team_name,
@@ -64,15 +66,10 @@ class DivisionTablesController extends Controller
                             away_score - home_score goal_difference,
                             1 games_played,
                             CASE WHEN home_score < away_score THEN '" . $win_value . "' WHEN home_score = away_score THEN '" . $draw_value . "' ELSE '" . $loss_value . "' END
-                        FROM matches mat
+                        FROM matches
                         WHERE played = 1 AND season_id = '" . $season_id . "' AND division_id = '" . $division_id . "'
                         
-                        ) INNER JOIN (
-                        division_season_team dst
-                        ON t.id = dst.team_id
-                        WHERE dst.division_id = '" . $division_id . "'
-                        
-                    ) AS total ON total.team_name=t.id
+                        ) AS total ON total.team_name=t.id WHERE dst.season_id = '" . $season_id . "' AND dst.division_id = '" . $division_id . "'
                     
                     GROUP BY t.id
                     ORDER BY SUM(points) DESC, goal_difference DESC"
@@ -87,7 +84,7 @@ class DivisionTablesController extends Controller
 // todo - IFNULL(SUM(BONUS_POINTS), 0) as BONUS_POINTS,
         // todo - also need a season id column for settings then query above ->where('season_id') etc?
 
-        
+
     }
 
     /**
