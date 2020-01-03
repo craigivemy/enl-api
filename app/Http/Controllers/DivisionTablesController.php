@@ -76,7 +76,7 @@ class DivisionTablesController extends Controller
                         ) AS total ON total.team_name=t.id WHERE dst.season_id = '" . $season_id . "' AND dst.division_id = '" . $division_id . "'
                     
                     GROUP BY t.id
-                    ORDER BY SUM(points) DESC, goal_difference DESC"
+                    ORDER BY ABS(points) + IFNULL(tpa.point_adjustment, 0) DESC, goal_difference DESC"
             ));
         } else {
             $teams = DB::select(DB::raw(
