@@ -38,8 +38,12 @@ class DivisionTablesController extends Controller
 
                     SUM(goal_difference) as goal_difference,
                     SUM(games_played) AS games_played,
-                    SUM(points) as points
-                    FROM teams t INNER JOIN
+                    SUM(points) + IFNULL(tpa.point_adjustment, 0) as points
+                    FROM teams t 
+                    LEFT JOIN team_point_adjustments tpa
+                        ON t.id = tpa.team_id
+                        AND (tpa.season_id = '" . $season_id . "' OR tpa.season_id IS NULL)
+                    INNER JOIN
                         division_season_team dst
                         ON t.id = dst.team_id
                     LEFT JOIN (
@@ -101,7 +105,10 @@ class DivisionTablesController extends Controller
                             away_score goals_against,
                             home_score - away_score goal_difference,
                             1 games_played,
-                            CASE WHEN home_score > away_score THEN '" . $win_value . "' WHEN home_score = away_score THEN '" . $draw_value . "' ELSE '" . $loss_value . "' END points
+                            CASE 
+                                WHEN home_score > away_score THEN '" . $win_value . "' 
+                                WHEN home_score = away_score THEN '" . $draw_value . "' 
+                                ELSE '" . $loss_value . "' END points
                         FROM matches mat WHERE played = 1 AND season_id = '" . $season_id . "'
                         
                         UNION ALL 
@@ -114,7 +121,10 @@ class DivisionTablesController extends Controller
                             home_score,
                             away_score - home_score goal_difference,
                             1 games_played,
-                            CASE WHEN home_score < away_score THEN '" . $win_value . "' WHEN home_score = away_score THEN '" . $draw_value . "' ELSE '" . $loss_value . "' END
+                            CASE 
+                                WHEN home_score < away_score THEN '" . $win_value . "' 
+                                WHEN home_score = away_score THEN '" . $draw_value . "' 
+                                ELSE '" . $loss_value . "' END
                         FROM matches
                         WHERE played = 1 AND season_id = '" . $season_id . "'
                         

@@ -25,7 +25,8 @@ class DatabaseSeeder extends Seeder
             //DivisionSeasonTableSeeder::class,
             //SeasonTeamTableSeeder::class
             DivisionSeasonTeamTableSeeder::class,
-            MatchesTableSeeder::class
+            MatchesTableSeeder::class,
+            TeamPointAdjustmentsTableSeeder::class
         ]);
 
     }
