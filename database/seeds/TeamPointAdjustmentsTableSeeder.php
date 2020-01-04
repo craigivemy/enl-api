@@ -20,6 +20,13 @@ class TeamPointAdjustmentsTableSeeder extends Seeder
                 'reason_date' => '2019-10-01',
                 'point_adjustment' => -5
             ],
+//            [
+//                'team_id' => 5,
+//                'season_id' => 1,
+//                'reason' => "Didn't turn up AGAIN",
+//                'reason_date' => '2019-10-01',
+//                'point_adjustment' => -10
+//            ],
             [
                 'team_id' => 5,
                 'season_id' => 2,

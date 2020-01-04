@@ -38,6 +38,9 @@ class DivisionTablesController extends Controller
 
                     SUM(goal_difference) as goal_difference,
                     SUM(games_played) AS games_played,
+                    tpa.point_adjustment,
+                    tpa.reason,
+                    tpa.reason_date,
                     SUM(points) + IFNULL(tpa.point_adjustment, 0) as points
                     FROM teams t 
                     LEFT JOIN team_point_adjustments tpa
@@ -76,7 +79,7 @@ class DivisionTablesController extends Controller
                         ) AS total ON total.team_name=t.id WHERE dst.season_id = '" . $season_id . "' AND dst.division_id = '" . $division_id . "'
                     
                     GROUP BY t.id
-                    ORDER BY ABS(points) + IFNULL(tpa.point_adjustment, 0) DESC, goal_difference DESC"
+                    ORDER BY points DESC, goal_difference DESC"
             ));
         } else {
             $teams = DB::select(DB::raw(
@@ -91,8 +94,12 @@ class DivisionTablesController extends Controller
 
                     SUM(goal_difference) as goal_difference,
                     SUM(games_played) AS games_played,
-                    SUM(points) as points
-                    FROM teams t INNER JOIN
+                    SUM(points) + IFNULL(tpa.point_adjustment, 0) as points
+                    FROM teams t 
+                    LEFT JOIN team_point_adjustments tpa
+                        ON t.id = tpa.team_id
+                        AND (tpa.season_id = '" . $season_id . "' OR tpa.season_id IS NULL)
+                    INNER JOIN
                         division_season_team dst
                         ON t.id = dst.team_id
                     LEFT JOIN (
@@ -131,13 +138,13 @@ class DivisionTablesController extends Controller
                         ) AS total ON total.team_name=t.id WHERE dst.season_id = '" . $season_id . "'
                     
                     GROUP BY t.id
-                    ORDER BY dst.division_id, SUM(points) DESC, goal_difference DESC"
+                    ORDER BY dst.division_id, points DESC, goal_difference DESC"
             ));
         }
         return $teams;
 
-        // todo - check calc will always be correct - should be using ABS at top too?
-        // todo - add points adjust to all divisions query
+        // todo - get points adjust into groups and sum correctly when more than one
+        // todo - calc half score / within 2 bonus point scores
 
 
     }
