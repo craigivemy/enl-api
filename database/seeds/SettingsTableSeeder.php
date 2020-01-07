@@ -22,7 +22,7 @@ class SettingsTableSeeder extends Seeder
             [
                 'name' => 'draw_value',
                 'description' => 'Points awarded for a draw',
-                'setting_value' => 2,
+                'setting_value' => 3,
                 'season_id' => 1
             ],
             [
@@ -32,9 +32,15 @@ class SettingsTableSeeder extends Seeder
                 'season_id' => 1
             ],
             [
-                'name' => 'bonus_point_value',
+                'name' => 'bonus_point_within_5_value',
                 'description' => 'Value of a bonus point',
                 'setting_value' => 2,
+                'season_id' => 1
+            ],
+            [
+                'name' => 'bonus_point_over_50_percent_value',
+                'description' => 'Value of a bonus point',
+                'setting_value' => 1,
                 'season_id' => 1
             ]
         ]);

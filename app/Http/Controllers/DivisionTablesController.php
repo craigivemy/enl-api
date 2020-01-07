@@ -22,7 +22,8 @@ class DivisionTablesController extends ApiController
         $win_value = $settings->get('win_value')->setting_value;
         $loss_value = $settings->get('loss_value')->setting_value;
         $draw_value = $settings->get('draw_value')->setting_value;
-        $bonus_value = $settings->get('bonus_point_value')->setting_value;
+        $bonus_value = $settings->get('bonus_point_within_5_value')->setting_value;
+        $lower_bonus_value = $settings->get('bonus_point_over_50_percent_value')->setting_value;
 
 
         if ($division_id) {
@@ -57,7 +58,9 @@ class DivisionTablesController extends ApiController
                         1 games_played,
                         CASE 
                             WHEN home_score > away_score THEN '" . $win_value . "' 
-                            WHEN home_score = away_score THEN '" . $draw_value . "' 
+                            WHEN home_score = away_score THEN '" . $draw_value . "'
+                            WHEN home_score + 5 >= away_score THEN '" . $bonus_value . "'
+                            WHEN away_score / 2 < home_score THEN '" . $lower_bonus_value .  "'
                             ELSE '" . $loss_value . "' 
                         END points
                     FROM matches mat WHERE played = 1 AND season_id = '" . $season_id . "' AND division_id = '" . $division_id . "'
@@ -73,6 +76,8 @@ class DivisionTablesController extends ApiController
                         CASE 
                             WHEN home_score < away_score THEN '" . $win_value . "' 
                             WHEN home_score = away_score THEN '" . $draw_value . "' 
+                            WHEN away_score + 5 >= home_score THEN '" . $bonus_value . "'
+                            WHEN home_score / 2 < away_score THEN '" . $lower_bonus_value .  "'
                             ELSE '" . $loss_value . "' 
                         END
                     FROM matches
@@ -114,8 +119,10 @@ class DivisionTablesController extends ApiController
                         1 games_played,
                         CASE 
                             WHEN home_score > away_score THEN '" . $win_value . "' 
-                            WHEN home_score = away_score THEN '" . $draw_value . "' 
-                            ELSE '" . $loss_value . "' 
+                            WHEN home_score = away_score THEN '" . $draw_value . "'
+                            WHEN home_score + 5 >= away_score THEN '" . $bonus_value . "'
+                            WHEN away_score / 2 < home_score THEN '" . $lower_bonus_value .  "'
+                            ELSE '" . $loss_value . "'
                         END points
                     FROM matches mat WHERE played = 1 AND season_id = '" . $season_id . "'
                     UNION ALL 
@@ -130,6 +137,8 @@ class DivisionTablesController extends ApiController
                         CASE 
                             WHEN home_score < away_score THEN '" . $win_value . "' 
                             WHEN home_score = away_score THEN '" . $draw_value . "' 
+                            WHEN away_score + 5 >= home_score THEN '" . $bonus_value . "'
+                            WHEN home_score / 2 < away_score THEN '" . $lower_bonus_value .  "'
                             ELSE '" . $loss_value . "' 
                         END
                     FROM matches
