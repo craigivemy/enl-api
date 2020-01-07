@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class DivisionTablesController extends Controller
+class DivisionTablesController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -27,124 +27,123 @@ class DivisionTablesController extends Controller
 
         if ($division_id) {
             $teams = DB::select(DB::raw(
-                "SELECT 
-                    t.name AS team_name,
-                    t.id as team_id,
-                    SUM(win) AS win,
-                    SUM(draw) AS draw,
-                    SUM(loss) AS loss,
-                    SUM(goals_for) AS goals_for,
-                    SUM(goals_against) AS goals_against,
-
-                    SUM(goal_difference) as goal_difference,
-                    SUM(games_played) AS games_played,
-                    tpa.point_adjustment,
-                    tpa.reason,
-                    tpa.reason_date,
-                    SUM(points) + IFNULL(tpa.point_adjustment, 0) as points
-                    FROM teams t 
-                    LEFT JOIN team_point_adjustments tpa
-                        ON t.id = tpa.team_id
-                        AND (tpa.season_id = '" . $season_id . "' OR tpa.season_id IS NULL)
-                    INNER JOIN
-                        division_season_team dst
-                        ON t.id = dst.team_id
-                    LEFT JOIN (
-                        SELECT home_id
-                            team_name,
-                            IF(home_SCORE > away_score, 1,0) win,
-                            IF(home_score = away_score, 1,0) draw,
-                            IF(home_score < away_score, 1,0) loss,
-                            home_score goals_for,
-                            away_score goals_against,
-                            home_score - away_score goal_difference,
-                            1 games_played,
-                            CASE WHEN home_score > away_score THEN '" . $win_value . "' WHEN home_score = away_score THEN '" . $draw_value . "' ELSE '" . $loss_value . "' END points
-                        FROM matches mat WHERE played = 1 AND season_id = '" . $season_id . "' AND division_id = '" . $division_id . "'
-                        
-                        UNION ALL 
-                        SELECT away_id,
-                            
-                            IF(home_score < away_score, 1, 0),
-                            IF(home_score = away_score, 1,0),
-                            IF(home_score > away_score, 1,0),
-                            away_score,
-                            home_score,
-                            away_score - home_score goal_difference,
-                            1 games_played,
-                            CASE WHEN home_score < away_score THEN '" . $win_value . "' WHEN home_score = away_score THEN '" . $draw_value . "' ELSE '" . $loss_value . "' END
-                        FROM matches
-                        WHERE played = 1 AND season_id = '" . $season_id . "' AND division_id = '" . $division_id . "'
-                        
-                        ) AS total ON total.team_name=t.id WHERE dst.season_id = '" . $season_id . "' AND dst.division_id = '" . $division_id . "'
-                    
+        "SELECT 
+                t.name AS team_name,
+                t.id as team_id,
+                SUM(win) AS win,
+                SUM(draw) AS draw,
+                SUM(loss) AS loss,
+                SUM(goals_for) AS goals_for,
+                SUM(goals_against) AS goals_against,
+                SUM(goal_difference) as goal_difference,
+                SUM(games_played) AS games_played,
+                SUM(points) + IFNULL(tpa.point_adjustment, 0) as points
+                FROM teams t 
+                LEFT JOIN (
+                  SELECT team_id, season_id, SUM(point_adjustment) AS point_adjustment
+                  FROM team_point_adjustments
+                  GROUP BY team_id, season_id
+                ) tpa ON t.id = tpa.team_id AND (tpa.season_id = '" . $season_id . "' OR tpa.season_id IS NULL)
+                LEFT JOIN division_season_team dst ON t.id = dst.team_id
+                LEFT JOIN (
+                    SELECT home_id
+                        team_name,
+                        IF(home_SCORE > away_score, 1,0) win,
+                        IF(home_score = away_score, 1,0) draw,
+                        IF(home_score < away_score, 1,0) loss,
+                        home_score goals_for,
+                        away_score goals_against,
+                        home_score - away_score goal_difference,
+                        1 games_played,
+                        CASE 
+                            WHEN home_score > away_score THEN '" . $win_value . "' 
+                            WHEN home_score = away_score THEN '" . $draw_value . "' 
+                            ELSE '" . $loss_value . "' 
+                        END points
+                    FROM matches mat WHERE played = 1 AND season_id = '" . $season_id . "' AND division_id = '" . $division_id . "'
+                    UNION ALL 
+                    SELECT away_id,
+                        IF(home_score < away_score, 1, 0),
+                        IF(home_score = away_score, 1,0),
+                        IF(home_score > away_score, 1,0),
+                        away_score,
+                        home_score,
+                        away_score - home_score goal_difference,
+                        1 games_played,
+                        CASE 
+                            WHEN home_score < away_score THEN '" . $win_value . "' 
+                            WHEN home_score = away_score THEN '" . $draw_value . "' 
+                            ELSE '" . $loss_value . "' 
+                        END
+                    FROM matches
+                    WHERE played = 1 AND season_id = '" . $season_id . "' AND division_id = '" . $division_id . "'
+                    ) AS total ON total.team_name=t.id WHERE dst.season_id = '" . $season_id . "' AND dst.division_id = '" . $division_id . "'
                     GROUP BY t.id
                     ORDER BY points DESC, goal_difference DESC"
-            ));
+                ));
         } else {
             $teams = DB::select(DB::raw(
                 "SELECT 
-                    t.name AS team_name,
-                    t.id as team_id,
-                    SUM(win) AS win,
-                    SUM(draw) AS draw,
-                    SUM(loss) AS loss,
-                    SUM(goals_for) AS goals_for,
-                    SUM(goals_against) AS goals_against,
-
-                    SUM(goal_difference) as goal_difference,
-                    SUM(games_played) AS games_played,
-                    SUM(points) + IFNULL(tpa.point_adjustment, 0) as points
-                    FROM teams t 
-                    LEFT JOIN team_point_adjustments tpa
-                        ON t.id = tpa.team_id
-                        AND (tpa.season_id = '" . $season_id . "' OR tpa.season_id IS NULL)
-                    INNER JOIN
-                        division_season_team dst
-                        ON t.id = dst.team_id
-                    LEFT JOIN (
-                        SELECT home_id
-                            team_name,
-                            IF(home_SCORE > away_score, 1,0) win,
-                            IF(home_score = away_score, 1,0) draw,
-                            IF(home_score < away_score, 1,0) loss,
-                            home_score goals_for,
-                            away_score goals_against,
-                            home_score - away_score goal_difference,
-                            1 games_played,
-                            CASE 
-                                WHEN home_score > away_score THEN '" . $win_value . "' 
-                                WHEN home_score = away_score THEN '" . $draw_value . "' 
-                                ELSE '" . $loss_value . "' END points
-                        FROM matches mat WHERE played = 1 AND season_id = '" . $season_id . "'
-                        
-                        UNION ALL 
-                        SELECT away_id,
-                            
-                            IF(home_score < away_score, 1, 0),
-                            IF(home_score = away_score, 1,0),
-                            IF(home_score > away_score, 1,0),
-                            away_score,
-                            home_score,
-                            away_score - home_score goal_difference,
-                            1 games_played,
-                            CASE 
-                                WHEN home_score < away_score THEN '" . $win_value . "' 
-                                WHEN home_score = away_score THEN '" . $draw_value . "' 
-                                ELSE '" . $loss_value . "' END
-                        FROM matches
-                        WHERE played = 1 AND season_id = '" . $season_id . "'
-                        
-                        ) AS total ON total.team_name=t.id WHERE dst.season_id = '" . $season_id . "'
-                    
+                t.name AS team_name,
+                t.id as team_id,
+                SUM(win) AS win,
+                SUM(draw) AS draw,
+                SUM(loss) AS loss,
+                SUM(goals_for) AS goals_for,
+                SUM(goals_against) AS goals_against,
+                SUM(goal_difference) as goal_difference,
+                SUM(games_played) AS games_played,
+                SUM(points) + IFNULL(tpa.point_adjustment, 0) as points,
+                dst.division_id as division_id
+                FROM teams t 
+                LEFT JOIN (
+                  SELECT team_id, season_id, SUM(point_adjustment) AS point_adjustment
+                  FROM team_point_adjustments
+                  GROUP BY team_id, season_id
+                ) tpa ON t.id = tpa.team_id AND (tpa.season_id = '" . $season_id . "' OR tpa.season_id IS NULL)
+                LEFT JOIN division_season_team dst ON t.id = dst.team_id
+                LEFT JOIN (
+                    SELECT home_id
+                        team_name,
+                        IF(home_SCORE > away_score, 1,0) win,
+                        IF(home_score = away_score, 1,0) draw,
+                        IF(home_score < away_score, 1,0) loss,
+                        home_score goals_for,
+                        away_score goals_against,
+                        home_score - away_score goal_difference,
+                        1 games_played,
+                        CASE 
+                            WHEN home_score > away_score THEN '" . $win_value . "' 
+                            WHEN home_score = away_score THEN '" . $draw_value . "' 
+                            ELSE '" . $loss_value . "' 
+                        END points
+                    FROM matches mat WHERE played = 1 AND season_id = '" . $season_id . "'
+                    UNION ALL 
+                    SELECT away_id,
+                        IF(home_score < away_score, 1, 0),
+                        IF(home_score = away_score, 1,0),
+                        IF(home_score > away_score, 1,0),
+                        away_score,
+                        home_score,
+                        away_score - home_score goal_difference,
+                        1 games_played,
+                        CASE 
+                            WHEN home_score < away_score THEN '" . $win_value . "' 
+                            WHEN home_score = away_score THEN '" . $draw_value . "' 
+                            ELSE '" . $loss_value . "' 
+                        END
+                    FROM matches
+                    WHERE played = 1 AND season_id = '" . $season_id . "'
+                    ) AS total ON total.team_name=t.id WHERE dst.season_id = '" . $season_id . "'
                     GROUP BY t.id
-                    ORDER BY dst.division_id, points DESC, goal_difference DESC"
+                    ORDER BY dst.division_id ASC, points DESC, goal_difference DESC"
             ));
         }
-        return $teams;
+        return $this->respond($teams);
 
-        // todo - get points adjust into groups and sum correctly when more than one
         // todo - calc half score / within 2 bonus point scores
+        // todo - definite sql injection issue with divison id etc
+        // todo - return as collection
 
 
     }
