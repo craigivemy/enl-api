@@ -82,13 +82,13 @@ class DivisionTablesController extends ApiController
                     GROUP BY dst.division_id, t.id
                     ORDER BY dst.division_id ASC, points DESC, goal_difference DESC"
             ));
-            
+
         return $this->respond([
             'data' => $teams
         ]);
 
         }
-
+        // todo - store all, filter by division id ngrx and order will be correct already?
         // todo - definite sql injection issue with division id etc
 
 
