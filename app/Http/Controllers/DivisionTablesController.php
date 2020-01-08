@@ -82,18 +82,7 @@ class DivisionTablesController extends ApiController
                     GROUP BY dst.division_id, t.id
                     ORDER BY dst.division_id ASC, points DESC, goal_difference DESC"
             ));
-
-            // todo - group by division_id
-    $start = $teams[0]->division_id;
-    $test = [];
-      foreach ($teams as $team) {
-          if ($team->division_id != $start) {
-              $start = $team->division_id;
-          } else {
-            $test[$start][] = $team;
-          }
-      }
-return $test;
+            
         return $this->respond([
             'data' => $teams
         ]);
