@@ -19,8 +19,8 @@ class DivisionTablesController extends ApiController
         $win_value = $settings->get('win_value')->setting_value;
         $loss_value = $settings->get('loss_value')->setting_value;
         $draw_value = $settings->get('draw_value')->setting_value;
-        $bonus_value = $settings->get('bonus_point_within_5_value')->setting_value;
-        $lower_bonus_value = $settings->get('bonus_point_over_50_percent_value')->setting_value;
+        $within5PointsBonusValue = $settings->get('bonus_point_within_5_value')->setting_value;
+        $overHalfPointsBonusValue = $settings->get('bonus_point_over_50_percent_value')->setting_value;
 
             $teams = DB::select(DB::raw(
                 "SELECT 
@@ -40,7 +40,7 @@ class DivisionTablesController extends ApiController
                   SELECT team_id, season_id, SUM(point_adjustment) AS point_adjustment
                   FROM team_point_adjustments
                   GROUP BY team_id, season_id
-                ) tpa ON t.id = tpa.team_id AND (tpa.season_id = '" . $season_id . "' OR tpa.season_id IS NULL)
+                ) tpa ON t.id = tpa.team_id AND (tpa.season_id = ? OR tpa.season_id IS NULL)
                 LEFT JOIN division_season_team dst ON t.id = dst.team_id
                 LEFT JOIN (
                     SELECT home_id
@@ -53,13 +53,13 @@ class DivisionTablesController extends ApiController
                         home_score - away_score goal_difference,
                         1 games_played,
                         CASE 
-                            WHEN home_score > away_score THEN '" . $win_value . "' 
-                            WHEN home_score = away_score THEN '" . $draw_value . "'
-                            WHEN home_score + 5 >= away_score THEN '" . $bonus_value . "'
-                            WHEN away_score / 2 < home_score THEN '" . $lower_bonus_value .  "'
-                            ELSE '" . $loss_value . "'
+                            WHEN home_score > away_score THEN ? 
+                            WHEN home_score = away_score THEN ?
+                            WHEN home_score + 5 >= away_score THEN ?
+                            WHEN away_score / 2 < home_score THEN ?
+                            ELSE ?
                         END points
-                    FROM matches mat WHERE played = 1 AND season_id = '" . $season_id . "'
+                    FROM matches mat WHERE played = 1 AND season_id = ?
                     UNION ALL 
                     SELECT away_id,
                         IF(home_score < away_score, 1, 0),
@@ -70,18 +70,33 @@ class DivisionTablesController extends ApiController
                         away_score - home_score goal_difference,
                         1 games_played,
                         CASE 
-                            WHEN home_score < away_score THEN '" . $win_value . "' 
-                            WHEN home_score = away_score THEN '" . $draw_value . "' 
-                            WHEN away_score + 5 >= home_score THEN '" . $bonus_value . "'
-                            WHEN home_score / 2 < away_score THEN '" . $lower_bonus_value .  "'
-                            ELSE '" . $loss_value . "' 
+                            WHEN home_score < away_score THEN ?
+                            WHEN home_score = away_score THEN ? 
+                            WHEN away_score + 5 >= home_score THEN ?
+                            WHEN home_score / 2 < away_score THEN ?
+                            ELSE ? 
                         END
                     FROM matches
-                    WHERE played = 1 AND season_id = '" . $season_id . "'
-                    ) AS total ON total.team_name=t.id WHERE dst.season_id = '" . $season_id . "'
+                    WHERE played = 1 AND season_id = ?
+                    ) AS total ON total.team_name=t.id WHERE dst.season_id = ?
                     GROUP BY dst.division_id, t.id
                     ORDER BY dst.division_id ASC, points DESC, goal_difference DESC"
-            ));
+            ), [
+                $season_id,
+                $win_value,
+                $draw_value,
+                $within5PointsBonusValue,
+                $overHalfPointsBonusValue,
+                $loss_value,
+                $season_id,
+                $win_value,
+                $draw_value,
+                $within5PointsBonusValue,
+                $overHalfPointsBonusValue,
+                $loss_value,
+                $season_id,
+                $season_id
+            ]);
 
         return $this->respond([
             'data' => $teams
@@ -89,29 +104,6 @@ class DivisionTablesController extends ApiController
 
         }
         // todo - store all, filter by division id ngrx and order will be correct already?
-        // todo - definite sql injection issue with division id etc
-
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
@@ -128,8 +120,8 @@ class DivisionTablesController extends ApiController
         $win_value = $settings->get('win_value')->setting_value;
         $loss_value = $settings->get('loss_value')->setting_value;
         $draw_value = $settings->get('draw_value')->setting_value;
-        $bonus_value = $settings->get('bonus_point_within_5_value')->setting_value;
-        $lower_bonus_value = $settings->get('bonus_point_over_50_percent_value')->setting_value;
+        $within5PointsBonusValue = $settings->get('bonus_point_within_5_value')->setting_value;
+        $overHalfPointsBonusValue = $settings->get('bonus_point_over_50_percent_value')->setting_value;
 
         $teams = DB::select(DB::raw(
             "SELECT 
@@ -148,7 +140,7 @@ class DivisionTablesController extends ApiController
                   SELECT team_id, season_id, SUM(point_adjustment) AS point_adjustment
                   FROM team_point_adjustments
                   GROUP BY team_id, season_id
-                ) tpa ON t.id = tpa.team_id AND (tpa.season_id = '" . $season_id . "' OR tpa.season_id IS NULL)
+                ) tpa ON t.id = tpa.team_id AND (tpa.season_id = ? OR tpa.season_id IS NULL)
                 LEFT JOIN division_season_team dst ON t.id = dst.team_id
                 LEFT JOIN (
                     SELECT home_id
@@ -161,13 +153,13 @@ class DivisionTablesController extends ApiController
                         home_score - away_score goal_difference,
                         1 games_played,
                         CASE 
-                            WHEN home_score > away_score THEN '" . $win_value . "' 
-                            WHEN home_score = away_score THEN '" . $draw_value . "'
-                            WHEN home_score + 5 >= away_score THEN '" . $bonus_value . "'
-                            WHEN away_score / 2 < home_score THEN '" . $lower_bonus_value .  "'
-                            ELSE '" . $loss_value . "' 
+                            WHEN home_score > away_score THEN ? 
+                            WHEN home_score = away_score THEN ?
+                            WHEN home_score + 5 >= away_score THEN ?
+                            WHEN away_score / 2 < home_score THEN ?
+                            ELSE ?
                         END points
-                    FROM matches mat WHERE played = 1 AND season_id = '" . $season_id . "' AND division_id = '" . $division_id . "'
+                    FROM matches mat WHERE played = 1 AND season_id = ? AND division_id = ?
                     UNION ALL 
                     SELECT away_id,
                         IF(home_score < away_score, 1, 0),
@@ -178,55 +170,39 @@ class DivisionTablesController extends ApiController
                         away_score - home_score goal_difference,
                         1 games_played,
                         CASE 
-                            WHEN home_score < away_score THEN '" . $win_value . "' 
-                            WHEN home_score = away_score THEN '" . $draw_value . "' 
-                            WHEN away_score + 5 >= home_score THEN '" . $bonus_value . "'
-                            WHEN home_score / 2 < away_score THEN '" . $lower_bonus_value .  "'
-                            ELSE '" . $loss_value . "' 
+                            WHEN home_score < away_score THEN ?
+                            WHEN home_score = away_score THEN ? 
+                            WHEN away_score + 5 >= home_score THEN ?
+                            WHEN home_score / 2 < away_score THEN ?
+                            ELSE ? 
                         END
                     FROM matches
-                    WHERE played = 1 AND season_id = '" . $season_id . "' AND division_id = '" . $division_id . "'
-                    ) AS total ON total.team_name=t.id WHERE dst.season_id = '" . $season_id . "' AND dst.division_id = '" . $division_id . "'
+                    WHERE played = 1 AND season_id = ? AND division_id = ?
+                    ) AS total ON total.team_name=t.id WHERE dst.season_id = ? AND dst.division_id = ?
                     GROUP BY t.id
                     ORDER BY points DESC, goal_difference DESC"
-        ));
+        ), [
+            $season_id,
+            $win_value,
+            $draw_value,
+            $within5PointsBonusValue,
+            $overHalfPointsBonusValue,
+            $loss_value,
+            $season_id,
+            $division_id,
+            $win_value,
+            $draw_value,
+            $within5PointsBonusValue,
+            $overHalfPointsBonusValue,
+            $loss_value,
+            $season_id,
+            $division_id,
+            $season_id,
+            $division_id
+        ]);
         return $this->respond([
             'data' => $teams
         ]);
 
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }
