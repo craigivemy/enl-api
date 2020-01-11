@@ -23,7 +23,8 @@ class DivisionTablesController extends ApiController
         $overHalfPointsBonusValue = $settings->get('bonus_point_over_50_percent_value')->setting_value;
 
             $teams = DB::select(DB::raw(
-                "SELECT 
+                "SELECT
+                t.id as id, 
                 t.name AS team_name,
                 t.id as team_id,
                 SUM(win) AS win,
@@ -103,7 +104,6 @@ class DivisionTablesController extends ApiController
         ]);
 
         }
-        // todo - store all, filter by division id ngrx and order will be correct already?
 
     /**
      * Display the specified resource.
