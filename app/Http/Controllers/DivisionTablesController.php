@@ -99,10 +99,9 @@ class DivisionTablesController extends ApiController
                 $season_id
             ]);
 
-        return $this->respond([
-            'data' => $teams
-        ]);
-
+            return $this->respond([
+                'data' => $teams
+            ]);
         }
 
     /**
