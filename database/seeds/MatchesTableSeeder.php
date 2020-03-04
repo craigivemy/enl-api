@@ -16,7 +16,7 @@ class MatchesTableSeeder extends Seeder
         $range = range(5, 50);
         $rounds = [1,2];
         $season_id = 1;
-        $true_or_false = [true, false];
+        $true_or_false = [true, false, false, false, false, false];
 
         $season_1_division_1_teams = DB::table('division_season_team')->select(['team_id'])->where('division_id', '=', 1)
             ->where('season_id', '=', 1)->pluck('team_id')->toArray();
@@ -33,6 +33,21 @@ class MatchesTableSeeder extends Seeder
         foreach ($season_1_division_1_teams as $team) {
             foreach ($season_1_division_1_teams as $opposition) {
                 if ($team != $opposition) {
+                    $walkoverHome = $true_or_false[array_rand($true_or_false)];
+                    $walkoverAway = $true_or_false[array_rand($true_or_false)];
+
+                    $home_or_away = [1,2];
+
+                    if ($walkoverAway && $walkoverHome) {
+                        if ($home_or_away[array_rand($home_or_away)] === 1) {
+                            $walkoverHome = true;
+                            $walkoverAway = false;
+                        } else {
+                            $walkoverHome = false;
+                            $walkoverAway = true;
+                        }
+                    }
+
                     DB::table('matches')->insert([
                        [
                            'home_score'    => $range[array_rand($range)],
@@ -45,7 +60,8 @@ class MatchesTableSeeder extends Seeder
                            'court'         => $faker->numberBetween(1, 4),
                            'round'         => $rounds[array_rand($rounds)],
                            'played'        => 1,
-                           'walkover'      => $true_or_false[array_rand($true_or_false)],
+                           'walkover_home'  => $walkoverHome,
+                           'walkover_away'  => $walkoverAway,
                            'home_adjust'   => 0,
                            'away_adjust'   => 0
                        ]
@@ -57,6 +73,23 @@ class MatchesTableSeeder extends Seeder
         foreach ($season_1_division_2_teams as $team) {
             foreach ($season_1_division_2_teams as $opposition) {
                 if ($team != $opposition) {
+
+                    $walkoverHome = $true_or_false[array_rand($true_or_false)];
+                    $walkoverAway = $true_or_false[array_rand($true_or_false)];
+
+                    $home_or_away = [1,2];
+
+                    if ($walkoverAway && $walkoverHome) {
+                        if ($home_or_away[array_rand($home_or_away)] === 1) {
+                            $walkoverHome = true;
+                            $walkoverAway = false;
+                        } else {
+                            $walkoverHome = false;
+                            $walkoverAway = true;
+                        }
+                    }
+
+
                     DB::table('matches')->insert([
                         [
                             'home_score'    => $range[array_rand($range)],
@@ -69,7 +102,8 @@ class MatchesTableSeeder extends Seeder
                             'court'         => $faker->numberBetween(1, 4),
                             'round'         => $rounds[array_rand($rounds)],
                             'played'        => 1,
-                            'walkover'      => $true_or_false[array_rand($true_or_false)],
+                            'walkover_home'  => $walkoverHome,
+                            'walkover_away'  => $walkoverAway,
                             'home_adjust'   => 0,
                             'away_adjust'   => 0
                         ]
@@ -81,6 +115,22 @@ class MatchesTableSeeder extends Seeder
         foreach ($season_1_division_3_teams as $team) {
             foreach ($season_1_division_3_teams as $opposition) {
                 if ($team != $opposition) {
+
+                    $walkoverHome = $true_or_false[array_rand($true_or_false)];
+                    $walkoverAway = $true_or_false[array_rand($true_or_false)];
+
+                    $home_or_away = [1,2];
+
+                    if ($walkoverAway && $walkoverHome) {
+                        if ($home_or_away[array_rand($home_or_away)] === 1) {
+                            $walkoverHome = true;
+                            $walkoverAway = false;
+                        } else {
+                            $walkoverHome = false;
+                            $walkoverAway = true;
+                        }
+                    }
+
                     DB::table('matches')->insert([
                         [
                             'home_score'    => $range[array_rand($range)],
@@ -93,7 +143,8 @@ class MatchesTableSeeder extends Seeder
                             'court'         => $faker->numberBetween(1, 4),
                             'round'         => $rounds[array_rand($rounds)],
                             'played'        => 1,
-                            'walkover'      => $true_or_false[array_rand($true_or_false)],
+                            'walkover_home'  => $walkoverHome,
+                            'walkover_away'  => $walkoverAway,
                             'home_adjust'   => 0,
                             'away_adjust'   => 0
                         ]
@@ -105,6 +156,22 @@ class MatchesTableSeeder extends Seeder
         foreach ($season_1_division_4_teams as $team) {
             foreach ($season_1_division_4_teams as $opposition) {
                 if ($team != $opposition) {
+
+                    $walkoverHome = $true_or_false[array_rand($true_or_false)];
+                    $walkoverAway = $true_or_false[array_rand($true_or_false)];
+
+                    $home_or_away = [1,2];
+
+                    if ($walkoverAway && $walkoverHome) {
+                        if ($home_or_away[array_rand($home_or_away)] === 1) {
+                            $walkoverHome = true;
+                            $walkoverAway = false;
+                        } else {
+                            $walkoverHome = false;
+                            $walkoverAway = true;
+                        }
+                    }
+
                     DB::table('matches')->insert([
                         [
                             'home_score'    => $range[array_rand($range)],
@@ -117,7 +184,8 @@ class MatchesTableSeeder extends Seeder
                             'court'         => $faker->numberBetween(1, 4),
                             'round'         => $rounds[array_rand($rounds)],
                             'played'        => 1,
-                            'walkover'      => $true_or_false[array_rand($true_or_false)],
+                            'walkover_home'  => $walkoverHome,
+                            'walkover_away'  => $walkoverAway,
                             'home_adjust'   => 0,
                             'away_adjust'   => 0
                         ]
@@ -129,6 +197,22 @@ class MatchesTableSeeder extends Seeder
         foreach ($season_1_division_5_teams as $team) {
             foreach ($season_1_division_5_teams as $opposition) {
                 if ($team != $opposition) {
+
+                    $walkoverHome = $true_or_false[array_rand($true_or_false)];
+                    $walkoverAway = $true_or_false[array_rand($true_or_false)];
+
+                    $home_or_away = [1,2];
+
+                    if ($walkoverAway && $walkoverHome) {
+                        if ($home_or_away[array_rand($home_or_away)] === 1) {
+                            $walkoverHome = true;
+                            $walkoverAway = false;
+                        } else {
+                            $walkoverHome = false;
+                            $walkoverAway = true;
+                        }
+                    }
+
                     DB::table('matches')->insert([
                         [
                             'home_score'    => $range[array_rand($range)],
@@ -141,7 +225,8 @@ class MatchesTableSeeder extends Seeder
                             'court'         => $faker->numberBetween(1, 4),
                             'round'         => $rounds[array_rand($rounds)],
                             'played'        => 1,
-                            'walkover'      => $true_or_false[array_rand($true_or_false)],
+                            'walkover_home'  => $walkoverHome,
+                            'walkover_away'  => $walkoverAway,
                             'home_adjust'   => 0,
                             'away_adjust'   => 0
                         ]
@@ -167,6 +252,22 @@ class MatchesTableSeeder extends Seeder
         foreach ($season_2_division_1_teams as $team) {
             foreach ($season_2_division_1_teams as $opposition) {
                 if ($team != $opposition) {
+
+                    $walkoverHome = $true_or_false[array_rand($true_or_false)];
+                    $walkoverAway = $true_or_false[array_rand($true_or_false)];
+
+                    $home_or_away = [1,2];
+
+                    if ($walkoverAway && $walkoverHome) {
+                        if ($home_or_away[array_rand($home_or_away)] === 1) {
+                            $walkoverHome = true;
+                            $walkoverAway = false;
+                        } else {
+                            $walkoverHome = false;
+                            $walkoverAway = true;
+                        }
+                    }
+
                     DB::table('matches')->insert([
                         [
                             'home_score'    => $range[array_rand($range)],
@@ -179,7 +280,8 @@ class MatchesTableSeeder extends Seeder
                             'court'         => $faker->numberBetween(1, 4),
                             'round'         => $rounds[array_rand($rounds)],
                             'played'        => 1,
-                            'walkover'      => $true_or_false[array_rand($true_or_false)],
+                            'walkover_home'  => $walkoverHome,
+                            'walkover_away'  => $walkoverAway,
                             'home_adjust'   => 0,
                             'away_adjust'   => 0
                         ]
@@ -191,6 +293,22 @@ class MatchesTableSeeder extends Seeder
         foreach ($season_2_division_2_teams as $team) {
             foreach ($season_2_division_2_teams as $opposition) {
                 if ($team != $opposition) {
+
+                    $walkoverHome = $true_or_false[array_rand($true_or_false)];
+                    $walkoverAway = $true_or_false[array_rand($true_or_false)];
+
+                    $home_or_away = [1,2];
+
+                    if ($walkoverAway && $walkoverHome) {
+                        if ($home_or_away[array_rand($home_or_away)] === 1) {
+                            $walkoverHome = true;
+                            $walkoverAway = false;
+                        } else {
+                            $walkoverHome = false;
+                            $walkoverAway = true;
+                        }
+                    }
+
                     DB::table('matches')->insert([
                         [
                             'home_score'    => $range[array_rand($range)],
@@ -203,7 +321,8 @@ class MatchesTableSeeder extends Seeder
                             'court'         => $faker->numberBetween(1, 4),
                             'round'         => $rounds[array_rand($rounds)],
                             'played'        => 1,
-                            'walkover'      => $true_or_false[array_rand($true_or_false)],
+                            'walkover_home'  => $walkoverHome,
+                            'walkover_away'  => $walkoverAway,
                             'home_adjust'   => 0,
                             'away_adjust'   => 0
                         ]
@@ -215,6 +334,22 @@ class MatchesTableSeeder extends Seeder
         foreach ($season_2_division_3_teams as $team) {
             foreach ($season_2_division_3_teams as $opposition) {
                 if ($team != $opposition) {
+
+                    $walkoverHome = $true_or_false[array_rand($true_or_false)];
+                    $walkoverAway = $true_or_false[array_rand($true_or_false)];
+
+                    $home_or_away = [1,2];
+
+                    if ($walkoverAway && $walkoverHome) {
+                        if ($home_or_away[array_rand($home_or_away)] === 1) {
+                            $walkoverHome = true;
+                            $walkoverAway = false;
+                        } else {
+                            $walkoverHome = false;
+                            $walkoverAway = true;
+                        }
+                    }
+
                     DB::table('matches')->insert([
                         [
                             'home_score'    => $range[array_rand($range)],
@@ -227,7 +362,8 @@ class MatchesTableSeeder extends Seeder
                             'court'         => $faker->numberBetween(1, 4),
                             'round'         => $rounds[array_rand($rounds)],
                             'played'        => 1,
-                            'walkover'      => $true_or_false[array_rand($true_or_false)],
+                            'walkover_home'  => $walkoverHome,
+                            'walkover_away'  => $walkoverAway,
                             'home_adjust'   => 0,
                             'away_adjust'   => 0
                         ]
@@ -239,6 +375,22 @@ class MatchesTableSeeder extends Seeder
         foreach ($season_2_division_4_teams as $team) {
             foreach ($season_2_division_4_teams as $opposition) {
                 if ($team != $opposition) {
+
+                    $walkoverHome = $true_or_false[array_rand($true_or_false)];
+                    $walkoverAway = $true_or_false[array_rand($true_or_false)];
+
+                    $home_or_away = [1,2];
+
+                    if ($walkoverAway && $walkoverHome) {
+                        if ($home_or_away[array_rand($home_or_away)] === 1) {
+                            $walkoverHome = true;
+                            $walkoverAway = false;
+                        } else {
+                            $walkoverHome = false;
+                            $walkoverAway = true;
+                        }
+                    }
+
                     DB::table('matches')->insert([
                         [
                             'home_score'    => $range[array_rand($range)],
@@ -251,7 +403,8 @@ class MatchesTableSeeder extends Seeder
                             'court'         => $faker->numberBetween(1, 4),
                             'round'         => $rounds[array_rand($rounds)],
                             'played'        => 1,
-                            'walkover'      => $true_or_false[array_rand($true_or_false)],
+                            'walkover_home'  => $walkoverHome,
+                            'walkover_away'  => $walkoverAway,
                             'home_adjust'   => 0,
                             'away_adjust'   => 0
                         ]
@@ -263,6 +416,22 @@ class MatchesTableSeeder extends Seeder
         foreach ($season_2_division_5_teams as $team) {
             foreach ($season_2_division_5_teams as $opposition) {
                 if ($team != $opposition) {
+
+                    $walkoverHome = $true_or_false[array_rand($true_or_false)];
+                    $walkoverAway = $true_or_false[array_rand($true_or_false)];
+
+                    $home_or_away = [1,2];
+
+                    if ($walkoverAway && $walkoverHome) {
+                        if ($home_or_away[array_rand($home_or_away)] === 1) {
+                            $walkoverHome = true;
+                            $walkoverAway = false;
+                        } else {
+                            $walkoverHome = false;
+                            $walkoverAway = true;
+                        }
+                    }
+
                     DB::table('matches')->insert([
                         [
                             'home_score'    => $range[array_rand($range)],
@@ -275,7 +444,8 @@ class MatchesTableSeeder extends Seeder
                             'court'         => $faker->numberBetween(1, 4),
                             'round'         => $rounds[array_rand($rounds)],
                             'played'        => 1,
-                            'walkover'      => $true_or_false[array_rand($true_or_false)],
+                            'walkover_home'  => $walkoverHome,
+                            'walkover_away'  => $walkoverAway,
                             'home_adjust'   => 0,
                             'away_adjust'   => 0
                         ]
@@ -287,6 +457,22 @@ class MatchesTableSeeder extends Seeder
         foreach ($season_2_division_6_teams as $team) {
             foreach ($season_2_division_6_teams as $opposition) {
                 if ($team != $opposition) {
+
+                    $walkoverHome = $true_or_false[array_rand($true_or_false)];
+                    $walkoverAway = $true_or_false[array_rand($true_or_false)];
+
+                    $home_or_away = [1,2];
+
+                    if ($walkoverAway && $walkoverHome) {
+                        if ($home_or_away[array_rand($home_or_away)] === 1) {
+                            $walkoverHome = true;
+                            $walkoverAway = false;
+                        } else {
+                            $walkoverHome = false;
+                            $walkoverAway = true;
+                        }
+                    }
+
                     DB::table('matches')->insert([
                         [
                             'home_score'    => $range[array_rand($range)],
@@ -299,7 +485,8 @@ class MatchesTableSeeder extends Seeder
                             'court'         => $faker->numberBetween(1, 4),
                             'round'         => $rounds[array_rand($rounds)],
                             'played'        => 1,
-                            'walkover'      => $true_or_false[array_rand($true_or_false)],
+                            'walkover_home'  => $walkoverHome,
+                            'walkover_away'  => $walkoverAway,
                             'home_adjust'   => 0,
                             'away_adjust'   => 0
                         ]

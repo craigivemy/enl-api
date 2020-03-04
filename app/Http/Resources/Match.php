@@ -28,7 +28,8 @@ class Match extends JsonResource
             'court'        => $this->court,
             'round'         => $this->round,
             'played'        => (bool) $this->played,
-            'walkover'      => (bool) $this->walkover,
+            'walkoverHome'  => (bool) $this->walkover_home,
+            'walkoverAway'  => (bool) $this->walkover_away,
             'homeAdjust'   => $this->home_adjust,
             'awayAdjust'   => $this->away_adjust
         ];

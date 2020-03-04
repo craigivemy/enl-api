@@ -21,7 +21,12 @@ class DivisionTablesController extends ApiController
         $draw_value = $settings->get('draw_value')->setting_value;
         $within5PointsBonusValue = $settings->get('bonus_point_within_5_value')->setting_value;
         $overHalfPointsBonusValue = $settings->get('bonus_point_over_50_percent_value')->setting_value;
+        $walkoverAwardedPoints = $settings->get('walkover_awarded_points')->setting_value;
+        $walkoverdeductedPoints = $settings->get('walkover_deducted_points')->setting_value;
+        $walkoverAwarededGoals = $settings->get('walkover_awarded_goals')->setting_value;
 
+// todo - add walkoverHome and away and calc - also add score and point implications to settings table
+        // todo - need to make sure goals / points etc dont get counted twice if socres are in ther eplus walkkover
             $teams = DB::select(DB::raw(
                 "SELECT
                 t.id as id, 

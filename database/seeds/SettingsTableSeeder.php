@@ -42,7 +42,31 @@ class SettingsTableSeeder extends Seeder
                 'description' => 'Value of a bonus point',
                 'setting_value' => 1,
                 'season_id' => 1
-            ]
+            ],
+            [
+                'name' => 'walkover_awarded_points',
+                'description' => 'Points awarded to non-guilty team in case of a walkover',
+                'setting_value' => 5,
+                'season_id' => 1
+            ],
+            [
+                'name' => 'walkover_deducted_points',
+                'description' => 'Points deducted to guilty team in case of a walkover',
+                'setting_value' => 5,
+                'season_id' => 1
+            ],
+            [
+                'name' => 'walkover_awarded_goals',
+                'description' => 'Goals awarded to non-guilty team in case of a walkover',
+                'setting_value' => 15,
+                'season_id' => 1
+            ],
+//            [
+//                'name' => 'walkover_deducted_goals',
+//                'description' => 'Goals deducted to guilty team in case of a walkover',
+//                'setting_value' => 0,
+//                'season_id' => 1
+//            ],
         ]);
     }
 }

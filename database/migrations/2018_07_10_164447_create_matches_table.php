@@ -32,7 +32,8 @@ class CreateMatchesTable extends Migration
             $table->unsignedInteger('round');
 
             $table->boolean('played')->default(false);
-            $table->boolean('walkover')->default(false);
+            $table->boolean('walkover_home')->default(false);
+            $table->boolean('walkover_away')->default(false);
 
             $table->integer('home_adjust')->default(0);
             $table->integer('away_adjust')->default(0);
