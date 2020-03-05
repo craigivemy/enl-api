@@ -84,10 +84,20 @@ class MatchController extends ApiController
     {
         try {
             $match = Match::findOrFail($id);
-            $match->home_score = $request->input('homeScore');
-            $match->away_score = $request->input('awayScore');
-            $match->walkover_home = $request->input('walkoverHome');
-            $match->walkover_away = $request->input('walkoverAway');
+            if ($request->input('homeScore')) {
+                $match->home_score = $request->input('homeScore');
+            }
+            if ($request->input('awayScore')) {
+                $match->away_score = $request->input('awayScore');
+            }
+            $is_home_walkover = $request->input('walkoverHome');
+            if (isset($is_home_walkover)) {
+                $match->walkover_home = $request->input('walkoverHome');
+            }
+            $is_away_walkover = $request->input('walkoverHome');
+            if (isset($is_away_walkover)) {
+                $match->walkover_away = $request->input('walkoverAway');
+            }
             $match->save();
             return $this->respondUpdated($match);
         } catch (ModelNotFoundException $e) {
