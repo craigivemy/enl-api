@@ -52,7 +52,7 @@ class DivisionTablesController extends ApiController
                 LEFT JOIN division_season_team dst ON t.id = dst.team_id
                 LEFT JOIN (
                     SELECT home_id
-                        team_name, /* todo need to add to IF or add as whens to ensure win isn't counted when there is a walkover, same with points  */
+                        team_name, /* todo - maths for decuting walkover points  */
                         CASE
                             WHEN walkover_home THEN 0
                             WHEN walkover_away THEN 0
