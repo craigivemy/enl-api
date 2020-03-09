@@ -22,10 +22,10 @@ class DivisionTablesController extends ApiController
         $within5PointsBonusValue = $settings->get('bonus_point_within_5_value')->setting_value;
         $overHalfPointsBonusValue = $settings->get('bonus_point_over_50_percent_value')->setting_value;
         $walkoverAwardedPoints = $settings->get('walkover_awarded_points')->setting_value;
-        $walkoverdeductedPoints = $settings->get('walkover_deducted_points')->setting_value;
+        $walkoverDeductedPoints = $settings->get('walkover_deducted_points')->setting_value;
         $walkoverAwarededGoals = $settings->get('walkover_awarded_goals')->setting_value;
 
-// todo - add walkoverHome and away and calc - also add score and point implications to settings table
+// todo - add walkoverHome and away and calc
         // todo - need to make sure goals / points etc dont get counted twice if socres are in ther eplus walkkover
             $teams = DB::select(DB::raw(
                 "SELECT
@@ -35,6 +35,8 @@ class DivisionTablesController extends ApiController
                 SUM(win) AS win,
                 SUM(draw) AS draw,
                 SUM(loss) AS loss,
+                SUM(walkovers_for) As walkovers_for,
+                SUM(walkovers_against) As walkovers_against,
                 SUM(goals_for) AS goals_for,
                 SUM(goals_against) AS goals_against,
                 SUM(goal_difference) as goal_difference,
@@ -50,15 +52,42 @@ class DivisionTablesController extends ApiController
                 LEFT JOIN division_season_team dst ON t.id = dst.team_id
                 LEFT JOIN (
                     SELECT home_id
-                        team_name,
-                        IF(home_SCORE > away_score, 1,0) win,
-                        IF(home_score = away_score, 1,0) draw,
-                        IF(home_score < away_score, 1,0) loss,
+                        team_name, /* todo need to add to IF or add as whens to ensure win isn't counted when there is a walkover, same with points  */
+                        CASE
+                            WHEN walkover_home THEN 0
+                            WHEN walkover_away THEN 0
+                            WHEN home_score > away_score THEN 1
+                            ELSE 0
+                        END win,
+                        /*IF(home_score > away_score, 1,0) win,*/
+                        CASE
+                            WHEN walkover_home THEN 0
+                            WHEN walkover_away THEN 0
+                            WHEN home_score = away_score THEN 1
+                            ELSE 0
+                        END draw,
+                        /* IF(home_score = away_score, 1,0) draw,*/
+                        CASE
+                            WHEN walkover_home THEN 0
+                            WHEN walkover_away THEN 0
+                            WHEN home_score < away_score THEN 1
+                            ELSE 0
+                        END loss,
+                        CASE 
+                            WHEN walkover_home = 1 THEN 1
+                            ELSE 0
+                        END walkovers_for,
+                        CASE 
+                            WHEN walkover_away = 1 THEN 1
+                            ELSE 0
+                        END walkovers_against,
                         home_score goals_for,
                         away_score goals_against,
                         home_score - away_score goal_difference,
                         1 games_played,
                         CASE 
+                            WHEN walkover_home = 1 THEN ?
+                            WHEN walkover_away = 1 THEN ?
                             WHEN home_score > away_score THEN ? 
                             WHEN home_score = away_score THEN ?
                             WHEN home_score + 5 >= away_score THEN ?
@@ -68,14 +97,39 @@ class DivisionTablesController extends ApiController
                     FROM matches mat WHERE played = 1 AND season_id = ?
                     UNION ALL 
                     SELECT away_id,
-                        IF(home_score < away_score, 1, 0),
-                        IF(home_score = away_score, 1,0),
-                        IF(home_score > away_score, 1,0),
+                        CASE
+                            WHEN walkover_home THEN 0
+                            WHEN walkover_away THEN 0
+                            WHEN home_score < away_score THEN 1
+                            ELSE 0
+                        END,
+                        CASE
+                            WHEN walkover_home THEN 0
+                            WHEN walkover_away THEN 0
+                            WHEN home_score = away_score THEN 1
+                            ELSE 0
+                        END,
+                        CASE
+                            WHEN walkover_home THEN 0
+                            WHEN walkover_away THEN 0
+                            WHEN home_score > away_score THEN 1
+                            ELSE 0
+                        END,
+                        CASE 
+                            WHEN walkover_away = 1 THEN 1
+                            ELSE 0
+                        END,
+                        CASE 
+                            WHEN walkover_home = 1 THEN 1
+                            ELSE 0
+                        END,
                         away_score,
                         home_score,
                         away_score - home_score goal_difference,
                         1 games_played,
                         CASE 
+                            WHEN walkover_away = 1 THEN ?
+                            WHEN walkover_home = 1 THEN ?
                             WHEN home_score < away_score THEN ?
                             WHEN home_score = away_score THEN ? 
                             WHEN away_score + 5 >= home_score THEN ?
@@ -89,12 +143,16 @@ class DivisionTablesController extends ApiController
                     ORDER BY dst.division_id ASC, points DESC, goal_difference DESC"
             ), [
                 $season_id,
+                $walkoverAwardedPoints,
+                $walkoverDeductedPoints,
                 $win_value,
                 $draw_value,
                 $within5PointsBonusValue,
                 $overHalfPointsBonusValue,
                 $loss_value,
                 $season_id,
+                $walkoverAwardedPoints,
+                $walkoverDeductedPoints,
                 $win_value,
                 $draw_value,
                 $within5PointsBonusValue,
