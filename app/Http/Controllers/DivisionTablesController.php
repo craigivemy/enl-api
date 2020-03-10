@@ -25,8 +25,9 @@ class DivisionTablesController extends ApiController
         $walkoverDeductedPoints = $settings->get('walkover_deducted_points')->setting_value;
         $walkoverAwarededGoals = $settings->get('walkover_awarded_goals')->setting_value;
 
-// todo - add walkoverHome and away and calc
-        // todo - need to make sure goals / points etc dont get counted twice if socres are in ther eplus walkkover
+// todo - walkover goals
+        // todo - does walkover actually need to count as win - think about a tie for 1st place example
+        // todo - need to get point adjustments by season not all
             $teams = DB::select(DB::raw(
                 "SELECT
                 t.id as id, 
@@ -52,7 +53,7 @@ class DivisionTablesController extends ApiController
                 LEFT JOIN division_season_team dst ON t.id = dst.team_id
                 LEFT JOIN (
                     SELECT home_id
-                        team_name, /* todo - maths for decuting walkover points  */
+                        team_name,
                         CASE
                             WHEN walkover_home THEN 0
                             WHEN walkover_away THEN 0
@@ -86,8 +87,8 @@ class DivisionTablesController extends ApiController
                         home_score - away_score goal_difference,
                         1 games_played,
                         CASE 
-                            WHEN walkover_home = 1 THEN -?
-                            WHEN walkover_away = 1 THEN ?
+                            WHEN walkover_home = 1 THEN ?
+                            WHEN walkover_away = 1 THEN -?
                             WHEN home_score > away_score THEN ? 
                             WHEN home_score = away_score THEN ?
                             WHEN home_score + 5 >= away_score THEN ?
@@ -128,8 +129,8 @@ class DivisionTablesController extends ApiController
                         away_score - home_score goal_difference,
                         1 games_played,
                         CASE 
-                            WHEN walkover_away = 1 THEN -?
-                            WHEN walkover_home = 1 THEN ?
+                            WHEN walkover_away = 1 THEN ?
+                            WHEN walkover_home = 1 THEN -?
                             WHEN home_score < away_score THEN ?
                             WHEN home_score = away_score THEN ? 
                             WHEN away_score + 5 >= home_score THEN ?
