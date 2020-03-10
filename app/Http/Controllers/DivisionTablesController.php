@@ -86,7 +86,7 @@ class DivisionTablesController extends ApiController
                         home_score - away_score goal_difference,
                         1 games_played,
                         CASE 
-                            WHEN walkover_home = 1 THEN ?
+                            WHEN walkover_home = 1 THEN -?
                             WHEN walkover_away = 1 THEN ?
                             WHEN home_score > away_score THEN ? 
                             WHEN home_score = away_score THEN ?
@@ -128,7 +128,7 @@ class DivisionTablesController extends ApiController
                         away_score - home_score goal_difference,
                         1 games_played,
                         CASE 
-                            WHEN walkover_away = 1 THEN ?
+                            WHEN walkover_away = 1 THEN -?
                             WHEN walkover_home = 1 THEN ?
                             WHEN home_score < away_score THEN ?
                             WHEN home_score = away_score THEN ? 
