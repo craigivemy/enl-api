@@ -17,6 +17,12 @@ class SettingsTableSeeder extends Seeder
                 'name' => 'win_value',
                 'description' => 'Points awarded for a win',
                 'setting_value' => 5,
+                'season_id' => 2
+            ],
+            [
+                'name' => 'win_value',
+                'description' => 'Points awarded for a win',
+                'setting_value' => 115,
                 'season_id' => 1
             ],
             [
@@ -60,13 +66,7 @@ class SettingsTableSeeder extends Seeder
                 'description' => 'Goals awarded to non-guilty team in case of a walkover',
                 'setting_value' => 15,
                 'season_id' => 1
-            ],
-//            [
-//                'name' => 'walkover_deducted_goals',
-//                'description' => 'Goals deducted to guilty team in case of a walkover',
-//                'setting_value' => 0,
-//                'season_id' => 1
-//            ],
+            ]
         ]);
     }
 }

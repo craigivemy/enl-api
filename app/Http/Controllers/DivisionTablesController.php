@@ -15,8 +15,7 @@ class DivisionTablesController extends ApiController
     public function index(Request $request)
     {
         $season_id = $request->input('seasonId');
-        // todo - need to get these by season_id !
-        $settings = DB::table('settings')->get()->keyBy('name');
+        $settings = DB::table('settings')->where('season_id', $season_id)->get()->keyBy('name');
         $win_value = $settings->get('win_value')->setting_value;
         $loss_value = $settings->get('loss_value')->setting_value;
         $draw_value = $settings->get('draw_value')->setting_value;
