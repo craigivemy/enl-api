@@ -55,7 +55,7 @@ class DivisionTablesController extends ApiController
                     SELECT home_id
                         team_name,
                         CASE
-                            WHEN walkover_home THEN 0
+                            WHEN walkover_home THEN 1
                             WHEN walkover_away THEN 0
                             WHEN home_score > away_score THEN 1
                             ELSE 0
@@ -70,7 +70,7 @@ class DivisionTablesController extends ApiController
                         /* IF(home_score = away_score, 1,0) draw,*/
                         CASE
                             WHEN walkover_home THEN 0
-                            WHEN walkover_away THEN 0
+                            WHEN walkover_away THEN 1
                             WHEN home_score < away_score THEN 1
                             ELSE 0
                         END loss,
@@ -100,7 +100,7 @@ class DivisionTablesController extends ApiController
                     SELECT away_id,
                         CASE
                             WHEN walkover_home THEN 0
-                            WHEN walkover_away THEN 0
+                            WHEN walkover_away THEN 1
                             WHEN home_score < away_score THEN 1
                             ELSE 0
                         END,
@@ -111,7 +111,7 @@ class DivisionTablesController extends ApiController
                             ELSE 0
                         END,
                         CASE
-                            WHEN walkover_home THEN 0
+                            WHEN walkover_home THEN 1
                             WHEN walkover_away THEN 0
                             WHEN home_score > away_score THEN 1
                             ELSE 0
