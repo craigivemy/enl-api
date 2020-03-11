@@ -60,14 +60,12 @@ class DivisionTablesController extends ApiController
                             WHEN home_score > away_score THEN 1
                             ELSE 0
                         END win,
-                        /*IF(home_score > away_score, 1,0) win,*/
                         CASE
                             WHEN walkover_home THEN 0
                             WHEN walkover_away THEN 0
                             WHEN home_score = away_score THEN 1
                             ELSE 0
                         END draw,
-                        /* IF(home_score = away_score, 1,0) draw,*/
                         CASE
                             WHEN walkover_home THEN 0
                             WHEN walkover_away THEN 1
@@ -82,9 +80,21 @@ class DivisionTablesController extends ApiController
                             WHEN walkover_away = 1 THEN 1
                             ELSE 0
                         END walkovers_against,
-                        home_score goals_for,
-                        away_score goals_against,
-                        home_score - away_score goal_difference,
+                        CASE
+                            WHEN walkover_home THEN ?
+                            WHEN walkover_away THEN 0
+                            ELSE home_score
+                        END goals_for,
+                        CASE
+                            WHEN walkover_home THEN 0
+                            WHEN walkover_away THEN ?
+                            ELSE away_score
+                        END goals_against,
+                        CASE
+                            WHEN walkover_home THEN ?
+                            WHEN walkover_away THEN -?
+                            ELSE home_score - away_score
+                        END goal_difference,
                         1 games_played,
                         CASE 
                             WHEN walkover_home = 1 THEN ?
@@ -124,9 +134,21 @@ class DivisionTablesController extends ApiController
                             WHEN walkover_home = 1 THEN 1
                             ELSE 0
                         END,
-                        away_score,
-                        home_score,
-                        away_score - home_score goal_difference,
+                        CASE
+                            WHEN walkover_away THEN ?
+                            WHEN walkover_home THEN 0
+                            ELSE away_score
+                        END,
+                        CASE
+                            WHEN walkover_away THEN 0
+                            WHEN walkover_home THEN ?
+                            ELSE home_score
+                        END,
+                        CASE
+                            WHEN walkover_away THEN ?
+                            WHEN walkover_home THEN -?
+                            ELSE away_score - home_score
+                        END,
                         1 games_played,
                         CASE 
                             WHEN walkover_away = 1 THEN ?
@@ -144,6 +166,10 @@ class DivisionTablesController extends ApiController
                     ORDER BY dst.division_id ASC, points DESC, goal_difference DESC"
             ), [
                 $season_id,
+                $walkoverAwarededGoals,
+                $walkoverAwarededGoals,
+                $walkoverAwarededGoals,
+                $walkoverAwarededGoals,
                 $walkoverAwardedPoints,
                 $walkoverDeductedPoints,
                 $win_value,
@@ -152,6 +178,10 @@ class DivisionTablesController extends ApiController
                 $overHalfPointsBonusValue,
                 $loss_value,
                 $season_id,
+                $walkoverAwarededGoals,
+                $walkoverAwarededGoals,
+                $walkoverAwarededGoals,
+                $walkoverAwarededGoals,
                 $walkoverAwardedPoints,
                 $walkoverDeductedPoints,
                 $win_value,
