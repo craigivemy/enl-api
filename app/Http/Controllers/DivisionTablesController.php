@@ -15,6 +15,7 @@ class DivisionTablesController extends ApiController
     public function index(Request $request)
     {
         $season_id = $request->input('seasonId');
+        // todo - need to get these by season_id !
         $settings = DB::table('settings')->get()->keyBy('name');
         $win_value = $settings->get('win_value')->setting_value;
         $loss_value = $settings->get('loss_value')->setting_value;
@@ -25,8 +26,7 @@ class DivisionTablesController extends ApiController
         $walkoverDeductedPoints = $settings->get('walkover_deducted_points')->setting_value;
         $walkoverAwarededGoals = $settings->get('walkover_awarded_goals')->setting_value;
 
-// todo - walkover goals
-        // todo - does walkover actually need to count as win - think about a tie for 1st place example
+
         // todo - need to get point adjustments by season not all
             $teams = DB::select(DB::raw(
                 "SELECT
