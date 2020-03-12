@@ -18,7 +18,7 @@ class Setting extends JsonResource
             'id'            => $this->id,
             'name'          => $this->name,
             'description'   => $this->description,
-            'value'         => $this->setting_value
+            'settingValue'  => $this->setting_value
         ];
     }
 }
