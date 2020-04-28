@@ -43,7 +43,7 @@ class DivisionController extends ApiController
 
                 $divisions = Division::whereIn('id', $divisionIdsQuery)
                     ->with(['teams' => function ($query) use ($season) {
-                        $query->where('season_id', $season->id);
+                        $query->withTrashed()->where('season_id', $season->id);
                     }])
                     ->get();
 
