@@ -205,6 +205,8 @@ class DivisionTablesController extends ApiController
      */
     public function show($division_id, Request $request)
     {
+        // TODO - THIS ISN'T UP TO DATE LIKE THE ONE ABOVE
+
         // todo - only use this for main site team page
 
         $season_id = $request->input('seasonId');

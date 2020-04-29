@@ -49,7 +49,7 @@ class SeasonController extends ApiController
             $season->rounds = $season_request['rounds'];
             $season->current = $season_request['current'];
             $season->saveOrFail();
-
+// todo - need to save settings too
             foreach ($divisions_teams_request as $key => $row) {
                 foreach ($row as $sub => $val) {
                     DB::table('division_season_team')->insert(

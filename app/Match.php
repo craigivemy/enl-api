@@ -30,12 +30,12 @@ class Match extends Model
 
     public function homeTeam()
     {
-        return $this->hasOne('App\Team', 'id', 'home_id');
+        return $this->hasOne('App\Team', 'id', 'home_id')->withTrashed();
     }
 
     public function awayTeam()
     {
-        return $this->hasOne('App\Team', 'id','away_id');
+        return $this->hasOne('App\Team', 'id','away_id')->withTrashed();
     }
 
 }
