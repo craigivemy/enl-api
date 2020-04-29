@@ -12,6 +12,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Monolog\Logger;
 use Throwable;
 
 class SeasonController extends ApiController
@@ -45,11 +46,13 @@ class SeasonController extends ApiController
             $season = new Season();
             $season_request = $request->input('season');
             $divisions_teams_request = $request->input('divisionsTeams');
+            $settings_request = $request->input('settings');
             $season->name = $season_request['name'];
             $season->rounds = $season_request['rounds'];
             $season->current = $season_request['current'];
+            $season->start_date = $season_request['startDate'];
             $season->saveOrFail();
-// todo - need to save settings too
+
             foreach ($divisions_teams_request as $key => $row) {
                 foreach ($row as $sub => $val) {
                     DB::table('division_season_team')->insert(
@@ -61,6 +64,17 @@ class SeasonController extends ApiController
                     );
                 }
             }
+
+            foreach ($settings_request as $key => $value) {
+                DB::table('settings')->insert(
+                    [
+                        'name' => $key,
+                        'setting_value' => $value,
+                        'season_id'     => $season->id
+                    ]
+                );
+            }
+
             if ($season->current === 1) {
                Season::where('current', 1)
                    ->where('id', '!=', $season->id)
