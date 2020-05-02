@@ -9,6 +9,7 @@ use App\Http\Resources\Team as TeamResource;
 use App\Http\Resources\TeamCollection;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 use App\QueryFilter;
 
@@ -88,6 +89,9 @@ class TeamController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    // todo - https://stackoverflow.com/questions/32508850/laravel-5-updating-multiple-records
+    // add another method for batch update - actually also for batch delete
     public function update(Request $request, $id)
     {
         try {
@@ -102,6 +106,20 @@ class TeamController extends ApiController
                 'action' => 'TeamController@update',
                 'info'   => 'Updating team named: ' . $request->input('name')
             ];
+            $this->logger->log('alert', $t->getMessage(), ['exception' => $t, 'meta'  => $meta]);
+            return $this->respondWithError();
+        }
+    }
+
+    public function batchDelete(Request $request) {
+        try {
+            Log::debug('123');
+            Team::destroy($request->ids);
+            return $this->respondSoftDeleted();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Team not found');
+        } catch (Throwable $t) {
+            $meta = ['action'   => 'TeamController@batchDelete'];
             $this->logger->log('alert', $t->getMessage(), ['exception' => $t, 'meta'  => $meta]);
             return $this->respondWithError();
         }
