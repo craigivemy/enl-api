@@ -9,9 +9,7 @@ use App\Http\Resources\Team as TeamResource;
 use App\Http\Resources\TeamCollection;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Log;
 use Throwable;
-use App\QueryFilter;
 
 class TeamController extends ApiController
 {
@@ -113,7 +111,6 @@ class TeamController extends ApiController
 
     public function batchDelete(Request $request) {
         try {
-            Log::debug('123');
             Team::destroy($request->ids);
             return $this->respondSoftDeleted();
         } catch (ModelNotFoundException $e) {
