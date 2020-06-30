@@ -9,6 +9,7 @@ use App\Http\Resources\Team as TeamResource;
 use App\Http\Resources\TeamCollection;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class TeamController extends ApiController
@@ -117,6 +118,21 @@ class TeamController extends ApiController
             return $this->respondNotFound('Team not found');
         } catch (Throwable $t) {
             $meta = ['action'   => 'TeamController@batchDelete'];
+            $this->logger->log('alert', $t->getMessage(), ['exception' => $t, 'meta'  => $meta]);
+            return $this->respondWithError();
+        }
+    }
+
+    public function batchRestore(Request $request) {
+        try {
+            //Log::debug('', $request->input('ids'));
+            Team::onlyTrashed()->whereIn('id', $request->input('ids'))->restore();
+            //Team::restore($request->ids);
+            return $this->respond([]);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound('Team not found');
+        } catch (Throwable $t) {
+            $meta = ['action'   => 'TeamController@batchRestore'];
             $this->logger->log('alert', $t->getMessage(), ['exception' => $t, 'meta'  => $meta]);
             return $this->respondWithError();
         }
