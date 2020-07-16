@@ -43,8 +43,15 @@ class TeamController extends ApiController
     public function store(Request $request)
     {
         try {
-            $team = Team::create($request->all());
-            return $this->respondCreated($team);
+            $team = $request->input('team');
+            $newTeam = new Team;
+            $newTeam->name = $team['name'];
+            $newTeam->narrative = $team['narrative'];
+            $newTeam->primary_colour = $team['primaryColour'];
+            $newTeam->secondary_colour = $team['secondaryColour'];
+            $newTeam->tertiary_colour = $team['tertiaryColour'];
+            $newTeam->save();
+            return $this->respondCreated($newTeam);
         } catch (QueryException $e) {
             if ($e->errorInfo[1] === 1062) {
                 $message = 'A team with that name already exists.';
