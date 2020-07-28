@@ -26,8 +26,7 @@ class PlayerController extends ApiController
             }
 
             if ($request->input('playedUp')) {
-                //return $this->respond(new PlayerCollection(Player::where('played_up_count', '>', 0)->get()));
-                return $this->respond(new PlayerCollection(Player::with('team')->where('played_up_count', '>', 0)->orderBy('surname')->get()));
+                return $this->respond(new PlayerCollection(Player::with(['team', 'playedUps'])->orderBy('surname')->get()));
             }
 
             return $this->respond(new PlayerCollection(Player::all()));

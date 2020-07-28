@@ -20,10 +20,9 @@ class DatabaseSeeder extends Seeder
             SeasonsTableSeeder::class,
             TeamsTableSeeder::class,
             PlayersTableSeeder::class,
+            PlayedUpsTableSeeder::class,
             StatisticsTableSeeder::class,
             UmpiresTableSeeder::class,
-            //DivisionSeasonTableSeeder::class,
-            //SeasonTeamTableSeeder::class
             DivisionSeasonTeamTableSeeder::class,
             MatchesTableSeeder::class,
             TeamPointAdjustmentsTableSeeder::class

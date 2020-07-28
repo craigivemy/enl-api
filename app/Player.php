@@ -18,4 +18,8 @@ class Player extends Model
         return $this->belongsTo('App\Team');
     }
 
+    public function playedUps() {
+        return $this->hasMany('App\PlayedUp');
+    }
+
 }
