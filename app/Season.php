@@ -10,16 +10,19 @@ class Season extends Model
     protected $guarded = [];
     protected $hidden = ['pivot'];
 
-    // new
     public function divisions()
     {
         return $this->belongsToMany(Division::class, 'division_season_team');
     }
 
-    // new
     public function teams()
     {
         return $this->belongsToMany(Team::class, 'division_season_team');
+    }
+
+    public function players()
+    {
+        return $this->belongsToMany(Player::class, 'player_season_team');
     }
 
 

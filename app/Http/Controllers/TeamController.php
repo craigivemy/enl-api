@@ -24,7 +24,7 @@ class TeamController extends ApiController
         try {
             if ($request->query('seasonId')) {
                 $season = Season::find($request->query('seasonId'));
-                return $this->respond(new TeamCollection($season->teams()->with(['club', 'division', 'seasons'])->orderBy('name')->get()));
+                return $this->respond(new TeamCollection($season->teams()->with(['club', 'divisions', 'seasons'])->orderBy('name')->get()));
             }
             return $this->respond(new TeamCollection(Team::withTrashed()->orderBy('name')->get()));
         } catch (Throwable $t) {

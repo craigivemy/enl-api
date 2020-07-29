@@ -3,19 +3,21 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Player extends Model
 {
     protected $guarded = [];
+    protected $hidden = ['pivot'];
 
     /**
      * Return this player's team
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsToMany
      */
-    public function team()
+    public function teams()
     {
-        return $this->belongsTo('App\Team');
+        return $this->belongsToMany(Team::class, 'player_season_team');
     }
 
     public function playedUps() {

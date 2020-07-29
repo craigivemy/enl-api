@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Season;
 use App\Team;
 use Illuminate\Http\Request;
 use App\Player;
@@ -26,7 +27,18 @@ class PlayerController extends ApiController
             }
 
             if ($request->input('playedUp')) {
-                return $this->respond(new PlayerCollection(Player::with(['team', 'playedUps'])->orderBy('surname')->get()));
+                // this all means players have to be deleted when team not active!?
+                // make teams inactive automatically when not included in season!?
+                // or bite the bullet and have another jointable - probably best!?
+                $seasonId = $request->input('seasonId');
+                $season = Season::find($request->query('seasonId'));
+                return $season->teams()->with(['players' => function($query) use($seasonId) {
+                    // $query->where season_id is season_id?
+                    $query->with(['playedUps' => function($query) use($seasonId) {
+                        $query->where('season_id', '=', $seasonId);
+                    }]);
+                }])->get();
+
             }
 
             return $this->respond(new PlayerCollection(Player::all()));

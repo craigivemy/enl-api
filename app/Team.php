@@ -15,7 +15,7 @@ class Team extends Model
 
     public function players()
     {
-        return $this->hasMany('App\Player');
+        return $this->belongsToMany(Player::class, 'player_season_team');
     }
 
     public function umpires()
