@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             TeamsTableSeeder::class,
             PlayersTableSeeder::class,
             PlayedUpsTableSeeder::class,
+            PlayerSeasonTeamTableSeeder::class,
             StatisticsTableSeeder::class,
             UmpiresTableSeeder::class,
             DivisionSeasonTeamTableSeeder::class,

@@ -9,7 +9,6 @@ $factory->define(\App\Player::class, function (Faker $faker) {
 
     return [
         'forename'          => $faker->firstName,
-        'surname'           => $faker->lastName,
-        'team_id'           => $faker->randomElement($team_ids)
+        'surname'           => $faker->lastName
     ];
 });
