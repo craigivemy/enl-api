@@ -23,7 +23,23 @@ class PlayerController extends ApiController
         try {
 
             if ($team_id = $request->input('teamId')) {
-                return $this->respond(new PlayerCollection(Player::where('team_id', '=', $team_id)->get()));
+                //return $this->respond(new PlayerCollection(Player::where('team_id', '=', $team_id)->get()));
+                $seasonId = $request->input('seasonId');
+                $season = Season::find($request->query('seasonId'));
+                $teamsInSeasonQuery = $season->teams()
+                    ->select('teams.id')
+                    ->groupBy('teams.id')
+                    ->getQuery();
+
+                $teams = Team::whereIn('id', $teamsInSeasonQuery)
+                    ->with(['players' => function($query) use($seasonId) {
+                        $query->withTrashed()->where('season_id', $seasonId);
+                    }])
+                    ->get();
+
+                // don't need all teams just one at this point but maybe do for below / played up
+                return $teams;
+
             }
 
             if ($request->input('playedUp')) {
