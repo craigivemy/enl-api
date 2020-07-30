@@ -15,6 +15,7 @@ class RemoveTeamIdFromPlayersTable extends Migration
     {
         Schema::table('players', function (Blueprint $table) {
             $table->dropForeign(['team_id']);
+            $table->dropColumn('team_id');
         });
     }
 

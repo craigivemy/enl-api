@@ -18,7 +18,6 @@ class Player extends JsonResource
             'id'                => $this->id,
             'forename'          => $this->forename,
             'surname'           => $this->surname,
-            'teamId'            => $this->team_id,
             'team'              => $this->whenLoaded('team'),
             'playedUpCount'     => $this->whenLoaded('playedUps')->count(),
             'playedUps'         => $this->whenLoaded('playedUps')
