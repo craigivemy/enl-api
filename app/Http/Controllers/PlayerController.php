@@ -29,10 +29,13 @@ class PlayerController extends ApiController
                     ->select('teams.id')
                     ->groupBy('teams.id')
                     ->getQuery();
-                
+
                 $teams = Team::whereIn('id', $teamsInSeasonQuery)
                     ->with(['players' => function($query) use($seasonId) {
                         $query->withTrashed()->where('season_id', $seasonId);
+                        $query->with(['playedUps' => function($query) use($seasonId) {
+                           $query->where('season_id', $seasonId);
+                        }]);
                     }])
                     ->get();
 

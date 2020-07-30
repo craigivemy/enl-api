@@ -20,8 +20,8 @@ class Player extends JsonResource
             'surname'           => $this->surname,
             'teamId'            => $this->team_id,
             'team'              => $this->whenLoaded('team'),
-            'playedUpCount'     => count($this->playedUps),
-            'playedUps'         => $this->playedUps
+            'playedUpCount'     => $this->whenLoaded('playedUps')->count(),
+            'playedUps'         => $this->whenLoaded('playedUps')
         ];
     }
 }
