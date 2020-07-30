@@ -22,42 +22,43 @@ class PlayerController extends ApiController
     {
         try {
 
-            if ($team_id = $request->input('teamId')) {
-                //return $this->respond(new PlayerCollection(Player::where('team_id', '=', $team_id)->get()));
+            if ($team_id = $request->input('teamId')) { // todo check if seasonId present to?
                 $seasonId = $request->input('seasonId');
                 $season = Season::find($request->query('seasonId'));
                 $teamsInSeasonQuery = $season->teams()
                     ->select('teams.id')
                     ->groupBy('teams.id')
                     ->getQuery();
-
+                
                 $teams = Team::whereIn('id', $teamsInSeasonQuery)
                     ->with(['players' => function($query) use($seasonId) {
                         $query->withTrashed()->where('season_id', $seasonId);
                     }])
                     ->get();
 
-                // don't need all teams just one at this point but maybe do for below / played up
-                return $teams;
-
+                foreach ($teams as $team) {
+                    if ($team->id == $team_id) {
+                        return $this->respond(new PlayerCollection($team->players));
+                    }
+                }
             }
 
-            if ($request->input('playedUp')) {
-                // this all means players have to be deleted when team not active!?
-                // make teams inactive automatically when not included in season!?
-                // or bite the bullet and have another jointable - probably best!?
-                $seasonId = $request->input('seasonId');
-                $season = Season::find($request->query('seasonId'));
-                return $season->teams()->with(['players' => function($query) use($seasonId) {
-                    // $query->where season_id is season_id?
-                    $query->with(['playedUps' => function($query) use($seasonId) {
-                        $query->where('season_id', '=', $seasonId);
-                    }]);
-                }])->get();
-
-            }
-
-            return $this->respond(new PlayerCollection(Player::all()));
+//            if ($request->input('playedUp')) {
+//                // this all means players have to be deleted when team not active!?
+//                // make teams inactive automatically when not included in season!?
+//                // or bite the bullet and have another jointable - probably best!?
+//                $seasonId = $request->input('seasonId');
+//                $season = Season::find($request->query('seasonId'));
+//                return $season->teams()->with(['players' => function($query) use($seasonId) {
+//                    // $query->where season_id is season_id?
+//                    $query->with(['playedUps' => function($query) use($seasonId) {
+//                        $query->where('season_id', '=', $seasonId);
+//                    }]);
+//                }])->get();
+//
+//            }
+//
+//            return $this->respond(new PlayerCollection(Player::all()));
         } catch (Throwable $t) {
             $meta = ['action' => 'PlayerController@index'];
             $this->logger->log('critical', $t->getMessage(), ['exception' => $t, 'meta' => $meta]);
