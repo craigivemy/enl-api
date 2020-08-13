@@ -24,7 +24,7 @@ class PlayerController extends ApiController
 
             if ($team_id = $request->input('teamId')) { // todo check if seasonId present to?
                 $seasonId = $request->input('seasonId');
-                $season = Season::find($request->query('seasonId'));
+                $season = Season::find($seasonId);
                 $teamsInSeasonQuery = $season->teams()
                     ->select('teams.id')
                     ->groupBy('teams.id')

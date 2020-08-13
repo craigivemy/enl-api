@@ -19,7 +19,10 @@ class Player extends JsonResource
             'forename'          => $this->forename,
             'surname'           => $this->surname,
             'team'              => $this->whenLoaded('team'),
-            'playedUpCount'     => $this->whenLoaded('playedUps')->count(),
+            'playedUpCount'     => $this->whenLoaded('playedUps', function() {
+               return $this->playedUps->count();
+            }),
+            // todo - create resource for these so can use camelCase
             'playedUps'         => $this->whenLoaded('playedUps')
         ];
     }
