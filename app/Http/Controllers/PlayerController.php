@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\PlayedUp;
 use App\Season;
 use App\Team;
 use Illuminate\Http\Request;
@@ -9,6 +10,7 @@ use App\Player;
 use App\Http\Resources\Player as PlayerResource;
 use App\Http\Resources\PlayerCollection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 use Throwable;
 
 class PlayerController extends ApiController
@@ -123,11 +125,31 @@ class PlayerController extends ApiController
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return PlayerResource
      */
     public function update(Request $request, $id)
     {
         try {
+
+            if ($request->query('addPlayedUp')) {
+                $seasonId = $request->input('seasonId');
+                $player = Player::findOrFail($id);
+                $playedUp = new PlayedUp(
+                    [
+                        'played_up_date' => $request->input('playedUpDate')['value'],
+                        'season_id' => $seasonId,
+                        'player_id' => $id
+                    ]
+                );
+                $player->playedUps()->save(
+                    $playedUp
+                );
+                $player->save();
+                $player->load('playedUps');
+                return new PlayerResource($player);
+            }
+
+
             $player = Player::findOrFail($id);
             $changes = $request->input('player');
             $player->played_up_count = $changes['playedUpCount'];
