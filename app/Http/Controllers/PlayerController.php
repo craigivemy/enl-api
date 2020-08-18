@@ -136,7 +136,7 @@ class PlayerController extends ApiController
                 $player = Player::findOrFail($id);
                 $playedUp = new PlayedUp(
                     [
-                        'played_up_date' => $request->input('playedUpDate')['value'],
+                        'played_up_date' => $request->input('playedUpDate'),
                         'season_id' => $seasonId,
                         'player_id' => $id
                     ]
@@ -145,9 +145,26 @@ class PlayerController extends ApiController
                     $playedUp
                 );
                 $player->save();
-                $player->load('playedUps');
+                $player->load(['playedUps' => function($q) use ($seasonId) {
+                    $q->where('season_id', $seasonId);
+                }]);
+                return new PlayerResource($player);
+                };
+
+
+            if ($request->query('deletePlayedUp')) {
+                $player = Player::findOrFail($id);
+                $seasonId = $request->input('seasonId');
+                $played_up_id = $request->input('playedUpId');
+                $played_up = PlayedUp::find($played_up_id);
+                $played_up->delete();
+                //$player->playedUps()->detach($played_up_id);
+                $player->load(['playedUps' => function($q) use ($seasonId) {
+                    $q->where('season_id', $seasonId);
+                }]);
                 return new PlayerResource($player);
             }
+
 
 
             $player = Player::findOrFail($id);
