@@ -32,6 +32,9 @@ class DivisionTablesController extends ApiController
                 t.id as id, 
                 t.name AS team_name,
                 t.id as team_id,
+                t.primary_colour as primary_colour,
+                t.secondary_colour as secondary_colour,
+                t.tertiary_colour as tertiary_colour,
                 SUM(win) AS win,
                 SUM(draw) AS draw,
                 SUM(loss) AS loss,
@@ -42,7 +45,8 @@ class DivisionTablesController extends ApiController
                 SUM(goal_difference) as goal_difference,
                 SUM(games_played) AS games_played,
                 SUM(points) + IFNULL(tpa.point_adjustment, 0) as points,
-                dst.division_id as division_id
+                dst.division_id as division_id,
+                IFNULL(tpa.point_adjustment, 0) as point_adjustment
                 FROM teams t 
                 LEFT JOIN (
                   SELECT team_id, season_id, SUM(point_adjustment) AS point_adjustment

@@ -18,12 +18,12 @@ class Player extends JsonResource
             'id'                => $this->id,
             'forename'          => $this->forename,
             'surname'           => $this->surname,
-            'team'              => $this->whenLoaded('team'),
             'playedUpCount'     => $this->whenLoaded('playedUps', function() {
                return $this->playedUps->count();
             }),
             // todo - create resource for these so can use camelCase
-            'playedUps'         => $this->whenLoaded('playedUps')
+            'playedUps'         => $this->whenLoaded('playedUps'),
+            'team'              => $this->whenLoaded('teams')
         ];
     }
 }

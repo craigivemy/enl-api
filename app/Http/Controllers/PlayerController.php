@@ -24,7 +24,8 @@ class PlayerController extends ApiController
     {
         try {
 
-            if ($team_id = $request->input('teamId')) { // todo check if seasonId present to?
+            if ($request->input('teamId') && $request->input('seasonId')) { // todo check if seasonId present to?
+                $team_id = $request->input('teamId');
                 $seasonId = $request->input('seasonId');
                 $season = Season::find($seasonId);
                 $teamsInSeasonQuery = $season->teams()
@@ -46,24 +47,28 @@ class PlayerController extends ApiController
                         return $this->respond(new PlayerCollection($team->players));
                     }
                 }
-            }
+            } elseif ($request->input('seasonId') && !$request->input('teamId')) {
+                $seasonId = $request->input('seasonId');
+                $season = Season::find($seasonId);
+                $playersInSeasonQuery = $season->players()
+                    ->select('players.id')
+                    ->getQuery();
 
-//            if ($request->input('playedUp')) {
-//                // this all means players have to be deleted when team not active!?
-//                // make teams inactive automatically when not included in season!?
-//                // or bite the bullet and have another jointable - probably best!?
-//                $seasonId = $request->input('seasonId');
-//                $season = Season::find($request->query('seasonId'));
-//                return $season->teams()->with(['players' => function($query) use($seasonId) {
-//                    // $query->where season_id is season_id?
-//                    $query->with(['playedUps' => function($query) use($seasonId) {
-//                        $query->where('season_id', '=', $seasonId);
-//                    }]);
-//                }])->get();
-//
-//            }
-//
-//            return $this->respond(new PlayerCollection(Player::all()));
+                $players = Player::whereIn('id', $playersInSeasonQuery)
+                    ->with(['teams' => function($query) use($seasonId) {
+                        $query->withTrashed()->where('season_id', $seasonId);
+                    }])
+                    ->whereHas('playedUps', function($query) use($seasonId) {
+                        $query->where('season_id', $seasonId);
+                    })
+                    ->with(['playedUps' => function($query) use($seasonId) {
+                        $query->where('season_id', $seasonId);
+                    }])
+                    ->orderBy('surname', 'asc')
+                    ->get();
+
+                return $this->respond(new PlayerCollection($players));
+            }
         } catch (Throwable $t) {
             $meta = ['action' => 'PlayerController@index'];
             $this->logger->log('critical', $t->getMessage(), ['exception' => $t, 'meta' => $meta]);

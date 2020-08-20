@@ -17,13 +17,13 @@ class SettingsTableSeeder extends Seeder
                 'name' => 'win_value',
                 'description' => 'Points awarded for a win',
                 'setting_value' => 5,
-                'season_id' => 2
+                'season_id' => 1
             ],
             [
                 'name' => 'win_value',
                 'description' => 'Points awarded for a win',
                 'setting_value' => 115,
-                'season_id' => 1
+                'season_id' => 2
             ],
             [
                 'name' => 'draw_value',
