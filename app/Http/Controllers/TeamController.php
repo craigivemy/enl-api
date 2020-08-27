@@ -9,6 +9,7 @@ use App\Http\Resources\Team as TeamResource;
 use App\Http\Resources\TeamCollection;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
@@ -72,12 +73,21 @@ class TeamController extends ApiController
     /**
      * Display the specified team.
      *
-     * @param  int  $id
+     * @param Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         try {
+            if ($request->query('pointAdjustments')) {
+                $season_id = $request->query('seasonId');
+                $rows = DB::table('team_point_adjustments')->where(['team_id' => $id, 'season_id' => $season_id])->get();
+                return $this->respond([
+                    "data" => $rows
+                ]);
+            }
+
             return $this->respond(new TeamResource(Team::findOrFail($id)));
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound('Team not found');
@@ -101,6 +111,29 @@ class TeamController extends ApiController
     public function update(Request $request, $id)
     {
         try {
+
+            if ($request->input('teamPointAdjustments')) {
+                $team = Team::findOrFail($id);
+                $season_id = $request->input('seasonId');
+                $adjustments = $request->input('adjustments');
+
+                //return $adjustments["deductions"];
+// use the ids
+                DB::delete("DELETE from team_point_adjustments where team_id=" . $id . " AND season_id=" . $season_id);
+
+                foreach ($adjustments['deductions'] as $adjustment) {
+                    DB::table('team_point_adjustments')->insert([
+                        'team_id'               => $id,
+                        'point_adjustment'      => $adjustment['deduction'], // test
+
+                        'reason'                => $adjustment['reason'],
+                        'reason_date'           => $adjustment['reasonDate'],
+                        'season_id'             => $season_id
+                    ]);
+                }
+                return 1;
+            }
+
             $team = Team::findOrFail($id);
             $team->fill($request->except('id'));
             $team->save();
