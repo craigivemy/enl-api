@@ -17,6 +17,7 @@ class MatchesTableSeeder extends Seeder
         $rounds = [1,2];
         $season_id = 1;
         $true_or_false = [true, false, false, false, false, false];
+        $played = [0,1];
 
         $season_1_division_1_teams = DB::table('division_season_team')->select(['team_id'])->where('division_id', '=', 1)
             ->where('season_id', '=', 1)->pluck('team_id')->toArray();
@@ -59,7 +60,7 @@ class MatchesTableSeeder extends Seeder
                            'match_date'    => $faker->dateTimeBetween('-60 days','now','Europe/London'),
                            'court'         => $faker->numberBetween(1, 4),
                            'round'         => $rounds[array_rand($rounds)],
-                           'played'        => 1,
+                           'played'        => $faker->randomElement($played),
                            'walkover_home'  => $walkoverHome,
                            'walkover_away'  => $walkoverAway,
                            'home_adjust'   => 0,
@@ -101,7 +102,7 @@ class MatchesTableSeeder extends Seeder
                             'match_date'    => $faker->dateTimeBetween('-60 days','now','Europe/London'),
                             'court'         => $faker->numberBetween(1, 4),
                             'round'         => $rounds[array_rand($rounds)],
-                            'played'        => 1,
+                            'played'        => $faker->randomElement($played),
                             'walkover_home'  => $walkoverHome,
                             'walkover_away'  => $walkoverAway,
                             'home_adjust'   => 0,
@@ -120,6 +121,7 @@ class MatchesTableSeeder extends Seeder
                     $walkoverAway = $true_or_false[array_rand($true_or_false)];
 
                     $home_or_away = [1,2];
+
 
                     if ($walkoverAway && $walkoverHome) {
                         if ($home_or_away[array_rand($home_or_away)] === 1) {
@@ -142,7 +144,7 @@ class MatchesTableSeeder extends Seeder
                             'match_date'    => $faker->dateTimeBetween('-60 days','now','Europe/London'),
                             'court'         => $faker->numberBetween(1, 4),
                             'round'         => $rounds[array_rand($rounds)],
-                            'played'        => 1,
+                            'played'        => $faker->randomElement($played),
                             'walkover_home'  => $walkoverHome,
                             'walkover_away'  => $walkoverAway,
                             'home_adjust'   => 0,
@@ -183,7 +185,7 @@ class MatchesTableSeeder extends Seeder
                             'match_date'    => $faker->dateTimeBetween('-60 days','now','Europe/London'),
                             'court'         => $faker->numberBetween(1, 4),
                             'round'         => $rounds[array_rand($rounds)],
-                            'played'        => 1,
+                            'played'        => $faker->randomElement($played),
                             'walkover_home'  => $walkoverHome,
                             'walkover_away'  => $walkoverAway,
                             'home_adjust'   => 0,
@@ -224,7 +226,7 @@ class MatchesTableSeeder extends Seeder
                             'match_date'    => $faker->dateTimeBetween('-60 days','now','Europe/London'),
                             'court'         => $faker->numberBetween(1, 4),
                             'round'         => $rounds[array_rand($rounds)],
-                            'played'        => 1,
+                            'played'        => $faker->randomElement($played),
                             'walkover_home'  => $walkoverHome,
                             'walkover_away'  => $walkoverAway,
                             'home_adjust'   => 0,
