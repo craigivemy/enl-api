@@ -10,6 +10,7 @@ use App\Player;
 use App\Http\Resources\Player as PlayerResource;
 use App\Http\Resources\PlayerCollection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
@@ -89,9 +90,13 @@ class PlayerController extends ApiController
             $newPlayer = new Player;
             $newPlayer->forename = $player['forename'];
             $newPlayer->surname = $player['surname'];
-            $newPlayer->played_up_count = $player['playedUpCount'] ?? 0;
-            $newPlayer->team_id = $player['teamId'];
             $newPlayer->save();
+            DB::insert("INSERT INTO player_season_team (player_id, team_id, season_id) VALUES (?,?,?)",
+                [
+                    $newPlayer->id,
+                    $request->input('teamId'),
+                    $request->input('seasonId')
+                ]);
             return $this->respondCreated(new PlayerResource($newPlayer));
             /*
              * todo - create fullname / displayname method, check it here and

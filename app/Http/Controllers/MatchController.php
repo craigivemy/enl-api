@@ -98,6 +98,7 @@ class MatchController extends ApiController
             if (isset($is_away_walkover)) {
                 $match->walkover_away = $request->input('walkoverAway');
             }
+            $match->played = 1;
             $match->save();
             return $this->respondUpdated($match);
         } catch (ModelNotFoundException $e) {

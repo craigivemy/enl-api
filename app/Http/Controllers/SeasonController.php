@@ -80,7 +80,6 @@ class SeasonController extends ApiController
                    ->where('id', '!=', $season->id)
                    ->update(['current' => 0]);
             }
-            Player::query()->update(['played_up_count' => 0]);
             return $this->respondCreated($season);
         } catch (QueryException $e) {
             if ($e->errorInfo[1] === 1062) {

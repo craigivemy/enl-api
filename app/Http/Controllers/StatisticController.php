@@ -105,12 +105,24 @@ class StatisticController extends Controller
                 ->get();
             $playedUpStats['moreThanTwice'] = count($playedUpStats['moreThanTwice']);
 
+            $today = new \DateTime("now");
+            //$today->format("Y-d-m");
+            $results = DB::table('matches')
+                ->selectRaw("count(*) as total")
+                ->whereRaw("season_id=? AND played=0 AND match_date < CURDATE() AND match_date > CURDATE() - INTERVAL 10 DAY", [$season_id])
+                ->get();
+            $missingResultsFromLastSevenDays = $results->pluck("total")[0];
+
+//            $resultsMissingForLastMatchDate = DB::table('matches')
+//                ->selectRaw()
+
             return [
                 'data' => [
                     'nextMatchAndDatetime' => $next_match_and_datetime,
                     //'gameWeeksLeft'   => $game_weeks_left,
+                    'missingResultsFromLastSevenDays' => $missingResultsFromLastSevenDays,
                     'teamsInSeason'   => $teams_in_season,
-                    'roundsInSseason'  => $rounds_in_season,
+                    'roundsInSeason'  => $rounds_in_season,
                     'goalsInSeason'   => $goals_in_season,
                     'matchesPlayedInSeason' => $matches_played_in_season,
                     'playedUpStats' => $playedUpStats
