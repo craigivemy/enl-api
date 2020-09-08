@@ -135,7 +135,8 @@ class TeamController extends ApiController
             }
 
             $team = Team::findOrFail($id);
-            $team->fill($request->except('id'));
+            $changes = $request->input('changes');
+            $team->fill($changes);
             $team->save();
             return $this->respondUpdated($team);
         } catch (ModelNotFoundException $e) {
