@@ -84,21 +84,25 @@ class MatchController extends ApiController
     {
         try {
             $match = Match::findOrFail($id);
-            if ($request->input('homeScore')) {
-                $match->home_score = $request->input('homeScore');
+            if ($request->input('result')) {
+                if ($request->input('homeScore')) {
+                    $match->home_score = $request->input('homeScore');
+                }
+                if ($request->input('awayScore')) {
+                    $match->away_score = $request->input('awayScore');
+                }
+                $is_home_walkover = $request->input('walkoverHome');
+                if (isset($is_home_walkover)) {
+                    $match->walkover_home = $request->input('walkoverHome');
+                }
+                $is_away_walkover = $request->input('walkoverHome');
+                if (isset($is_away_walkover)) {
+                    $match->walkover_away = $request->input('walkoverAway');
+                }
+                $match->played = 1;
+            } else {
+                $match->fill($request->except('fixture')); // this is the query param
             }
-            if ($request->input('awayScore')) {
-                $match->away_score = $request->input('awayScore');
-            }
-            $is_home_walkover = $request->input('walkoverHome');
-            if (isset($is_home_walkover)) {
-                $match->walkover_home = $request->input('walkoverHome');
-            }
-            $is_away_walkover = $request->input('walkoverHome');
-            if (isset($is_away_walkover)) {
-                $match->walkover_away = $request->input('walkoverAway');
-            }
-            $match->played = 1;
             $match->save();
             return $this->respondUpdated($match);
         } catch (ModelNotFoundException $e) {
