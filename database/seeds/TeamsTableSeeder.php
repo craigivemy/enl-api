@@ -64,197 +64,236 @@ class TeamsTableSeeder extends Seeder
             [
                 'name' => 'Allsorts',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Eagles',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Hastings',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Rapids',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Raptors',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Roselands',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Saracens',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'X-treme',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Blue Fusion',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Falcons',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Flame',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Hunters',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Hurricanes',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Panthers',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'PBS',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Rebels',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Rosettes',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Force',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Little Common',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Jets',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Parklife A',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Rosethornes',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Silhouettes',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Thunder',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Welcome',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Bedes',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Eastbourne Hawks',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Heathfield Hawks',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Rampage',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Roses',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Sapphires',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Zodiac',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Cuckoos',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => '-withdrawn-',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Eastbourne Harriers',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Inferno',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Parklife B',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Rockets',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ],
             [
                 'name' => 'Sparks',
                 'primary_colour' => $faker->randomElement($colors),
-                'secondary_colour' => $faker->randomElement($colors_secondary)
+                'secondary_colour' => $faker->randomElement($colors_secondary),
+                'tertiary_colour' => $faker->randomElement($colors_secondary)
             ]
         ]);
 

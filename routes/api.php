@@ -30,5 +30,6 @@ Route::apiResources([
     'divisions-tables' => 'DivisionTablesController'
 ]);
 Route::delete('clubs/{club}/soft', 'ClubController@softDelete');
+Route::delete('umpires/{umpire}/soft', 'UmpireController@softDelete');
 Route::delete('batch/teams', 'TeamController@batchDelete');
 Route::post('batchRestore/teams', 'TeamController@batchRestore');

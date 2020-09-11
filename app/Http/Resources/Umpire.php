@@ -18,6 +18,9 @@ class Umpire extends JsonResource
             'id'        => $this->id,
             'forename'  => $this->forename,
             'surname'   => $this->surname,
+            'about'     => $this->about,
+            'email'     => $this->email,
+            'phone'     => $this->phone,
             'teamId'   => $this->team_id
         ];
     }

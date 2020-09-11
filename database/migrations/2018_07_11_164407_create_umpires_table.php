@@ -19,6 +19,10 @@ class CreateUmpiresTable extends Migration
 
             $table->string('forename', 45);
             $table->string('surname', 45);
+            $table->text('about')->nullable();
+            $table->string('email', 255)->nullable();
+            $table->string('phone', 50)->nullable();
+
             $table->unsignedInteger('team_id')->nullable();
 
             $table->timestamps();

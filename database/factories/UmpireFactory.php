@@ -8,6 +8,9 @@ $factory->define(\App\Umpire::class, function (Faker $faker) {
     return [
         'forename'  => $faker->firstName,
         'surname'   => $faker->lastName,
-        'team_id'   => $faker->randomElement($user_ids)
+        'team_id'   => $faker->randomElement($user_ids),
+        'about'     => $faker->paragraph(2),
+        'email'     => $faker->email,
+        'phone'     => $faker->phoneNumber
     ];
 });

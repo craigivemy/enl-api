@@ -18,6 +18,7 @@ class UmpireController extends ApiController
      */
     public function index()
     {
+        // todo - admin flag returns phone and email, main site won't
         try {
             return $this->respond(new UmpireCollection(Umpire::all()));
         } catch (Throwable $t) {
@@ -36,7 +37,8 @@ class UmpireController extends ApiController
     public function store(Request $request)
     {
         try {
-            $umpire = Umpire::create($request->all());
+            $umpire_details = $request->input('umpire');
+            $umpire = Umpire::create($umpire_details);
             return $this->respondCreated($umpire);
         } catch (Throwable $t) {
             $meta = ['action' => 'UmpireController@store'];
@@ -75,7 +77,8 @@ class UmpireController extends ApiController
     {
         try {
             $umpire = Umpire::findOrFail($id);
-            $umpire->fill($request->except('id'));
+            $changes = $request->input('umpire');
+            $umpire->fill($changes);
             $umpire->save();
             return $this->respondUpdated($umpire);
         } catch (ModelNotFoundException $e) {
