@@ -20,12 +20,6 @@ class SettingsTableSeeder extends Seeder
                 'season_id' => 1
             ],
             [
-                'name' => 'win_value',
-                'description' => 'Points awarded for a win',
-                'setting_value' => 115,
-                'season_id' => 2
-            ],
-            [
                 'name' => 'draw_value',
                 'description' => 'Points awarded for a draw',
                 'setting_value' => 3,
@@ -66,6 +60,18 @@ class SettingsTableSeeder extends Seeder
                 'description' => 'Goals awarded to non-guilty team in case of a walkover',
                 'setting_value' => 15,
                 'season_id' => 1
+            ],
+            [
+                'name'  => 'number_of_courts',
+                'description'   => 'Number of courts being used each match day',
+                'setting_value' => 4,
+                'season_id' => 1,
+            ],
+            [
+                'name'  => 'match_times',
+                'description'   => 'Default times for matches',
+                'setting_value' => json_encode(['18:30', '19:30', '20:30']),
+                'season_id' => 1,
             ]
         ]);
     }

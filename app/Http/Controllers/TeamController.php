@@ -23,11 +23,30 @@ class TeamController extends ApiController
     public function index(Request $request)
     {
         try {
-            if ($request->query('seasonId')) {
-                $season = Season::find($request->query('seasonId'));
-                return $this->respond(new TeamCollection($season->teams()->with(['club', 'divisions', 'seasons'])->orderBy('name')->get()));
-            }
-            return $this->respond(new TeamCollection(Team::withTrashed()->orderBy('name')->get()));
+//            if ($request->query('seasonId')) {
+//                $season = Season::find($request->query('seasonId'));
+//                return $this->respond(new TeamCollection($season->teams()->with(['club', 'divisions', 'seasons'])->orderBy('name')->get()));
+//            }
+//            // todo - differentiate between this and one above
+//            if ($request->query('banter')) {
+//                $season = Season::find($request->query('seasonId'));
+//                $seasonId = $season->id;
+//
+//                $teams = Team::with('seasons', function($query) use($seasonId) {
+//                    $query->where('season_id', $seasonId);
+//                })->get();
+//
+//
+//                return $this->respond(new TeamCollection($season->teams()->orderBy('name')->get()));
+//            }
+
+            $season = Season::find($request->seasonId);
+            $seasonId = $season->id;
+            return $this->respond(new TeamCollection(Team::withTrashed()->with(['seasons' => function($query) use($seasonId) {
+                $query->where('season_id', '=', $seasonId);
+            }])->orderBy('name')->get()));
+
+
         } catch (Throwable $t) {
             $meta = ['action' => 'TeamController@index'];
             $this->logger->log('critical', $t->getMessage(), ['exception' => $t, 'meta' => $meta]);
@@ -123,12 +142,12 @@ class TeamController extends ApiController
 
                 foreach ($adjustments['deductions'] as $adjustment) {
                     DB::table('team_point_adjustments')->insert([
-                        'team_id'               => $id,
-                        'point_adjustment'      => $adjustment['deduction'], // test
+                        'team_id' => $id,
+                        'point_adjustment' => $adjustment['deduction'], // test
 
-                        'reason'                => $adjustment['reason'],
-                        'reason_date'           => $adjustment['reasonDate'],
-                        'season_id'             => $season_id
+                        'reason' => $adjustment['reason'],
+                        'reason_date' => $adjustment['reasonDate'],
+                        'season_id' => $season_id
                     ]);
                 }
                 return 1;
@@ -139,6 +158,16 @@ class TeamController extends ApiController
             $team->fill($changes);
             $team->save();
             return $this->respondUpdated($team);
+        } catch (QueryException $e) {
+            if ($e->errorInfo[1] === 1062) {
+                $message = 'A team with that name already exists.';
+                $meta = [
+                    'action' => 'TeamController@update',
+                    'info'   => 'Updating team named: ' . $request->input('name')
+                ];
+                $this->logger->log('info', $e->getMessage(), ['exception' => $e, 'meta' => $meta]);
+                return $this->respondDuplicateEntry($message);
+            }
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound('Team not found');
         } catch (Throwable $t) {

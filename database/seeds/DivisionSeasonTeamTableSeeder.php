@@ -36,6 +36,15 @@ class DivisionSeasonTeamTableSeeder extends Seeder
         }
 
         $season_2_team_ids = array_reverse($teams_ids);
+        unset($season_2_team_ids[1]);
+        unset($season_2_team_ids[39]);
+        unset($season_2_team_ids[32]);
+        unset($season_2_team_ids[12]);
+        unset($season_2_team_ids[19]);
+        unset($season_2_team_ids[3]);
+        unset($season_2_team_ids[21]);
+        unset($season_2_team_ids[24]);
+        unset($season_2_team_ids[36]);
         foreach ($season_2_team_ids as $team_id) {
             if ($i === 6) {
                 $i = 0;

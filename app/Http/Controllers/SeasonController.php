@@ -47,6 +47,7 @@ class SeasonController extends ApiController
             $season_request = $request->input('season');
             $divisions_teams_request = $request->input('divisionsTeams');
             $settings_request = $request->input('settings');
+            $basic_details_request = $request->input('basicDetails');
             $season->name = $season_request['name'];
             $season->rounds = $season_request['rounds'];
             $season->current = $season_request['current'];
@@ -66,6 +67,15 @@ class SeasonController extends ApiController
             }
 
             foreach ($settings_request as $key => $value) {
+                DB::table('settings')->insert(
+                    [
+                        'name' => $key,
+                        'setting_value' => $value,
+                        'season_id'     => $season->id
+                    ]
+                );
+            }
+            foreach ($basic_details_request as $key => $value) {
                 DB::table('settings')->insert(
                     [
                         'name' => $key,
