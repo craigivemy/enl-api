@@ -128,7 +128,7 @@ class TeamController extends ApiController
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return TeamResource
      */
 
     // todo - https://stackoverflow.com/questions/32508850/laravel-5-updating-multiple-records
@@ -163,10 +163,18 @@ class TeamController extends ApiController
             if ($request->input('deletePlayers')) {
                 $season_id = $request->input('seasonId');
                 $ids = $request->input('ids');
-                foreach ($ids as $id) {
-                    DB::table('player_season_team')->where('season_id', $season_id)->where('player_id', $id)->delete();
+                foreach ($ids as $playerId) {
+                    DB::table('player_season_team')->where('season_id', $season_id)->where('player_id', $playerId)->delete();
                 }
-                return 1;
+                // todo - return same format it's in when fetching all teams on the players page
+                    $team = Team::withTrashed()->where('id', $id)
+                        ->with(['players' => function($query) use($season_id) {
+                            $query->withTrashed();
+                            $query->where('season_id', $season_id);
+                            $query->orderBy('surname', 'asc');
+                        }])
+                        ->first();
+                return ['data' => $team];
 
             }
 
