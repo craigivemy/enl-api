@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PlayerCollection;
+use App\Player;
 use App\Season;
 use Illuminate\Http\Request;
 use App\Team;
@@ -23,25 +25,29 @@ class TeamController extends ApiController
     public function index(Request $request)
     {
         try {
-//            if ($request->query('seasonId')) {
-//                $season = Season::find($request->query('seasonId'));
-//                return $this->respond(new TeamCollection($season->teams()->with(['club', 'divisions', 'seasons'])->orderBy('name')->get()));
-//            }
-//            // todo - differentiate between this and one above
-//            if ($request->query('banter')) {
-//                $season = Season::find($request->query('seasonId'));
-//                $seasonId = $season->id;
-//
-//                $teams = Team::with('seasons', function($query) use($seasonId) {
-//                    $query->where('season_id', $seasonId);
-//                })->get();
-//
-//
-//                return $this->respond(new TeamCollection($season->teams()->orderBy('name')->get()));
-//            }
+            $seasonId = $request->input('seasonId');
+            $season = Season::find($seasonId);
 
-            $season = Season::find($request->seasonId);
-            $seasonId = $season->id;
+            if ($request->input('withPlayers')) {
+                $teamsInSeasonQuery = $season->teams()
+                    ->select('teams.id')
+                    ->getQuery();
+                $teams = Team::withTrashed()->whereIn('id', $teamsInSeasonQuery)
+                    ->with(['players' => function($query) use($seasonId) {
+                        $query->withTrashed();
+                        $query->where('season_id', $seasonId);
+                        $query->orderBy('surname', 'asc');
+                    }])
+                    ->with(['seasons' => function($query) use($seasonId) {
+                        $query->where('season_id', '=', $seasonId);
+                    }])
+                    ->orderBy('name', 'asc')
+                    ->get();
+
+                return $this->respond(new TeamCollection($teams));
+            }
+
+
             return $this->respond(new TeamCollection(Team::withTrashed()->with(['seasons' => function($query) use($seasonId) {
                 $query->where('season_id', '=', $seasonId);
             }])->orderBy('name')->get()));
@@ -151,6 +157,17 @@ class TeamController extends ApiController
                     ]);
                 }
                 return 1;
+            }
+
+            // from season
+            if ($request->input('deletePlayers')) {
+                $season_id = $request->input('seasonId');
+                $ids = $request->input('ids');
+                foreach ($ids as $id) {
+                    DB::table('player_season_team')->where('season_id', $season_id)->where('player_id', $id)->delete();
+                }
+                return 1;
+
             }
 
             $team = Team::findOrFail($id);

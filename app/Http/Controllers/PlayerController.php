@@ -25,7 +25,7 @@ class PlayerController extends ApiController
     {
         try {
 
-            if ($request->input('teamId') && $request->input('seasonId')) { // todo check if seasonId present to?
+            if ($request->input('teamId') && $request->input('seasonId')) {
                 $team_id = $request->input('teamId');
                 $seasonId = $request->input('seasonId');
                 $season = Season::find($seasonId);
@@ -55,6 +55,7 @@ class PlayerController extends ApiController
                     ->select('players.id')
                     ->getQuery();
 
+                // todo - should check that seasonId is NOT current before returning withTrashed?
                 $players = Player::whereIn('id', $playersInSeasonQuery)
                     ->with(['teams' => function($query) use($seasonId) {
                         $query->withTrashed()->where('season_id', $seasonId);
@@ -70,6 +71,9 @@ class PlayerController extends ApiController
 
                 return $this->respond(new PlayerCollection($players));
             }
+            // todo maybe - have one that returns just trashed, then won't be loading all every time - can just load on tab view of 'Restore Players'?
+            return $this->respond(new PlayerCollection(Player::withTrashed()->get()));
+
         } catch (Throwable $t) {
             $meta = ['action' => 'PlayerController@index'];
             $this->logger->log('critical', $t->getMessage(), ['exception' => $t, 'meta' => $meta]);

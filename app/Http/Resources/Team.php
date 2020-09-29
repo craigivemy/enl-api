@@ -28,7 +28,8 @@ class Team extends JsonResource
             'deletedAt'         => $this->deleted_at,
             'activeThisSeason'  => $this->whenLoaded('seasons', function() {
                 return $this->seasons->count();
-            })
+            }),
+            'players'           => $this->whenLoaded('players')
         ];
 
     }
