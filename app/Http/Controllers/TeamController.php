@@ -25,32 +25,36 @@ class TeamController extends ApiController
     public function index(Request $request)
     {
         try {
-            $seasonId = $request->input('seasonId');
-            $season = Season::find($seasonId);
+            if ($request->input('seasonId')) {
+                $seasonId = $request->input('seasonId');
+                $season = Season::find($seasonId);
 
-            if ($request->input('withPlayers')) {
-                $teamsInSeasonQuery = $season->teams()
-                    ->select('teams.id')
-                    ->getQuery();
-                $teams = Team::withTrashed()->whereIn('id', $teamsInSeasonQuery)
-                    ->with(['players' => function($query) use($seasonId) {
-                        $query->withTrashed();
-                        $query->where('season_id', $seasonId);
-                        $query->orderBy('surname', 'asc');
-                    }])
-                    ->with(['seasons' => function($query) use($seasonId) {
-                        $query->where('season_id', '=', $seasonId);
-                    }])
-                    ->orderBy('name', 'asc')
-                    ->get();
+                if ($request->input('withPlayers')) {
+                    $teamsInSeasonQuery = $season->teams()
+                        ->select('teams.id')
+                        ->getQuery();
+                    $teams = Team::withTrashed()->whereIn('id', $teamsInSeasonQuery)
+                        ->with(['players' => function($query) use($seasonId) {
+                            $query->withTrashed();
+                            $query->where('season_id', $seasonId);
+                            $query->orderBy('surname', 'asc');
+                        }])
+                        ->with(['seasons' => function($query) use($seasonId) {
+                            $query->where('season_id', $seasonId);
+                        }])
+                        ->orderBy('name', 'asc')
+                        ->get();
 
-                return $this->respond(new TeamCollection($teams));
+                    return $this->respond(new TeamCollection($teams));
+                }
+
+                return $this->respond(new TeamCollection(Team::withTrashed()->with(['seasons' => function($query) use($seasonId) {
+                    $query->where('season_id', '=', $seasonId);
+                }])->orderBy('name')->get()));
+
+            } else {
+                return $this->respond(new TeamCollection(Team::with('seasons')->orderBy('name')->get()));
             }
-
-
-            return $this->respond(new TeamCollection(Team::withTrashed()->with(['seasons' => function($query) use($seasonId) {
-                $query->where('season_id', '=', $seasonId);
-            }])->orderBy('name')->get()));
 
 
         } catch (Throwable $t) {
@@ -163,10 +167,9 @@ class TeamController extends ApiController
             if ($request->input('deletePlayers')) {
                 $season_id = $request->input('seasonId');
                 $ids = $request->input('ids');
-                foreach ($ids as $playerId) {
-                    DB::table('player_season_team')->where('season_id', $season_id)->where('player_id', $playerId)->delete();
-                }
-                // todo - return same format it's in when fetching all teams on the players page
+                DB::table('player_season_team')->where('season_id', $season_id)->whereIn('player_id', $ids)->delete();
+
+                // todo - check this is exact same format it's in when fetching all teams on the players page
                     $team = Team::withTrashed()->where('id', $id)
                         ->with(['players' => function($query) use($season_id) {
                             $query->withTrashed();
@@ -175,8 +178,62 @@ class TeamController extends ApiController
                         }])
                         ->first();
                 return ['data' => $team];
+            }
+
+            if ($request->input('movePlayers')) {
+                $season_id = $request->input('seasonId');
+                $ids = $request->input('ids');
+                $newTeamId = $request->input('newTeamId');
+                DB::table('player_season_team')
+                    ->where(['season_id' => $season_id, 'team_id' => $id])
+                    ->whereIn('player_id', $ids)
+                    ->update(['team_id' => $newTeamId]);
+
+                $fromTeam = Team::withTrashed()->where('id', $id)
+                    ->with(['players' => function($query) use($season_id) {
+                        $query->withTrashed();
+                        $query->where('season_id', $season_id);
+                        $query->orderBy('surname', 'asc');
+                    }])
+                    ->first();
+                $toTean = Team::withTrashed()->where('id', $newTeamId)
+                    ->with(['players' => function($query) use($season_id) {
+                        $query->withTrashed();
+                        $query->where('season_id', $season_id);
+                        $query->orderBy('surname', 'asc');
+                    }])
+                    ->first();
+                return ['data' =>
+                    [
+                    'fromTeam'  => $fromTeam,
+                    'toTeam'    => $toTean
+                    ]
+                ];
 
             }
+
+            if ($request->input('addPlayers')) {
+                $season_id = $request->input('seasonId');
+                $players = $request->input('players');
+                foreach ($players as $player) {
+                    $newPlayer = new Player();
+                    $newPlayer->forename = $player['forename'];
+                    $newPlayer->surname = $player['surname'];
+                    $newPlayer->save();
+                    DB::table('player_season_team')->insert(['team_id' => $id, 'season_id' => $season_id, 'player_id' => $newPlayer->id]);
+                }
+
+                $team = Team::withTrashed()->where('id', $id)
+                    ->with(['players' => function($query) use($season_id) {
+                        $query->withTrashed();
+                        $query->where('season_id', $season_id);
+                        $query->orderBy('surname', 'asc');
+                    }])
+                    ->first();
+                return ['data' => $team];
+
+            }
+
 
             $team = Team::findOrFail($id);
             $changes = $request->input('changes');

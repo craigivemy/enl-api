@@ -43,6 +43,7 @@ class SeasonController extends ApiController
     {
         try {
             // todo - only 1 should be able to be pending? or on front end don't allow add, juist show pending one they can edit?
+            $current_season = Season::where('current', 1)->first();
             $season = new Season();
             $season_request = $request->input('season');
             $divisions_teams_request = $request->input('divisionsTeams');
@@ -54,8 +55,10 @@ class SeasonController extends ApiController
             $season->start_date = $season_request['startDate'];
             $season->saveOrFail();
 
+            $newTeams = [];
             foreach ($divisions_teams_request as $key => $row) {
                 foreach ($row as $sub => $val) {
+                    $newTeams[] = $val['id'];
                     DB::table('division_season_team')->insert(
                         [
                             'season_id' => $season->id,
@@ -64,6 +67,11 @@ class SeasonController extends ApiController
                         ]
                     );
                 }
+            }
+            foreach ($newTeams as $team_id) {
+                DB::statement("INSERT INTO player_season_team (season_id, player_id, team_id)
+                SELECT " . $season->id . ", player_id, team_id FROM player_season_team WHERE team_id = " . $team_id . " 
+                AND season_id = " . $current_season->id);
             }
 
             foreach ($settings_request as $key => $value) {
@@ -85,6 +93,7 @@ class SeasonController extends ApiController
                 );
             }
 
+            // todo -at the moment, always will be, until save / pending is in place
             if ($season->current === 1) {
                Season::where('current', 1)
                    ->where('id', '!=', $season->id)
