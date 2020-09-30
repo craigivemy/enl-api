@@ -33,7 +33,7 @@ class TeamController extends ApiController
                     $teamsInSeasonQuery = $season->teams()
                         ->select('teams.id')
                         ->getQuery();
-                    $teams = Team::withTrashed()->whereIn('id', $teamsInSeasonQuery)
+                    $teams = Team::withTrashed()
                         ->with(['players' => function($query) use($seasonId) {
                             $query->withTrashed();
                             $query->where('season_id', $seasonId);
@@ -49,7 +49,7 @@ class TeamController extends ApiController
                 }
 
                 return $this->respond(new TeamCollection(Team::withTrashed()->with(['seasons' => function($query) use($seasonId) {
-                    $query->where('season_id', '=', $seasonId);
+                    $query->where('season_id', $seasonId);
                 }])->orderBy('name')->get()));
 
             } else {
