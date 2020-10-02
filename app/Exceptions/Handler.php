@@ -53,8 +53,7 @@ class Handler extends ExceptionHandler
                 'status' => 'not found'
             ])->setStatusCode(404);
         }
-
-
-        return parent::render($request, $exception);
+        // return parent::render($request, $exception);
+        return response(['error' => $exception->getMessage(), $exception->getCode() ?: 400]);
     }
 }
