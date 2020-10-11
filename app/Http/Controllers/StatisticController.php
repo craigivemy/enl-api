@@ -22,9 +22,9 @@ class StatisticController extends Controller
         $season = Season::find($season_id);
         // todo if team id, get the below for a team
         if ($request->input('basicStats')) {
-            // needs where date is later than today
             $next_match_and_datetime = Match::where('season_id', $season_id)
                 ->where('played', 0)
+                ->where('match_date', '>=', DB::raw('curdate()'))
                 ->with('homeTeam', 'awayTeam')
                 ->orderBy('match_date', 'asc')
                 ->pluck('match_date')
@@ -63,7 +63,7 @@ class StatisticController extends Controller
             $next_match_and_datetime = Match::where('season_id', $season_id)
                 ->where('played', 0)
                 ->with('homeTeam', 'awayTeam')
-                ->orderBy('match_date', 'asc')
+                ->orderBy('match_date', 'desc')
                 ->pluck('match_date')
                 ->first();
 

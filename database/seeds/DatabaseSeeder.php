@@ -16,18 +16,18 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UsersTableSeeder::class,
             SettingsTableSeeder::class,
-            //ClubsTableSeeder::class,
+            ClubsTableSeeder::class,
             DivisionsTableSeeder::class,
-            //SeasonsTableSeeder::class,
-            //TeamsTableSeeder::class,
-            //PlayersTableSeeder::class,
-            //PlayedUpsTableSeeder::class,
-            //PlayerSeasonTeamTableSeeder::class,
-            //StatisticsTableSeeder::class,
-            //UmpiresTableSeeder::class,
-            //DivisionSeasonTeamTableSeeder::class,
-            //MatchesTableSeeder::class,
-            //TeamPointAdjustmentsTableSeeder::class
+            SeasonsTableSeeder::class,
+            TeamsTableSeeder::class,
+            PlayersTableSeeder::class,
+            PlayedUpsTableSeeder::class,
+            PlayerSeasonTeamTableSeeder::class,
+            StatisticsTableSeeder::class,
+            UmpiresTableSeeder::class,
+            DivisionSeasonTeamTableSeeder::class,
+            MatchesTableSeeder::class,
+            TeamPointAdjustmentsTableSeeder::class
         ]);
 
     }
